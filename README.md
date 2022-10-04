@@ -10,10 +10,8 @@ title: December 2022 R Statistics Training Workshop
 
 This site will eventually contain all the course materials. It is a work in progress! Please check back soon for more information.
 
-{.biglink}
 [SIGNUP FORM](https://forms.gle/mzk8GVJ42hSFPvCU8)
 
-{.biglink}
 [COURSE SYLLABUS](syllabus.md)
 
 ## Directions to workshop location
