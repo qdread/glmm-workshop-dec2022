@@ -4,7 +4,7 @@ title: Course Syllabus
 
 **This is a DRAFT and is still subject to change!**
 
-[Skip down to course schedule](#Schedule)
+[Skip down to course schedule](#schedule)
 
 ## Conceptual learning objectives
 
