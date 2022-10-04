@@ -1,15 +1,19 @@
-# A practical toolkit for mixed models in R
+---
+title: December 2022 R Statistics Training Workshop
+---
 
-**What:** "A practical toolkit for mixed models in R": USDA ARS southeast area statistics training workshop
-**When:** Thursday, December 8 - Friday, December 9, 2022, 9:00 AM-4:00 PM (Eastern time)
-**Who:** open to any ARS personnel in the Southeast area
-**Where:** Raleigh, NC (NCSU Plant Sciences Building, Room 3158, 840 Oval Drive). The workshop will also be livestreamed and recorded.
-**Instructor:** Quentin Read, ARS southeast area statistician
+- **What:** "A practical toolkit for mixed models in R": USDA ARS southeast area statistics training workshop
+- **When:** Thursday, December 8 - Friday, December 9, 2022, 9:00 AM-4:00 PM (Eastern time)
+- **Who:** open to any ARS personnel in the Southeast area
+- **Where:** Raleigh, NC (NCSU Plant Sciences Building, Room 3158, 840 Oval Drive). The workshop will also be livestreamed and recorded.
+- **Instructor:** Quentin Read, ARS southeast area statistician
 
 This site will eventually contain all the course materials. It is a work in progress! Please check back soon for more information.
 
+{.biglink}
 [SIGNUP FORM](https://forms.gle/mzk8GVJ42hSFPvCU8)
 
+{.biglink}
 [COURSE SYLLABUS](syllabus.md)
 
 ## Directions to workshop location
