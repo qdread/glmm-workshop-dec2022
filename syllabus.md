@@ -4,6 +4,8 @@ title: Course Syllabus
 
 **This is a DRAFT and is still subject to change!**
 
+[Skip down to course schedule](#Schedule)
+
 ## Conceptual learning objectives
 
 At the end of the workshop, students will be able to . . . 
@@ -31,12 +33,12 @@ At the end of the workshop, students will be able to . . .
 
 ## R packages we will learn about
 
--	“tidyverse” packages especially readr, dplyr, and tidyr (read and manipulate data)
--	lme4 (fit models if using classical frequentist stats)
--	brms/tidybayes (fit models if using Bayesian stats)
--	emmeans (estimate treatment effects and test hypotheses)
--	ggplot2 (make publication-quality graphics)
--	gt (make publication-quality tables)
+-	“tidyverse” packages especially **readr**, **dplyr**, and **tidyr** (read and manipulate data)
+-	**lme4** (fit models if using classical frequentist stats)
+-	**brms**/**tidybayes** (fit models if using Bayesian stats)
+-	**emmeans** (estimate treatment effects and test hypotheses)
+-	**ggplot2** (make publication-quality graphics)
+-	**gt** (make publication-quality tables)
 
 ## Before class, you will need to ...
 
@@ -50,7 +52,7 @@ In this workshop, we will have it both ways. I will present both Bayesian and fr
 
 ## Schedule
 
-This is a preliminary schedule that’s subject to change. Long breaks are built into the schedule, I will be available to answer individual questions for at least part of the long breaks.
+This is a preliminary schedule that’s subject to change. The instructor (Quentin) will be available to answer individual questions for at least part of the long breaks.
 
 *All times are in Eastern Standard Time.*
 
