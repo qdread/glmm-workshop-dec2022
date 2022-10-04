@@ -12,6 +12,5 @@ slurm-*.out
 # Stan executables
 *.exe
 
-# Symlink to data and project directories
-data
-project
+# Preview HTML
+*.html
