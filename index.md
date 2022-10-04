@@ -2,6 +2,8 @@
 title: December 2022 R Statistics Training Workshop
 ---
 
+# ARS Southeast Area December 2022 R Stats Training
+
 - **What:** "A practical toolkit for mixed models in R": USDA ARS southeast area statistics training workshop
 - **When:** Thursday, December 8 - Friday, December 9, 2022, 9:00 AM-4:00 PM (Eastern time)
 - **Who:** open to any ARS personnel in the Southeast area
