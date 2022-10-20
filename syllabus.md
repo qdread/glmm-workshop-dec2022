@@ -2,7 +2,7 @@
 title: Course Syllabus
 ---
 
-**This is a DRAFT and is still subject to change!**
+**This is a DRAFT and is still subject to change! Last updated October 20.**
 
 [Skip down to course schedule](#schedule)
 
@@ -10,23 +10,19 @@ title: Course Syllabus
 
 At the end of the workshop, students will be able to . . . 
 
--	Conceptually understand all components of a generalized linear mixed model (GLMM), including: 
-  +	Link function
+-	Conceptually understand all components of a linear mixed model (LMM), including: 
   +	Fixed effects
   +	Random intercepts and random slopes
   +	Estimated marginal means
-  +	Confidence/credible intervals and prediction intervals
--	Interpret the output of a GLMM
--	Conceptually understand at least the basics of Bayesian inference
+  +	Confidence intervals and prediction intervals
+-	Interpret the output of a LMM
 
 ## Practical learning objectives
 
 At the end of the workshop, students will be able to . . .
 
-- Set up a reproducible R stats/data science workflow using RStudio projects and RMarkdown notebooks
-- Use an R modeling package of their choice to fit GLMM models
-  +	Frequentist/classical statistics: **lme4**
-  +	Bayesian statistics: **brms**
+- Set up an R stats pipeline using RStudio projects and RMarkdown notebooks (a pipeline that takes you from the raw data to a document presenting analysis results)
+- Use the R modeling package **lme4** to fit GLMM models
 -	Generate predictions from a fitted model, including estimated marginal means
 -	Test specific hypotheses with contrasts
 -	Make a nice-looking report with results in graphical, table, and text format
@@ -34,8 +30,7 @@ At the end of the workshop, students will be able to . . .
 ## R packages we will learn about
 
 -	“tidyverse” packages especially **readr**, **dplyr**, and **tidyr** (read and manipulate data)
--	**lme4** (fit models if using classical frequentist stats)
--	**brms**/**tidybayes** (fit models if using Bayesian stats)
+-	**lme4** (fit models)
 -	**emmeans** (estimate treatment effects and test hypotheses)
 -	**ggplot2** (make publication-quality graphics)
 -	**gt** (make publication-quality tables)
@@ -43,12 +38,12 @@ At the end of the workshop, students will be able to . . .
 ## Before class, you will need to ...
 
 -	Have access to a working version of R and RStudio on a laptop
--	Preferably install the packages (specific instructions coming soon)
+-	Install the necessary packages (specific instructions coming soon)
 -	Optional: bring a dataset you are interested in analyzing. If you don’t have one, I will provide you with an example dataset.
 
-## Note on Bayesian versus classical statistics
+## Note on general versus generalized models, and Bayesian versus classical statistics
 
-In this workshop, we will have it both ways. I will present both Bayesian and frequentist (classical approach) code alternatives for each model we fit. However, I will focus more on the frequentist approach in this workshop because it is what people are familiar with and I do not want to bite off more than we can chew in this first workshop. I am planning a future workshop to delve more into the finer points of the Bayesian approach.
+Based on the poll results, it seems that most students taking this course will need to spend some time learning the basics of R before we get into the statistics. Therefore I think it will not be feasible to cover generalized linear models or Bayesian statistics in this workshop. We will focus on R basics and start with simpler LMM models. I will plan a future workshop or series of workshops on generalized linear mixed models, and on Bayesian statistics.
 
 ## Schedule
 

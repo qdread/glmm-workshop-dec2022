@@ -12,9 +12,13 @@ title: December 2022 R Statistics Training Workshop
 
 This site will eventually contain all the course materials. It is a work in progress! Please check back soon for more information.
 
-[SIGNUP FORM](https://forms.gle/mzk8GVJ42hSFPvCU8){: .biglink }
-
 [COURSE SYLLABUS](syllabus.md){: .biglink }
+
+[INSTALLATION INSTRUCTIONS](install.md){: .biglink }  
+Instructions on installing R, RStudio, and necessary packages. Please follow these instructions before the beginning of the workshop.
+
+[OPTIONAL PRE-WORKSHOP LEARNING MATERIAL](pre-workshop-materials.md){: .biglink }  
+If you want to study up on R or statistical models before the workshop, here are some helpful resources.
 
 ## Directions to workshop location
 
