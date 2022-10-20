@@ -15,6 +15,9 @@ Before the course, you will need to have the following software installed on you
   + lme4
   + emmeans
   + gt
+  + readxl
+  
+In addition, you will need to download the example datasets.
   
 ## How to install R
 
@@ -38,7 +41,7 @@ To install the packages we will be working with in this course, you will need to
 - Type or copy the following code into the console, and press enter:
 
 ```
-install.packages(c("tidyverse", "lme4", "emmeans", "gt"))
+install.packages(c("tidyverse", "lme4", "lmerTest", "emmeans", "gt", "readxl"))
 ```
 
 ### Installing packages from the RStudio package installation window
@@ -49,7 +52,7 @@ You can also install the packages using the RStudio package installation dialog.
 - Type the package names, separated by space or comma, into the box:
 
 ```
-tidyverse, lme4, emmeans, gt
+tidyverse, lme4, lmerTest, emmeans, gt, readxl
 ```
 
 It should look like this:
@@ -59,3 +62,7 @@ It should look like this:
 - Ensure that the library you are installing to is somewhere in a folder you can write to without admin rights. **COMING SOON: I will give instructions on how to do that.**
 - Ensure that "install dependencies" is selected.
 - Click "Install."
+
+## Downloading the example datasets
+
+**Instructions coming soon.**

@@ -11,6 +11,3 @@ slurm-*.out
 
 # Stan executables
 *.exe
-
-# Preview HTML
-*.html

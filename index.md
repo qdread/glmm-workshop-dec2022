@@ -12,7 +12,8 @@ title: December 2022 R Statistics Training Workshop
 
 This site will eventually contain all the course materials. It is a work in progress! Please check back soon for more information.
 
-[COURSE SYLLABUS](syllabus.md){: .biglink }
+[COURSE SYLLABUS](syllabus.md){: .biglink }  
+Learning objectives and workshop schedule.
 
 [INSTALLATION INSTRUCTIONS](install.md){: .biglink }  
 Instructions on installing R, RStudio, and necessary packages. Please follow these instructions before the beginning of the workshop.

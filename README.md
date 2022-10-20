@@ -2,4 +2,4 @@
 
 This is the repository that the course site is built from.
 
-Visit the course site at <https://quentinread.com/glmm-workshop-dec-2022> for more information.
+Visit the course site at <https://quentinread.com/glmm-workshop-dec2022> for more information.

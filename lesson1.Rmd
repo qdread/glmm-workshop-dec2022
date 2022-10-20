@@ -1,0 +1,64 @@
+---
+title: "Lesson 1: R basics"
+author: "Quentin D. Read"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = TRUE, warning = TRUE)
+```
+
+*(This is a test to make sure the lessons display correctly.)*
+
+Here are some simple things you can do with R.
+
+```{r}
+2 + 3
+
+x <- 2
+y <- 3
+
+x + y
+x * 4
+
+x <- x + 1
+z <- x * 4
+z
+
+log(1000)
+
+sin(pi)
+
+my_name <- "Quentin"
+
+paste("Hello,", my_name)
+```
+
+Load a package, read in an external file, plot the data, and fit a model.
+
+```{r}
+library(tidyverse)
+library(lmerTest)
+
+dat <- read_csv('testdata.csv')
+```
+
+```{r, fig.width = 4, fig.height = 4}
+ggplot(dat, aes(x = x, y = y, color = g)) +
+  geom_point()
+```
+
+```{r}
+fit <- lmer(y ~ x + (1|g), data = dat)
+```
+
+```{r}
+fixef(fit)
+ranef(fit)
+anova(fit)
+```
+
