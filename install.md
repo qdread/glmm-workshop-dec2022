@@ -1,4 +1,5 @@
 ---
+layout: page
 title: Installation instructions
 ---
 
@@ -57,7 +58,7 @@ tidyverse, lme4, lmerTest, emmeans, gt, readxl
 
 It should look like this:
 
-![installation dialog](assets/images/install_dialog.png)
+![installation dialog](/images/install_dialog.png)
 
 - Ensure that the library you are installing to is somewhere in a folder you can write to without admin rights. **COMING SOON: I will give instructions on how to do that.**
 - Ensure that "install dependencies" is selected.

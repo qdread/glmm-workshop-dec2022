@@ -1,3 +1,26 @@
-remote_theme: pages-themes/modernist@v0.2.0
+# Setup
+title:               A practical toolkit for mixed models in R
+tagline:             'USDA ARS stats workshop: December 8-9, 2022'
+description:         'A practical toolkit for mixed models in R: USDA ARS stats workshop: December 8-9, 2022.'
+url:                 https://qdread.github.io/glmm-workshop-dec2022
+baseurl:             ''
+paginate:            5
+permalink:           pretty
+
+# About/contact
+author:
+  name:              Quentin Read
+  url:               https://quentinread.com
+  email:             quentin.read@usda.gov
+
+# Gems
 plugins:
-- jekyll-remote-theme
+  - jekyll-paginate
+
+# Custom vars
+version:             0.1
+google_analytics_id: #UA-XXXX-Y
+
+github:
+  repo:              https://github.com/qdread/glmm-workshop-dec2022
+  
