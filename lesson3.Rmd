@@ -1,0 +1,18 @@
+---
+title: "Lesson 3: xxxxxxxxx"
+author: "Quentin D. Read"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = TRUE, warning = TRUE)
+```
+
+# Learning objectives
+
+At the end of this lesson, students will ...
+
