@@ -3,7 +3,7 @@ layout: page
 title: Installation instructions
 ---
 
-**THIS DOCUMENT IS A DRAFT. Last edited October 20.**
+**THIS DOCUMENT IS A DRAFT. Last edited October 26.**
 
 ## What you need to install
 
@@ -34,12 +34,14 @@ Go to the [RStudio download page](https://www.rstudio.com/products/rstudio/downl
 
 ## How to install the packages
 
-To install the packages we will be working with in this course, you will need to do one of the following.
+To install the packages we will be working with in this course, you will need to either install packages by typing a command into the R console, or install them using RStudio's package installation window. 
 
-### Installing packages from command line
+> **NOTE**: On some Windows systems, the default R package installation directory is inside the `Program Files` directory. Please ask your IT person to change the default R package installation directory to one that you have administrator rights to. This will allow you to install R packages in the future without involvement from an administrator.
+
+### Installing packages from the R console
 
 - Open RStudio.
-- Type or copy the following code into the console, and press enter:
+- Type the following command into the R console and press enter. Voila!
 
 ```
 install.packages(c("tidyverse", "lme4", "lmerTest", "emmeans", "gt", "readxl"))
@@ -58,12 +60,12 @@ tidyverse, lme4, lmerTest, emmeans, gt, readxl
 
 It should look like this:
 
-![installation dialog](/images/install_dialog.png)
+![installation dialog](images/install_dialog.png)
 
-- Ensure that the library you are installing to is somewhere in a folder you can write to without admin rights. **COMING SOON: I will give instructions on how to do that.**
+- Ensure that the library you are installing to is somewhere in a folder you can write to without admin rights. (See above.) 
 - Ensure that "install dependencies" is selected.
 - Click "Install."
 
 ## Downloading the example datasets
 
-**Instructions coming soon.**
+The example datasets will be available for download through this website. I will provide a link closer to the date of the course.
