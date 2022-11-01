@@ -18,10 +18,16 @@ At the end of this lesson, students will ...
 
 - Know what R is and what it can do.
 - Use the R console to interactively issue R commands.
+- Know what a data frame is.
 - Know what R packages are and how to install and load them.
 - Read a CSV file of data into the R workspace.
+- Understand "tidy" data.
+- Calculate summary statistics by group.
+- Make a few basic plots.
 
-*(This is a test to make sure the lessons display correctly.)*
+# What is R?
+
+# Using the R console
 
 Here are some simple things you can do with R.
 
@@ -46,6 +52,10 @@ my_name <- "Quentin"
 
 paste("Hello,", my_name)
 ```
+
+# What is a data frame?
+
+We will not go into every possible R data type for this lesson. The one you really need to know about for model fitting is the data frame.
 
 Load a package, read in an external file, plot the data, and fit a model.
 

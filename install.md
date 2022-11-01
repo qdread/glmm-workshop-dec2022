@@ -3,7 +3,7 @@ layout: page
 title: Installation instructions
 ---
 
-**THIS DOCUMENT IS A DRAFT. Last edited October 26.**
+**THIS DOCUMENT IS A DRAFT.**
 
 ## What you need to install
 
@@ -15,9 +15,7 @@ Before the course, you will need to have the following software installed on you
   + tidyverse (this includes the packages dplyr, tidyr, readr, and ggplot2 that we will be working with)
   + lme4
   + emmeans
-  + gt
-  + readxl
-  
+
 In addition, you will need to download the example datasets.
   
 ## How to install R
@@ -44,7 +42,7 @@ To install the packages we will be working with in this course, you will need to
 - Type the following command into the R console and press enter. Voila!
 
 ```
-install.packages(c("tidyverse", "lme4", "lmerTest", "emmeans", "gt", "readxl"))
+install.packages(c("tidyverse", "lme4", "lmerTest", "emmeans"))
 ```
 
 ### Installing packages from the RStudio package installation window
@@ -55,7 +53,7 @@ You can also install the packages using the RStudio package installation dialog.
 - Type the package names, separated by space or comma, into the box:
 
 ```
-tidyverse, lme4, lmerTest, emmeans, gt, readxl
+tidyverse, lme4, lmerTest, emmeans
 ```
 
 It should look like this:

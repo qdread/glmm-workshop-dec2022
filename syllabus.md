@@ -23,10 +23,10 @@ At the end of the workshop, students will be able to . . .
 At the end of the workshop, students will be able to . . .
 
 - Set up an R stats pipeline using RStudio projects and RMarkdown notebooks (a pipeline that takes you from the raw data to a document presenting analysis results)
-- Use the R modeling package **lme4** to fit GLMM models
+- Use the R modeling package **lme4** to fit LMM models
 -	Generate predictions from a fitted model, including estimated marginal means
 -	Test specific hypotheses with contrasts
--	Make a nice-looking report with results in graphical, table, and text format
+-	Make plots and tables of LMM results
 
 ## R packages we will learn about
 
@@ -34,7 +34,6 @@ At the end of the workshop, students will be able to . . .
 -	**lme4** (fit models)
 -	**emmeans** (estimate treatment effects and test hypotheses)
 -	**ggplot2** (make publication-quality graphics)
--	**gt** (make publication-quality tables)
 
 ## Before class, you will need to ...
 

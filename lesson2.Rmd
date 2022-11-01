@@ -1,5 +1,5 @@
 ---
-title: "Lesson 2: xxxxxxxxx"
+title: "Lesson 2: From LM to LMM"
 author: "Quentin D. Read"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: 
@@ -16,3 +16,6 @@ knitr::opts_chunk$set(echo = TRUE, message = TRUE, warning = TRUE)
 
 At the end of this lesson, students will ...
 
+- Be able to fit a linear model with continuous and categorical predictor.
+- Be able to fit a linear model with interaction terms.
+- Be able to fit a mixed model with fixed effect and random intercept.

@@ -55,3 +55,5 @@ validation-report.json
 # Folders to ignore
 node_modules
 bower_components
+
+lesson_outline.md
