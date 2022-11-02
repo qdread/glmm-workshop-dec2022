@@ -57,11 +57,11 @@ This is a preliminary schedule that’s subject to change. The instructor (Quent
 Time                      | Activity
 ------------------------- | ----------------------------------------------------------
 9:00-9:15 AM              | Introductions, troubleshooting
-9:15-10:15 AM             | Quick R refresher
+9:15-10:15 AM             | R Boot Camp: the very basics
 10:15-10:45 AM            | *break*
-10:45-11:30 AM            | What are LMMs? Fit our first LMM!
+10:45-11:30 AM            | R Boot Camp: working with data
 11:30-11:45 AM            | *break*
-11:45 AM-12:30 PM         | Estimating and comparing treatment means
+11:45 AM-12:30 PM         | What are LMMs? Fit our first LMM!
 12:30-1:30 PM             | *lunch break*
 1:30 PM-4:00 PM           | Office Hours: Students will work on data and code. Quentin will answer questions and troubleshoot.
 
@@ -70,10 +70,10 @@ Time                      | Activity
 Time                      | Activity
 ------------------------- | ----------------------------------------------------------
 9:00-9:15 AM              | Recap of Day 1
-9:15-10:15 AM             | Making nice plots and tables
+9:15-10:15 AM             | Random intercept and random slope models
 10:15-10:45 AM            | *break*
-10:45-11:30 AM            | Putting the "generalized" into generalized linear mixed model
+10:45-11:30 AM            | Estimating and comparing treatment means
 11:30-11:45 AM            | *break*
-11:45 AM-12:30 PM         | Fun with categorical and continuous interactions
+11:45 AM-12:30 PM         | Making plots and tables
 12:30-1:30 PM             | *lunch break*
 1:30 PM-4:00 PM           | Office Hours: Students will work on data and code. Quentin will answer questions and troubleshoot.
