@@ -3,7 +3,7 @@ layout: page
 title: Course Syllabus
 ---
 
-**This is a DRAFT and is still subject to change! Last updated October 20.**
+**This is a DRAFT and is still subject to change! Last updated November 1.**
 
 [Skip down to course schedule](#schedule)
 
@@ -22,7 +22,8 @@ At the end of the workshop, students will be able to . . .
 
 At the end of the workshop, students will be able to . . .
 
-- Set up an R stats pipeline using RStudio projects and RMarkdown notebooks (a pipeline that takes you from the raw data to a document presenting analysis results)
+- Read data into R
+- Do simple manipulations of R data frames
 - Use the R modeling package **lme4** to fit LMM models
 -	Generate predictions from a fitted model, including estimated marginal means
 -	Test specific hypotheses with contrasts
@@ -39,7 +40,7 @@ At the end of the workshop, students will be able to . . .
 
 -	Have access to a working version of R and RStudio on a laptop
 -	Install the necessary packages (specific instructions coming soon)
--	Optional: bring a dataset you are interested in analyzing. If you don’t have one, I will provide you with an example dataset.
+-	*Optional*: bring a dataset you are interested in analyzing. If you don’t have one, I will provide you with an example dataset.
 
 ## Note on general versus generalized models, and Bayesian versus classical statistics
 

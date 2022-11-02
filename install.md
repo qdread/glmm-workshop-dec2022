@@ -3,8 +3,6 @@ layout: page
 title: Installation instructions
 ---
 
-**THIS DOCUMENT IS A DRAFT.**
-
 ## What you need to install
 
 Before the course, you will need to have the following software installed on your laptop:
@@ -22,7 +20,7 @@ In addition, you will need to download the example datasets.
 
 You will need to download R from [The Comprehensive R Archive Network](https://cran.r-project.org/), or CRAN. CRAN is a team of developers that maintain R and manage the packages that users contribute.
 
-Go to the [CRAN website](https://cran.r-project.org/) and select the link to download R for your operating system. Follow the installation instructions. You will need admin rights to do this so you may need to get help from your IT staff.
+Go to the [CRAN website](https://cran.r-project.org/) and select the link to download the most recent version of R for your operating system. Follow the installation instructions. You will need admin rights to do this so you may need to get help from your IT staff.
 
 ## How to install RStudio
 
@@ -66,4 +64,4 @@ It should look like this:
 
 ## Downloading the example datasets
 
-The example datasets will be available for download through this website. I will provide a link closer to the date of the course.
+The example datasets will be available for download on this page. I will provide a link closer to the date of the course.
