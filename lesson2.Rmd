@@ -19,3 +19,48 @@ At the end of this lesson, students will ...
 - Be able to fit a linear model with continuous and categorical predictor.
 - Be able to fit a linear model with interaction terms.
 - Be able to fit a mixed model with fixed effect and random intercept.
+
+# Load some sample data
+
+We are going to use some data from Ag Data Commons.
+
+```{r}
+barnyard_ghg <- read_csv('https://data.nal.usda.gov/system/files/BYD_GHG.csv')
+```
+
+Let's look at the data. Typing the name of the data frame gives you the first few rows.
+
+```{r}
+barnyard_ghg
+```
+
+Or you might prefer to use `str()`
+
+```{r}
+str(barnyard_ghg)
+```
+
+# Linear model with catagorical predictor
+
+This is a one-way ANOVA.
+
+```{r}
+fit1 <- lm(CO2_mgC ~ Surface, data = barnyard_ghg)
+```
+
+## Diagnostic plots
+
+```{r}
+plot(fit1)
+```
+
+What is wrong here?
+
+The error isn't normally distributed. This is much better.
+
+```{r}
+fit2 <- lm(log(CO2_mgC) ~ Surface, data = barnyard_ghg)
+
+plot(fit2)
+```
+
