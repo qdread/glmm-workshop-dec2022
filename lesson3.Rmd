@@ -1,5 +1,5 @@
 ---
-title: "Lesson 3: xxxxxxxxx"
+title: "Lesson 3: Making predictions and testing hypotheses"
 author: "Quentin D. Read"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: 
@@ -16,3 +16,6 @@ knitr::opts_chunk$set(echo = TRUE, message = TRUE, warning = TRUE)
 
 At the end of this lesson, students will ...
 
+- Generate predictions from a mixed model.
+- Test specific hypotheses with contrasts.
+- Compare multiple group means and correct for multiple comparisons.

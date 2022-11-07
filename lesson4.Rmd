@@ -1,5 +1,5 @@
 ---
-title: "Lesson 4: xxxxxxxxx"
+title: "Lesson 4: Presenting your results"
 author: "Quentin D. Read"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: 
@@ -16,3 +16,9 @@ knitr::opts_chunk$set(echo = TRUE, message = TRUE, warning = TRUE)
 
 At the end of this lesson, students will ...
 
+- Create plots of model results.
+- Create tables of model results.
+
+# Plots and tables
+
+Throughout these lessons, we've seen some graphs and tables of model results. In this lesson, we'll go into a little more depth about how to make some of these plots in a way that you can present in presentations and manuscripts.
