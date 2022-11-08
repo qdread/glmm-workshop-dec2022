@@ -59,7 +59,7 @@ Time                      | Activity
 9:00-9:15 AM              | Introductions, troubleshooting
 9:15-10:15 AM             | R Boot Camp: the very basics
 10:15-10:45 AM            | *break*
-10:45-11:30 AM            | R Boot Camp: working with data
+10:45-11:30 AM            | R Boot Camp: working with data frames
 11:30-11:45 AM            | *break*
 11:45 AM-12:30 PM         | What are LMMs? Fit our first LMM!
 12:30-1:30 PM             | *lunch break*

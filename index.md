@@ -16,6 +16,9 @@ This site will eventually contain all the course materials. It is a work in prog
 [COURSE SYLLABUS](syllabus){: .biglink }  
 Learning objectives and workshop schedule.
 
+[WORKSHEETS AND EXAMPLE DATASETS](worksheets){: .biglink }  
+Download page with course materials.
+
 [INSTALLATION INSTRUCTIONS](install){: .biglink }  
 Instructions on installing R, RStudio, and necessary packages. Please follow these instructions before the beginning of the workshop.
 

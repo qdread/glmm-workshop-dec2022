@@ -3,32 +3,69 @@ layout: page
 title: Installation instructions
 ---
 
-## What you need to install
+I am happy to announce that we now have access to [RStudio Cloud](https://rstudio.cloud). This allows participants in this course to have access to a fully functioning copy of RStudio through their web browser that has all the packages installed and contains all the datasets and worksheets needed for the course. This is a "demo" version of RStudio that is only suitable for the workshop, and shouldn't be used to work on analyzing your own USDA data. 
+
+You may also want to run all the R code locally on your own machine during the course. And if you want to continue using RStudio after the workshop, you will need to install everything on your own computer anyway. This page now contains two sets of instructions:
+
+- How to get access to RStudio Cloud
+- How to install R, RStudio, and the needed packages locally
+
+## Accessing RStudio Cloud
+
+> NOTE: Your RStudio Cloud access is for instructional purposes only. Please do not upload the government's data to this cloud server. To work with your USDA data using R, please install the software locally or use SciNet.
+
+![email signup](../public/images/rstudio_cloud_signup.png){: align="left" style="padding-right: 25px" }
+
+You will receive a signup link by email. Please let your instructor know if you need the link to be resent.
+
+Open the link in your browser. You'll be prompted to either log in or sign up. Click "Sign Up" to create an account.
+
+![email verification](../public/images/rstudio_cloud_verify_email.png){: align="left" style="padding-right: 25px" }
+
+Verify the email address that you used to create the account.
+
+![join space prompt](../public/images/rstudio_cloud_join_prompt.png){: align="left" style="padding-right: 25px" }
+
+When you log in, you will be asked whether you want to join the "December 2022 Stats Workshop" workspace. Click "Yes"!
+
+![navigation bar](../public/images/rstudio_cloud_left_bar.png){: align="left" style="padding-right: 25px" }
+
+Select the December 2022 Stats Workshop space in the left-hand navigation bar.
+
+![content pane](../public/images/rstudio_cloud_content.png){: align="left" style="padding-right: 25px" }
+
+In the central pane you will be able to see the projects associated with this workspace. Currently there is only one, called "Lessons." Click on it to enter the "Lessons" project space. 
+
+This will bring up a new RStudio session with all the needed packages installed, the worksheets in a folder called `worksheets` and the datasets in a folder called `datasets`. You can run all the code you need for this workshop right from your browser!
+
+## Installing software on your own machine
+
+### What you need to install
 
 Before the course, you will need to have the following software installed on your laptop:
 
 - R 
 - RStudio
 - R packages:
-  + tidyverse (this includes the packages dplyr, tidyr, readr, and ggplot2 that we will be working with)
-  + lme4
-  + emmeans
+  + [tidyverse](https://www.tidyverse.org/) (this includes the packages [dplyr](https://dplyr.tidyverse.org/), [tidyr](https://tidyr.tidyverse.org/), [readr](https://readr.tidyverse.org/), and [ggplot2](https://ggplot2.tidyverse.org/) that we will be working with)
+  + [lme4](https://cran.r-project.org/web/packages/lme4/index.html)
+  + [emmeans](https://cran.r-project.org/web/packages/emmeans/index.html)
 
 In addition, you will need to download the example datasets.
   
-## How to install R
+### How to install R
 
 You will need to download R from [The Comprehensive R Archive Network](https://cran.r-project.org/), or CRAN. CRAN is a team of developers that maintain R and manage the packages that users contribute.
 
 Go to the [CRAN website](https://cran.r-project.org/) and select the link to download the most recent version of R for your operating system. Follow the installation instructions. You will need admin rights to do this so you may need to get help from your IT staff.
 
-## How to install RStudio
+### How to install RStudio
 
 RStudio is an additional software program that makes it easy for you to write R code. It provides an interface that lets you run code, edit scripts, see what variables are in your working environment, and manage files. *RStudio is a program that makes it easier to use R, but you need to download both R and RStudio separately.*
 
 Go to the [RStudio download page](https://www.rstudio.com/products/rstudio/download/) and download the free version of RStudio Desktop. Again, you will need admin rights to do this on your USDA machine.
 
-## How to install the packages
+### How to install the packages
 
 To install the packages we will be working with in this course, you will need to either install packages by typing a command into the R console, or install them using RStudio's package installation window. 
 
@@ -43,7 +80,7 @@ To install the packages we will be working with in this course, you will need to
 install.packages(c("tidyverse", "lme4", "lmerTest", "emmeans"))
 ```
 
-### Installing packages from the RStudio package installation window
+#### Installing packages from the RStudio package installation window
 
 You can also install the packages using the RStudio package installation dialog.
 
@@ -62,6 +99,6 @@ It should look like this:
 - Ensure that "install dependencies" is selected.
 - Click "Install."
 
-## Downloading the example datasets
+### Downloading the worksheets and example datasets
 
-The example datasets will be available for download on this page. I will provide a link closer to the date of the course.
+The worksheets and example datasets will be available for download on this site. I will provide a link closer to the date of the course.
