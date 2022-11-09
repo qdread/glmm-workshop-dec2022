@@ -7,8 +7,8 @@ I am happy to announce that we now have access to [RStudio Cloud](https://rstudi
 
 You may also want to run all the R code locally on your own machine during the course. And if you want to continue using RStudio after the workshop, you will need to install everything on your own computer anyway. This page now contains two sets of instructions:
 
-- How to get access to RStudio Cloud
-- How to install R, RStudio, and the needed packages locally
+- [How to get access to RStudio Cloud](#accessing-rstudio-cloud)
+- [How to install R, RStudio, and the needed packages locally](#installing-r-and-rstudio-locally)
 
 ## Accessing RStudio Cloud
 
@@ -20,35 +20,46 @@ You may also want to run all the R code locally on your own machine during the c
 
 You will receive a signup link by email. Please let your instructor know if you need the link to be resent.
 
-Open the link in your browser. You'll be prompted to either log in or sign up. Click "Sign Up" to create an account.
+Open the link in your browser. You'll be prompted to either log in or sign up. Click "Sign Up" to create an account. Sign up with your usda.gov email account.
+<br><br><br><br><br>
 
 #### Step 2. Verify email
 
-![email verification](../public/images/rstudio_cloud_verify_email.png){: align="left" style="padding-right: 25px; float: left" height="300px" }
+![email verification](../public/images/rstudio_cloud_verify_email.png){: align="left" style="padding-right: 25px; float: left; clear: left" height="300px" }
 
 Verify the email address that you used to create the account.
+{:style="clear: right"}
+<br><br><br><br><br><br><br>
 
 #### Step 3. Join workspace
 
-![join space prompt](../public/images/rstudio_cloud_join_prompt.png){: align="left" style="padding-right: 25px; float: left" width="300px" }
+![join space prompt](../public/images/rstudio_cloud_join_prompt.png){: align="left" style="padding-right: 25px; float: left; clear: left" width="300px" }
 
 When you log in, you will be asked whether you want to join the "December 2022 Stats Workshop" workspace. Click "Yes"!
+{:style="clear: right"}
+<br><br><br>
 
 #### Step 4. Open workspace
 
-![navigation bar](../public/images/rstudio_cloud_left_bar.png){: align="left" style="padding-right: 25px; float: left" height="300px" }
+![navigation bar](../public/images/rstudio_cloud_left_bar.png){: align="left" style="padding-right: 25px; float: left; clear: left" height="300px" }
 
 Select the December 2022 Stats Workshop space in the left-hand navigation bar.
+{:style="clear: right"}
+<br><br><br><br><br><br><br>
 
 #### Step 5. Open project
 
-![content pane](../public/images/rstudio_cloud_content.png){: align="left" style="padding-right: 25px; float:left" width="400px" }
+![content pane](../public/images/rstudio_cloud_content.png){: align="left" style="padding-right: 25px; float:left; clear: left" width="400px" }
 
 In the central pane you will be able to see the projects associated with this workspace. Currently there is only one, called "Lessons." Click on it to enter the "Lessons" project space. 
+{:style="clear: right"}
 
 This will bring up a new RStudio session with all the needed packages installed, the worksheets in a folder called `worksheets` and the datasets in a folder called `datasets`. You can run all the code you need for this workshop right from your browser!
+{:style="clear: right"}
 
-## Installing software on your own machine
+## Installing R and RStudio locally
+
+The following instructions describe how to set up the software installation on your own machine.
 
 ### What you need to install
 
