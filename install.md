@@ -126,4 +126,4 @@ It should look like this:
 
 #### Step 4. Download the worksheets and example datasets
 
-The worksheets and example datasets will be available for download on this site. I will provide a link closer to the date of the course.
+The [worksheets and example datasets]({{ site.baseurl}}/worksheets) are available for download on this site. 

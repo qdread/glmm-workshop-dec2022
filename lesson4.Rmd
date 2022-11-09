@@ -16,4 +16,6 @@ knitr::opts_chunk$set(echo = TRUE, message = TRUE, warning = TRUE)
 
 At the end of this lesson, students will ...
 
-- TBD
+- Differentiate between a random intercept and random slope.
+- Be able to fit a mixed model including both random slope and random intercept terms.
+- Fit a generalized linear model with a different response distribution.

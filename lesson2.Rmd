@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE, message = TRUE, warning = TRUE)
 At the end of this lesson, students will ...
 
 - Read a CSV file of data into the R workspace.
-- Understand "tidy" data.
+- Know what a data frame is and understand what constitutes "tidy" data.
 - Calculate summary statistics by group.
 - Make a few basic plots.
 
@@ -110,24 +110,24 @@ Then you use the plus sign `+` to add "geoms" to the plot which correspond to di
 (insert cheat sheet)
 
 ```{r, fig.width = 4, fig.height = 4}
-ggplot(dat, aes(x = x, y = y, color = g)) +
+ggplot(dat, aes(x = x, y = y, color = g, fill = g)) +
   geom_point()
 ```
 
 As you can see, different types of plots can be made by changing the geom, with the variable mappings unchanged, such as a line graph or a stacked bar plot. The data are the same.
 
 ```{r, fig.width = 4, fig.height = 4}
-ggplot(dat, aes(x = x, y = y, color = g)) +
+ggplot(dat, aes(x = x, y = y, color = g, fill = g)) +
   geom_line()
 
-ggplot(dat, aes(x = x, y = y, color = g)) +
+ggplot(dat, aes(x = x, y = y, color = g, fill = g)) +
   geom_col()
 ```
 
 Additional arguments can be added to change the appearance of the plot, alter the geoms, or add other graphical elements that are not mapped from the data frame. For instance we can change our stacked bar plot to a grouped bar plot by an argument to `geom_col()`. Then we can change the theme by adding `theme_bw()`, and also add a horizontal dotted line on the plot by adding another geom.
 
 ```{r}
-barplot <- ggplot(dat, aes(x = x, y = y, color = g)) +
+barplot <- ggplot(dat, aes(x = x, y = y, color = g, fill = g)) +
   geom_col(position = 'dodge')
 
 barplot

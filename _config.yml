@@ -4,7 +4,7 @@ tagline:             'USDA ARS stats workshop: December 8-9, 2022'
 description:         'A practical toolkit for mixed models in R: USDA ARS stats workshop: December 8-9, 2022.'
 url:                 https://qdread.github.io/glmm-workshop-dec2022
 baseurl:             ''
-paginate:            5
+#paginate:            5
 permalink:           pretty
 
 # About/contact
@@ -14,8 +14,8 @@ author:
   email:             quentin.read@usda.gov
 
 # Gems
-plugins:
-  - jekyll-paginate
+#plugins:
+#  - insert here. None at the moment.
 
 # Custom vars
 version:             0.1
@@ -23,4 +23,8 @@ google_analytics_id: #UA-XXXX-Y
 
 github:
   repo:              https://github.com/qdread/glmm-workshop-dec2022
+  
+exclude:
+  - .Rproj.user/
+  - testing/
   

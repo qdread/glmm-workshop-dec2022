@@ -7,8 +7,6 @@ These are some resources you can take a look at to brush up on your R or statist
 
 I've divided this resources page into two sections: one with resources about [learning how to code in R](#learning-R) and one with resources about [mixed models](#learning-mixed-models) but there is a lot of overlap.
 
-**I will add more resources to this list later. Please check back soon!**
-
 ## Learning R
 
 ![](https://d33wubrfki0l68.cloudfront.net/b88ef926a004b0fce72b2526b0b5c4413666a4cb/24a30/cover.png){: align="left" style="padding-right: 25px" width="150px" }

@@ -8,16 +8,19 @@ title: December 2022 R Statistics Training Workshop
 - **What:** "A practical toolkit for mixed models in R": USDA ARS southeast area statistics training workshop
 - **When:** Thursday, December 8 - Friday, December 9, 2022, 9:00 AM-4:00 PM (Eastern time)
 - **Who:** open to any ARS personnel in the Southeast area
-- **Where:** Raleigh, NC (NCSU Plant Sciences Building, Room 3158, 840 Oval Drive). The workshop will also be livestreamed and recorded.
+- **Where:** Raleigh, NC ([NCSU Plant Sciences Building, Room 3158, 840 Oval Drive](#directions-to-workshop-location)). The workshop will also be livestreamed and recorded.
 - **Instructor:** Quentin Read, ARS southeast area statistician
 
-This site will eventually contain all the course materials. It is a work in progress! Please check back soon for more information.
+> **NOTE**: This is a work in progress! All information on this site is subject to change. This site will eventually contain all the course materials. Please check back soon. Last updated 2022-11-09.
+
+[COURSE SCHEDULE](#course-schedule){: .biglink }  
+Schedule, including links to lesson content (below on this page).
 
 [COURSE SYLLABUS](syllabus){: .biglink }  
-Learning objectives and workshop schedule.
+Learning objectives and other information about course content.
 
 [WORKSHEETS AND EXAMPLE DATASETS](worksheets){: .biglink }  
-Download page with course materials.
+Page with course materials for download.
 
 [INSTALLATION INSTRUCTIONS](install){: .biglink }  
 Instructions on installing R, RStudio, and necessary packages. Please follow these instructions before the beginning of the workshop.
@@ -27,16 +30,20 @@ If you want to study up on R or statistical models before the workshop, here are
 
 ## Course schedule
 
+**Use the links in the schedule to access lesson content.** 
+
 ### DAY 1: Thursday, December 8
+
+*All times are in Eastern Standard Time.*
 
 Time                      | Activity
 ------------------------- | ----------------------------------------------------------
 9:00-9:15 AM              | Introductions, troubleshooting
-9:15-10:15 AM             | **Lesson 1**: R Boot Camp: the very basics
+9:15-10:15 AM             | [**Lesson 1**: R Boot Camp: the very basics]({{ site.baseurl }}/lesson1.html)
 10:15-10:45 AM            | *break*
-10:45-11:30 AM            | **Lesson 2**: R Boot Camp: working with data frames
+10:45-11:30 AM            | [**Lesson 2**: R Boot Camp: working with data frames]({{ site.baseurl }}/lesson2.html)
 11:30-11:45 AM            | *break*
-11:45 AM-12:30 PM         | **Lesson 3**: What are LMMs? Fit our first LMM!
+11:45 AM-12:30 PM         | [**Lesson 3**: What are LMMs? Fit our first LMM!]({{ site.baseurl }}/lesson3.html)
 12:30-1:30 PM             | *lunch break*
 1:30 PM-4:00 PM           | **Office Hours**: Students will work on data and code. Quentin will answer questions and troubleshoot.
 
@@ -45,11 +52,11 @@ Time                      | Activity
 Time                      | Activity
 ------------------------- | ----------------------------------------------------------
 9:00-9:15 AM              | Recap of Day 1
-9:15-10:15 AM             | **Lesson 4**: Random intercept and random slope models
+9:15-10:15 AM             | [**Lesson 4**: Random intercept and random slope models]({{ site.baseurl }}/lesson4.html)
 10:15-10:45 AM            | *break*
-10:45-11:30 AM            | **Lesson 5**: Estimating and comparing treatment means
+10:45-11:30 AM            | [**Lesson 5**: Estimating and comparing treatment means]({{ site.baseurl }}/lesson5.html)
 11:30-11:45 AM            | *break*
-11:45 AM-12:30 PM         | **Lesson 6**: Making plots and tables
+11:45 AM-12:30 PM         | [**Lesson 6**: Making plots and tables]({{ site.baseurl }}/lesson6.html)
 12:30-1:30 PM             | *lunch break*
 1:30 PM-4:00 PM           | **Office Hours**: Students will work on data and code. Quentin will answer questions and troubleshoot.
 

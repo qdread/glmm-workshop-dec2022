@@ -22,3 +22,7 @@ At the end of this lesson, students will ...
 # Plots and tables
 
 Throughout these lessons, we've seen some graphs and tables of model results. In this lesson, we'll go into a little more depth about how to make some of these plots in a way that you can present in presentations and manuscripts.
+
+# Creating publication-quality plots
+
+# Creating publication-quality tables

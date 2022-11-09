@@ -18,6 +18,7 @@ At the end of this lesson, students will ...
 
 - Be able to fit a linear model with continuous and categorical predictor.
 - Be able to fit a linear model with interaction terms.
+- Understand the difference between a linear model and a linear mixed model.
 - Be able to fit a mixed model with fixed effect and random intercept.
 
 # Load some sample data
