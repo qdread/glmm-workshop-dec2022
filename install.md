@@ -14,25 +14,29 @@ You may also want to run all the R code locally on your own machine during the c
 
 > NOTE: Your RStudio Cloud access is for instructional purposes only. Please do not upload the government's data to this cloud server. To work with your USDA data using R, please install the software locally or use SciNet.
 
-![email signup](../public/images/rstudio_cloud_signup.png){: align="left" style="padding-right: 25px" }
+![email signup](../public/images/rstudio_cloud_signup.png){: align="left" style="padding-right: 25px; float: left" height="300px" }
 
 You will receive a signup link by email. Please let your instructor know if you need the link to be resent.
 
 Open the link in your browser. You'll be prompted to either log in or sign up. Click "Sign Up" to create an account.
+<br><br><br><br><br><br>
 
-![email verification](../public/images/rstudio_cloud_verify_email.png){: align="left" style="padding-right: 25px" }
+![email verification](../public/images/rstudio_cloud_verify_email.png){: align="left" style="padding-right: 25px; float: left" height="300px" }
 
 Verify the email address that you used to create the account.
+<br><br><br><br><br><br><br><br><br>
 
-![join space prompt](../public/images/rstudio_cloud_join_prompt.png){: align="left" style="padding-right: 25px" }
+![join space prompt](../public/images/rstudio_cloud_join_prompt.png){: align="left" style="padding-right: 25px; float: left" width="300px" }
 
 When you log in, you will be asked whether you want to join the "December 2022 Stats Workshop" workspace. Click "Yes"!
+<br><br><br><br><br>
 
-![navigation bar](../public/images/rstudio_cloud_left_bar.png){: align="left" style="padding-right: 25px" }
+![navigation bar](../public/images/rstudio_cloud_left_bar.png){: align="left" style="padding-right: 25px; float: left" height="300px" }
 
 Select the December 2022 Stats Workshop space in the left-hand navigation bar.
+<br><br><br><br><br><br><br><br><br>
 
-![content pane](../public/images/rstudio_cloud_content.png){: align="left" style="padding-right: 25px" }
+![content pane](../public/images/rstudio_cloud_content.png){: align="left" style="padding-right: 25px; float:left" width="400px" }
 
 In the central pane you will be able to see the projects associated with this workspace. Currently there is only one, called "Lessons." Click on it to enter the "Lessons" project space. 
 
@@ -57,13 +61,17 @@ In addition, you will need to download the example datasets.
 
 You will need to download R from [The Comprehensive R Archive Network](https://cran.r-project.org/), or CRAN. CRAN is a team of developers that maintain R and manage the packages that users contribute.
 
+![CRAN R download screenshot](../public/images/cran_screenshot.png){: align="left" style="padding-right: 25px" width="400px" }
+
 Go to the [CRAN website](https://cran.r-project.org/) and select the link to download the most recent version of R for your operating system. Follow the installation instructions. You will need admin rights to do this so you may need to get help from your IT staff.
 
 ### How to install RStudio
 
 RStudio is an additional software program that makes it easy for you to write R code. It provides an interface that lets you run code, edit scripts, see what variables are in your working environment, and manage files. *RStudio is a program that makes it easier to use R, but you need to download both R and RStudio separately.*
 
-Go to the [RStudio download page](https://www.rstudio.com/products/rstudio/download/) and download the free version of RStudio Desktop. Again, you will need admin rights to do this on your USDA machine.
+![Posit RStudio download screenshot](../public/images/posit_screenshot.png){: align="left" style="padding-right: 25px" width="300px" }
+
+As of early November 2022, RStudio is now distributed by a company called Posit. Go to the [RStudio Desktop download page](https://posit.co/download/rstudio-desktop/) and download the free version of RStudio Desktop. Again, you will need admin rights to do this on your USDA machine.
 
 ### How to install the packages
 

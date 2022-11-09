@@ -40,7 +40,6 @@ At the end of the workshop, students will be able to . . .
 
 -	Have access to a working version of R and RStudio on a laptop
 -	Install the necessary packages (specific instructions coming soon)
--	*Optional*: bring a dataset you are interested in analyzing. If you don’t have one, I will provide you with an example dataset.
 
 ## Note on general versus generalized models, and Bayesian versus classical statistics
 
@@ -57,23 +56,23 @@ This is a preliminary schedule that’s subject to change. The instructor (Quent
 Time                      | Activity
 ------------------------- | ----------------------------------------------------------
 9:00-9:15 AM              | Introductions, troubleshooting
-9:15-10:15 AM             | R Boot Camp: the very basics
+9:15-10:15 AM             | **Lesson 1**: R Boot Camp: the very basics
 10:15-10:45 AM            | *break*
-10:45-11:30 AM            | R Boot Camp: working with data frames
+10:45-11:30 AM            | **Lesson 2**: R Boot Camp: working with data frames
 11:30-11:45 AM            | *break*
-11:45 AM-12:30 PM         | What are LMMs? Fit our first LMM!
+11:45 AM-12:30 PM         | **Lesson 3**: What are LMMs? Fit our first LMM!
 12:30-1:30 PM             | *lunch break*
-1:30 PM-4:00 PM           | Office Hours: Students will work on data and code. Quentin will answer questions and troubleshoot.
+1:30 PM-4:00 PM           | **Office Hours**: Students will work on data and code. Quentin will answer questions and troubleshoot.
 
 ### DAY 2: Friday, December 9
 
 Time                      | Activity
 ------------------------- | ----------------------------------------------------------
 9:00-9:15 AM              | Recap of Day 1
-9:15-10:15 AM             | Random intercept and random slope models
+9:15-10:15 AM             | **Lesson 4**: Random intercept and random slope models
 10:15-10:45 AM            | *break*
-10:45-11:30 AM            | Estimating and comparing treatment means
+10:45-11:30 AM            | **Lesson 5**: Estimating and comparing treatment means
 11:30-11:45 AM            | *break*
-11:45 AM-12:30 PM         | Making plots and tables
+11:45 AM-12:30 PM         | **Lesson 6**: Making plots and tables
 12:30-1:30 PM             | *lunch break*
-1:30 PM-4:00 PM           | Office Hours: Students will work on data and code. Quentin will answer questions and troubleshoot.
+1:30 PM-4:00 PM           | **Office Hours**: Students will work on data and code. Quentin will answer questions and troubleshoot.
