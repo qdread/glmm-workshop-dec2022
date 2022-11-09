@@ -1,5 +1,5 @@
 ---
-title: "Lesson 3: Making predictions and testing hypotheses"
+title: "Lesson 3: From LM to LMM"
 author: "Quentin D. Read"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: 
@@ -16,6 +16,101 @@ knitr::opts_chunk$set(echo = TRUE, message = TRUE, warning = TRUE)
 
 At the end of this lesson, students will ...
 
-- Generate predictions from a mixed model.
-- Test specific hypotheses with contrasts.
-- Compare multiple group means and correct for multiple comparisons.
+- Be able to fit a linear model with continuous and categorical predictor.
+- Be able to fit a linear model with interaction terms.
+- Be able to fit a mixed model with fixed effect and random intercept.
+
+# Load some sample data
+
+We are going to use some data from Ag Data Commons.
+
+```{r}
+library(tidyverse)
+library(lmerTest)
+
+barnyard_ghg <- read_csv('https://data.nal.usda.gov/system/files/BYD_GHG.csv')
+```
+
+Let's look at the data. Typing the name of the data frame gives you the first few rows.
+
+```{r}
+barnyard_ghg
+```
+
+Or you might prefer to use `str()`
+
+```{r}
+str(barnyard_ghg)
+```
+
+# Model Syntax in R
+
+The bare minimum we need is formula and data.
+
+The formula consists of a left-hand side (LHS), a tilde `~`, and a right-hand side (RHS).
+
+The left-hand side is the name of the response variable `y`. In this lesson we are only going to be focusing on models with a single response variable.
+
+The right-hand side contains the predictor variables `x`. Effects are separated by a plus sign `+`. Interaction effects are denoted with a colon `:`. The shorthand `*` indicates all possible combinations of interactions for a set of variables. I do not recommend using this shorthand but you may see it. Another shorthand is `.` which means all variables in the dataset.
+
+We will cover random effect syntax later. 
+
+So a typical formula might be
+
+`weight ~ height + sex + height:sex`
+
+(In SAS this would be `model weight = height sex height*sex`). This means the expected value of weight is a linear combination of height (a continuous variable), sex (a binary variable), and the product or interaction of height and sex.
+
+The `data` argument tells the model fitting function what data frame contains the variables in the model formula.
+
+# Linear model with categorical predictor
+
+This is a one-way ANOVA.
+
+```{r}
+fit1 <- lm(CO2_mgC ~ Surface, data = barnyard_ghg)
+```
+
+## Diagnostic plots
+
+```{r}
+plot(fit1)
+```
+
+What is wrong here?
+
+The error isn't normally distributed. This is much better.
+
+```{r}
+fit2 <- lm(log(CO2_mgC) ~ Surface, data = barnyard_ghg)
+
+plot(fit2)
+```
+
+We can include continuous effects, categorical effects, and interactions between any of them.
+
+```{r}
+fit_temp <- lm(log(CO2_mgC) ~ Temp, data = barnyard_ghg)
+fit_surfacetemp <- lm(log(CO2_mgC) ~ Surface + Temp, data = barnyard_ghg)
+fit_int <- lm(log(CO2_mgC) ~ Surface + Temp + Surface:Temp, data = barnyard_ghg)
+fit_int_shortcut <- lm(log(CO2_mgC) ~ Surface*Temp, data = barnyard_ghg)
+```
+
+# Separate regressions for each sampling unit
+
+People get hung up on checking relatively less important assumptions like normality of residuals. But a far more important assumption is that your data points are independent. If you fit a model to independent data points when it is truly non-independent, the results do not reflect reality. This is a much worse problem than the residuals not being normal.
+
+In this example model fit, we have 1981 degrees of freedom. That is far too many. 
+
+We can look in the data and see that samples were taken in a bunch of different barnyards. 
+
+Okay, so what if there is a different relationship between CO2 flux and temperature in each barnyard? One way you might think about dealing with this is to fit a separate regression model to each barnyard.
+
+I will demonstrate how you might do this -- note this code is a little bit more complex than what we'll be covering in this workshop so take this more as a demonstration. It is not something you would typically want to do.
+
+We will `group_by()` and `nest()`.
+
+```{r}
+barnyard_ghg
+```
+

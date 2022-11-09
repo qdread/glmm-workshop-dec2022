@@ -1,5 +1,5 @@
 ---
-title: "Lesson 4: Presenting your results"
+title: "Lesson 6: Presenting your results"
 author: "Quentin D. Read"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: 
