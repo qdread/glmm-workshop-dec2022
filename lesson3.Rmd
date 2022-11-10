@@ -20,10 +20,11 @@ At the end of this lesson, students will ...
 - Be able to fit a linear model with interaction terms.
 - Understand the difference between a linear model and a linear mixed model.
 - Be able to fit a mixed model with fixed effect and random intercept.
+- Examine summary information from mixed model output, including ANOVA tables.
 
 # Load some sample data
 
-We are going to use some data from Ag Data Commons.
+We are going to use some data from Ag Data Commons. I've simplified the data and added some random noise to it as well.
 
 ```{r}
 library(tidyverse)
@@ -66,7 +67,7 @@ The `data` argument tells the model fitting function what data frame contains th
 
 # Linear model with categorical predictor
 
-This is a one-way ANOVA.
+This is a one-way ANOVA. We are looking at whether the mean CO2 flux from barnyard soil differs by surface type.
 
 ```{r}
 fit1 <- lm(CO2_mgC ~ Surface, data = barnyard_ghg)

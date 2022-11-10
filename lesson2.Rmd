@@ -58,8 +58,6 @@ dat <- read_csv('datasets/testdata.csv')
 
 We can calculate summary statistics on the entire data frame.
 
-You often want to calculate summary statistics for each group.
-
 # Dealing with missing data
 
 Summary methods for data frames tell you how many missing values there are.
@@ -92,10 +90,65 @@ max(x, na.rm = TRUE)
 
 Note `na.rm` serves a useful purpose and I think it's a good idea to have `FALSE` be the default.
 
-Let's calculate summary statistics for entire columns of a data frame.
+Let's calculate summary statistics for entire columns of a data frame. Here I am introducing the pipe `%>%` operator. This is used in tidyverse packages to chain functions together. We can pass the output of one line of code to the next.
 
 ```{r}
-# FIXME HERE INCLUDE HOW TO CALC SUMM STATS FOR ALL OF A DF AND ALSO BY GROUP
+dat %>%
+  summarize(mean_x = mean(x), sd_x = sd(x), mean_y = mean(y), sd_y = sd(y))
+```
+
+# Calculating summary statistics by group
+
+You often want to calculate summary statistics for each group. We will use the `group_by()` function here.
+
+```{r}
+dat %>%
+  group_by(group)
+  summarize(mean_x = mean(x), sd_x = sd(x), mean_y = mean(y), sd_y = sd(y))
+```
+
+# Other common operations on data frames
+
+- `filter()`
+- `pivot_longer()`
+- `pivot_wider()`
+
+# Long-form data
+
+Usually, we want to have long form data rather than wide. You may also see this referred to as "tidy" data. In long-form or tidy data, each row represents a single data point or observation. Each column represents a single variable. Most of the model fitting functions in R require the data to be in this format (as well as many statistical procedures in SAS and other software).
+
+Which of these data frames contain tidy data? I am using the `head()` function to show the first few rows.
+
+> These are example datasets that come packaged with R. You can call up documentation on them by entering `?ToothGrowth` or `help(package = 'datasets')` to see a list of all of them.
+
+```{r}
+head(ToothGrowth)
+```
+
+Here `len` is tooth length, `supp` is type of Vitamin C supplement, and `dose` is the dose of supplement administered. **YES!** this is tidy data! (Each row is one individual's measurement.)
+
+```{r}
+euro.cross
+```
+
+Different countries' currencies are across both rows and columns. Each cell contains the exchange rate between the two. **NO!** this is not tidy data! (Each row contains many data points.)
+
+```{r}
+head(swiss)
+```
+
+These are socioeconomic indicators for different regions of Switzerland in 1888. **YES!** this is tidy data! (Each row contains the variables associated with one region.)
+
+```{r}
+mdeaths
+```
+
+These are monthly deaths from lung disease in the United Kingdom in the 1970s. **MAYBE!** this may be tidy depending on your research goal. (If you are comparing months to each other within years, yes it is tidy, but if you are looking at the overall time series, you would want to reshape to have each combination of year and month in its own row.)
+
+# Making untidy data tidy
+
+```{r}
+# FIXME
 ```
 
 
@@ -135,19 +188,6 @@ barplot
 barplot + theme_bw()
 
 barplot + theme_bw() + geom_hline(yintercept = 15, linetype = 'dotted')
-```
-
-
-# Fit a model
-
-```{r}
-fit <- lmer(y ~ x + (1|g), data = dat)
-```
-
-```{r}
-fixef(fit)
-ranef(fit)
-anova(fit)
 ```
 
 # Exercises
