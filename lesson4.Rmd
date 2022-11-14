@@ -19,3 +19,41 @@ At the end of this lesson, students will ...
 - Differentiate between a random intercept and random slope.
 - Be able to fit a mixed model including both random slope and random intercept terms.
 - Fit a generalized linear model with a different response distribution.
+
+# Random slope models
+
+Imagine we are measuring cash crop yield in a bunch of plots where two different cover crops have been grown. The experiment is set up with paired plots so that every plot with cover crop A is adjacent to a plot that receives cover crop B. There might be an underlying, unmeasured gradient of soil fertility in our study area. Plots where the "baseline" soil fertility is high are probably going to have higher yield than low-fertility plots, even if the effect of the cover crop treatment is about the same across all the plots. We've already seen how to account for this by fitting random intercepts. **The intercepts for each plot are modeled as if they are drawn randomly from a (normal) distribution**.
+
+```{r, echo = FALSE, message = FALSE}
+library(tidyverse)
+
+set.seed(314)
+fert <- rnorm(5)
+fertdat <- data.frame(plot_id = 1:5, fert = fert)
+fakedat <- expand.grid(plot_id = 1:5, cover_crop = c('A', 'B')) %>%
+  left_join(fertdat) %>%
+  mutate(yield = 5 + (cover_crop == 'B') * 2 + fert)
+
+ggplot(fakedat, aes(x = cover_crop, y = yield, group = plot_id, label = plot_id)) +
+  geom_line() +
+  geom_point(shape = 21, size = 6, fill = 'white') +
+  geom_text() +
+  theme_classic() +
+  scale_x_discrete(expand = c(0.05, 0.05), name = 'cover crop')
+```
+
+This plot shows how we would model this situation: all the lines connecting plots from the same pair are parallel. They have different (random) intercepts but the same slopes. This allows us to account for whatever effects unmeasured environmental variables, be it soil fertility or anything else, might have on the yield regardless of the cover crop. For example plot 2 might have higher soil fertility or otherwise more favorable environmental conditions, so it has higher yield in both cover crop treatments.
+
+But what if the *effect* of the treatment itself depends on the plot? For example, if the underlying soil fertility is high, we might expect that the yield effect due to cover crop will not be very big ... the high fertility will cause high yield regardless of cover crop. But there may be some random variation around that pattern. In that case, we would want to assume that **both the intercepts and the treatment effect coefficients are drawn randomly from (normal) distribution**. Regardless of whether the predictor variable is continuous or categorical, fixed effect coefficients other than the intercept are referred to as "slopes." So we would call this a random-slope model (or to be more verbose, a random-intercept random-slope model).
+
+```{r, echo = FALSE}
+fakedat$yield[6:10] <- fakedat$yield[6:10] + c(0.6, -1.6, -0.5, 0.2, -1.2)
+ggplot(fakedat, aes(x = cover_crop, y = yield, group = plot_id, label = plot_id)) +
+  geom_line() +
+  geom_point(shape = 21, size = 6, fill = 'white') +
+  geom_text() +
+  theme_classic() +
+  scale_x_discrete(expand = c(0.05, 0.05), name = 'cover crop')
+```
+
+The same logic applies if the predictor variable is continuous, instead of a discrete variable with two different levels like in our example above. For instance instead of cover crop treatment we might have biochar amendment applied in a regression design at levels 0, 1, 2, 3, 4, and 5 tons/hectare. The model would be set up in the same way.

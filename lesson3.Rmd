@@ -45,6 +45,13 @@ Or you might prefer to use `str()`
 str(barnyard_ghg)
 ```
 
+There is a column called `Surface` which contains character data. Look at the distribution of values in it with the `table()` function:
+
+```{r}
+table(barnyard_ghg$Surface)
+```
+
+
 # Model Syntax in R
 
 The bare minimum we need is formula and data.
@@ -88,6 +95,15 @@ fit2 <- lm(log(CO2_mgC) ~ Surface, data = barnyard_ghg)
 
 plot(fit2)
 ```
+
+Examine the output using the `summary()` function.
+
+```{r}
+summary(fit2)
+```
+
+You can see that there are three coefficients in the model: the intercept, sand, and soil.
+
 
 We can include continuous effects, categorical effects, and interactions between any of them.
 

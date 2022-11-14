@@ -43,7 +43,9 @@ Note we are going to use tidyverse packages.
 
 # Reading in data
 
-Load a package, read in an external file, plot the data, and fit a model.
+If you are using RStudio Cloud, the file `xxxx.csv` is included in the `datasets` folder. Otherwise, you will need to download the file locally and replace `datasets` with the file path to the location on your system where the file is found. For example it might be `C:/Users/yourname/Documents/r_workshop_datasets/xxxx.csv`. Notice that `/` (forward slash) is used, even on Windows!
+
+Load the packages we'll need for this library. Read in an external file using the `read_csv()` function from the tidyverse package **readr**. There is a base R function for this as well but the **readr** function has better default values and reads large files more quickly. Also, `read_csv` returns a special kind of data frame called a "tibble" that works better with the other tidyverse functions.
 
 ```{r}
 library(tidyverse)
@@ -53,6 +55,78 @@ dat <- read_csv('datasets/testdata.csv')
 ```
 
 # Examining contents of a data frame
+
+- dimensions
+- names of rows and columns
+- index by row number, column number, row name, and column name
+
+## Summary information about a data frame
+
+Let's look at the object which is now loaded into our workspace that we are calling `dat`. (I don't like to use `data` or `df` because there are already base R functions with those names, and it can cause issues down the road.)
+
+If we just type `dat` into our console we see the first few rows of data and some information about its dimensions.
+
+```{r}
+dat
+```
+
+As the informational text says, we can print all the values of `dat` if we explicitly tell R to do this. It's nice that it does not do this by default especially if we have data frames with thousands or millions of rows.
+
+```{r}
+print(dat, n = 50)
+```
+
+Some other useful functions to examine a data frame are `summary()` and `str()` from base R, and `glimpse()` from tidyverse. Try calling them and see what output you get.
+
+## Subsetting values from a data frame
+
+If we want to print only specific subsets of the data, we can do that by indexing rows and columns. The square brackets `[]` are used for this. You can get individual elements of a data frame with brackets. The syntax is `dataframe[row, column]`. For example this will return the value in row 2, column 3 of the data frame. It actually returns a 1x1 tibble.
+
+```{r}
+dat[2, 3]
+```
+
+We can also get an entire row by leaving the `column` part blank, and an entire column by leaving the `row` part blank. This gives us the 5th row:
+
+```{r}
+dat[5, ]
+```
+
+and this gives us the 2nd column:
+
+```{r}
+dat[, 2]
+```
+
+We can also subset with ranges, for example this gives us the 6th through 10th rows, including all columns:
+
+```{r}
+dat[6:10, ]
+```
+
+and this gives us the first 5 rows, but only columns 1 and 2.
+
+```{r}
+dat[1:5, 1:2]
+```
+
+You can also get columns by name. Just make sure to pass the vector of column names using the `c()` function, and put quotes around the names:
+
+```{r}
+dat[, c('x', 'y')]
+```
+
+The tidyverse functions `filter()` and `select()` are used to give you subsets of rows and columns, respectively. A common use of `filter()` is to subset rows by a certain condition. For example we can use `filter()` to get all rows where `y` is less than 10.
+
+```{r}
+filter(dat, y < 10)
+```
+
+And we can use `select()` to get columns we want. We do not need to use quotes on column names within `select()`:
+
+```{r}
+select(dat, x, y)
+```
 
 # Calculating summary statistics
 
