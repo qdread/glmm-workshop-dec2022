@@ -183,46 +183,37 @@ dat %>%
 
 # Other common operations on data frames
 
-- `filter()`
 - `pivot_longer()`
 - `pivot_wider()`
 
-# Long-form data
+# Tidy data
 
-Usually, we want to have long form data rather than wide. You may also see this referred to as "tidy" data. In long-form or tidy data, each row represents a single data point or observation. Each column represents a single variable. Most of the model fitting functions in R require the data to be in this format (as well as many statistical procedures in SAS and other software).
+This set of examples is borrowed from Hadley Wickham's book *R for Data Science* ([Chapter 12: Tidy data](https://r4ds.had.co.nz/tidy-data.html)).
 
-Which of these data frames contain tidy data? I am using the `head()` function to show the first few rows.
+Tidy data is a dataset that is organized so that the following are true:
 
-> These are example datasets that come packaged with R. You can call up documentation on them by entering `?ToothGrowth` or `help(package = 'datasets')` to see a list of all of them.
+- Each observation has its own row.
+- Each variable has its own column.
+- Each value has its own cell.
+
+Most of the model fitting functions in R require the data to be in this format (as well as many statistical procedures in SAS and other software).
+
+All of the following data frames contain the same data: number of cases of a disease and total population, for three different countries (Afghanistan, Brazil, and China), in each of two years (1999 and 2000). Which of these data frames contain tidy data? 
+
+> These are example datasets that come packaged with the **tidyr** package in R, part of the tidyverse.
 
 ```{r}
-head(ToothGrowth)
+table1
+table2
+table3
 ```
 
-Here `len` is tooth length, `supp` is type of Vitamin C supplement, and `dose` is the dose of supplement administered. **YES!** this is tidy data! (Each row is one individual's measurement.)
+INSERT DESCRIPTION HERE
+
+# Reshaping data
 
 ```{r}
-euro.cross
-```
-
-Different countries' currencies are across both rows and columns. Each cell contains the exchange rate between the two. **NO!** this is not tidy data! (Each row contains many data points.)
-
-```{r}
-head(swiss)
-```
-
-These are socioeconomic indicators for different regions of Switzerland in 1888. **YES!** this is tidy data! (Each row contains the variables associated with one region.)
-
-```{r}
-mdeaths
-```
-
-These are monthly deaths from lung disease in the United Kingdom in the 1970s. **MAYBE!** this may be tidy depending on your research goal. (If you are comparing months to each other within years, yes it is tidy, but if you are looking at the overall time series, you would want to reshape to have each combination of year and month in its own row.)
-
-# Making untidy data tidy
-
-```{r}
-# FIXME
+# FIXME WE ARE GOING TO INCLUDE SOME STUFF ABOUT RESHAPING HERE
 ```
 
 
@@ -263,6 +254,11 @@ barplot + theme_bw()
 
 barplot + theme_bw() + geom_hline(yintercept = 15, linetype = 'dotted')
 ```
+
+# Hey! What about ...
+
+- Joining two or more data frames together
+- Operations on lists of data frames or data frames containing lists
 
 # Exercises
 
