@@ -260,6 +260,8 @@ barplot + theme_bw() + geom_hline(yintercept = 15, linetype = 'dotted')
 - Joining two or more data frames together
 - Operations on lists of data frames or data frames containing lists
 
+Those are very important topics that you will definitely need to learn about if you want to do serious data analysis with R. We don't have time to cover them today but I would recommend using the R resources I posted on the workshop page to learn more about them.
+
 # Exercises
 
 TBD

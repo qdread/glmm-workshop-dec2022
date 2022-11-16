@@ -19,3 +19,36 @@ At the end of this lesson, students will ...
 - Generate predictions from a mixed model.
 - Test specific hypotheses with contrasts.
 - Compare multiple group means and correct for multiple comparisons.
+
+# Estimated marginal means
+
+We are going to talk about estimated marginal means. You might know the term "least square means" or "lsmeans" if you are a SAS user. This statistical technique was pioneered by statisticians working for SAS. Estimated marginal means are the same thing as lsmeans in most cases. It is probably better to use the term estimated marginal means because the least squares method is not always used to calculate them. 
+
+The name estimated marginal means makes sense because they are estimates from a model, **not data**. It's best to keep that in mind -- when we calculate these estimated means, they are functions of model parameters and sensitive to all the assumptions we've made in constructing the model. And remember, all models are wrong and only some of them are useful. They're called marginal because they can be calculated averaged across the margins of all other fixed and random effects in the model. 
+
+# Note on estimated means
+
+These estimated means are population-level predictions. It's important to note that the confidence interval or uncertainty around an estimated marginal mean is not the range of values that any individual in the population might have. 
+
+For instance, a dataset gathered between 2015 and 2018 shows that [the population level mean of the height of an adult female in the United States](https://www.cdc.gov/nchs/data/series/sr_03/sr03-046-508.pdf) is 161.3 cm (5' 3.5") and the heights are roughly normally distributed. The 90% confidence interval around that estimate goes from 160.9 cm to 161.6 cm (5' 3.38" to 5' 3.63"). Because this mean was estimated from a large sample of 5,510 women, we are really sure we have that number pinned down to within a tiny range of uncertainty.
+
+But if we took a random adult female from the United States and measured her height, does that mean we are 90% confident it would be between 160.9 cm and 161.6 cm? No! In fact, the 5th and 95th percentile are 149.8 cm (4'11") and 172.5 cm (5'8") -- so 90% of the time if we selected a random female we would expect her height to be between those much more widely separated values. So estimated means tell us what the most likely expected value of a random individual from the population would be, but not about the variation in the population itself. 
+
+This is even more important to keep in mind when we are averaging the estimated means across random effects, where the subpopulations we are averaging across may be very different from each other. The estimated mean is a "construct" that may not correspond to any individual, like the proverbial household with 2.2 children.
+
+# The emmeans package
+
+The [**emmeans** package](https://cran.r-project.org/package=emmeans) is the workhorse of this section. It was developed by Russ Lenth, an emeritus statistics professor from the University of Iowa. I am very indebted to Russ for all his help -- even though he is retired, he somehow always manages to answer any question I post on the emmeans package's GitHub page within a few hours, and almost always fixes the problem right away. He is like the "man behind the curtain" in the Wizard of Oz -- whenever I appear to be helping ARS scientists with their stats, I am actually going to him to get the answer!
+
+(insert goofy pictures here)
+
+Today we're only going to have time for a brief introduction to the capabilities of **emmeans**. The [**emmeans** package page](https://cran.r-project.org/package=emmeans) has a long list of vignettes that you might find helpful if you want to get deeper into it. For example, **emmeans** also works with some of the Bayesian modeling packages in R, so you can use similar code to get the estimated means regardless of what method you used to fit the model.
+
+# Use emmeans to estimate means
+
+Let's use one of the models we have worked with already. Reload the data and refit the model. Load the **emmeans** package along with the other ones we need.
+
+```{r}
+#FIXME do this
+```
+

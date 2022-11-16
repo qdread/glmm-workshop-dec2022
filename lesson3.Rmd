@@ -30,7 +30,9 @@ We are going to use some data from Ag Data Commons. I've simplified the data and
 library(tidyverse)
 library(lmerTest)
 
-barnyard_ghg <- read_csv('https://data.nal.usda.gov/system/files/BYD_GHG.csv')
+barnyard_ghg <- read_csv('https://data.nal.usda.gov/system/files/BYD_GHG.csv') %>%
+  filter(Days_elapsed == 0, !is.na(CO2_mgC)) %>%
+  select(Barnyard, Surface, Temp, CO2_mgC, NH3_mg, N2O_mg)
 ```
 
 Let's look at the data. Typing the name of the data frame gives you the first few rows.
@@ -102,8 +104,33 @@ Examine the output using the `summary()` function.
 summary(fit2)
 ```
 
-You can see that there are three coefficients in the model: the intercept, sand, and soil.
+You can see that there are three coefficients in the model: the intercept, sand, and soil. Even though there are three surfaces (bark, sand, and soil), only two of them (sand and soil) have their own coefficient. This is because we have an intercept already, and the mean value of one of the three surfaces is set as the intercept. Then we only need two additional coefficients to define the means for the other two levels. "Bark" is set as the reference level because it is the first in alphabetical order. This is the default, which you can change by changing the order of factor levels.
 
+What the summary tells us is that the expected mean value of *the natural logarithm* of CO2 emissions from bark is about 6.03. We can back-transform that by taking $e^{6.03}$, or in R code `exp(6.03)`, which is ~416 mg C. The coefficients on sand and soil are negative, so the emissions are lower from both of those surfaces, relative to bark. For example, the expected value of emissions from sand is `exp(6.03 - 0.97)` which is ~158 mg C. We will look at ways to compare these means later.
+
+We also see that there are built-in t-tests for each coefficient. The t-test for the intercept is not really meaningful because it is comparing the intercept against a value of zero. Of course all the CO2 fluxes are well above zero so it's not surprising to get a high t-statistic and low p-value here. However the other two t-tests are testing whether the difference between two surfaces (sand and bark, and soil and bark, respectively), is not zero. So those are meaningful. However these don't account for multiple comparisons or anything, so they aren't the best ones to report. We'll revisit that tomorrow!
+
+If you find the intercept thing confusing, you can force the model to fit the intercept at zero this way:
+
+```{r}
+fit_nointercept <- lm(log(CO2_mgC) ~ 0 + Surface, data = barnyard_ghg)
+
+summary(fit_nointercept)
+```
+
+Now we can see that there is no intercept coefficient. Instead there are three surface coefficients, one for each surface. Instead of the difference relative to the intercept (bark), we now have a mean for each surface. The only issue here is that the default t-tests can't be interpreted in a meaningful way anymore. They are comparing each coefficient against zero. Obviously none of them are anywhere close to zero so that isn't a very interesting comparison.
+
+# ANOVA
+
+FIXME INCLUDE ANOVA HERE
+
+# Plot of the model results
+
+Here's a plot of the model results. For now I will not explain how it was made. You will learn about that tomorrow.
+
+# Different effects
+
+The `barnyard_ghg` dataset also has a variable `Temp` indicating the temperature at the time the gas flux measurement was taken. It is a continuous variable.
 
 We can include continuous effects, categorical effects, and interactions between any of them.
 
@@ -122,6 +149,12 @@ In this example model fit, we have 1981 degrees of freedom. That is far too many
 
 We can look in the data and see that samples were taken in a bunch of different barnyards. 
 
+```{r}
+table(barnyard_ghg$Barnyard)
+```
+
+There are nine barnyards, each with about 200 measurements.
+
 Okay, so what if there is a different relationship between CO2 flux and temperature in each barnyard? One way you might think about dealing with this is to fit a separate regression model to each barnyard.
 
 I will demonstrate how you might do this -- note this code is a little bit more complex than what we'll be covering in this workshop so take this more as a demonstration. It is not something you would typically want to do.
@@ -129,6 +162,26 @@ I will demonstrate how you might do this -- note this code is a little bit more 
 We will `group_by()` and `nest()`.
 
 ```{r}
-barnyard_ghg
+barnyard_ghg %>%
+  group_by()
+#FIXME put this in there
+```
+
+# Our first mixed model
+
+It might seem like we have dealt with the issue that the different barnyards might have different relationships between surface type and CO2 emissions. But we went a little bit too far. We really want to know how surface type affects CO2 emissions in general, not in one particular barnyard ... the goal of our scientific inference is usually to generalize what we find in a particular study to a larger population of barnyards (only a few of which we actually visited to get CO2 measurements in our study). Doing separate regressions for each barnyard doesn't quite get us there because it doesn't give us *an estimate of the overall relationship between surface and CO2 emissions in barnyards, while at the same time accounting for variation due to the unknown factors that may be different from barnyard to barnyard*. 
+
+How can we solve that problem? You probably already guessed it ... a mixed model! I'm calling these mixed models but they go by a lot of other names.
+
+(dumb picture courtesy of Chelsea Parlett-Pelleriti on Twitter)
+
+Mixed models do what is called "partial pooling." 
+
+(insert some other description of mixed models)
+
+Here's our first mixed model. We are now using the `lmer()` function from the **lme4** package instead of `lm()` from base R.
+
+```{r}
+fit_mm <- lmer(log(CO2_mgC) ~ Temp, data = barnyard_ghg)
 ```
 
