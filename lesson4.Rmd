@@ -57,3 +57,6 @@ ggplot(fakedat, aes(x = cover_crop, y = yield, group = plot_id, label = plot_id)
 ```
 
 The same logic applies if the predictor variable is continuous, instead of a discrete variable with two different levels like in our example above. For instance instead of cover crop treatment we might have biochar amendment applied in a regression design at levels 0, 1, 2, 3, 4, and 5 tons/hectare. The model would be set up in the same way.
+
+- Give example of random slope model for just a LMM
+- We can also do random slopes in a GLMM

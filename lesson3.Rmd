@@ -41,11 +41,13 @@ Let's look at the data. Typing the name of the data frame gives you the first fe
 barnyard_ghg
 ```
 
-Or you might prefer to use `str()`
+Or you might prefer to use `str()` or `glimpse()`.
 
 ```{r}
-str(barnyard_ghg)
+glimpse(barnyard_ghg)
 ```
+
+There is a numeric column to identify which barnyard the measurement comes from, a character column for what the surface type is, and numeric columns for temperature, CO2 emissions, NH3 emissions, and N2O emissions. Some of the values are missing (`NA`).
 
 There is a column called `Surface` which contains character data. Look at the distribution of values in it with the `table()` function:
 
@@ -79,50 +81,38 @@ The `data` argument tells the model fitting function what data frame contains th
 This is a one-way ANOVA. We are looking at whether the mean CO2 flux from barnyard soil differs by surface type.
 
 ```{r}
-fit1 <- lm(CO2_mgC ~ Surface, data = barnyard_ghg)
+fit_oneway <- lm(CO2_mgC ~ Surface, data = barnyard_ghg)
 ```
 
 ## Diagnostic plots
 
 ```{r}
-plot(fit1)
+plot(fit_oneway)
 ```
 
-What is wrong here?
+Press `<Enter>` to bring up each plot in order.
 
-The error isn't normally distributed. This is much better.
-
-```{r}
-fit2 <- lm(log(CO2_mgC) ~ Surface, data = barnyard_ghg)
-
-plot(fit2)
-```
+These diagnostic plots look reasonable. In particular, the first plot shows that the distributions of residuals are about the same for the three surface types, indicating there is no relationship between residual and fitted values (the assumption of homogeneous variance is met). The second plot shows that quantiles of the residuals fall very close to a straight line relative to the quantiles of a normal distribution. This indicates the residuals are roughly normally distributed. 
 
 Examine the output using the `summary()` function.
 
 ```{r}
-summary(fit2)
+summary(fit_oneway)
 ```
 
 You can see that there are three coefficients in the model: the intercept, sand, and soil. Even though there are three surfaces (bark, sand, and soil), only two of them (sand and soil) have their own coefficient. This is because we have an intercept already, and the mean value of one of the three surfaces is set as the intercept. Then we only need two additional coefficients to define the means for the other two levels. "Bark" is set as the reference level because it is the first in alphabetical order. This is the default, which you can change by changing the order of factor levels.
 
-What the summary tells us is that the expected mean value of *the natural logarithm* of CO2 emissions from bark is about 6.03. We can back-transform that by taking $e^{6.03}$, or in R code `exp(6.03)`, which is ~416 mg C. The coefficients on sand and soil are negative, so the emissions are lower from both of those surfaces, relative to bark. For example, the expected value of emissions from sand is `exp(6.03 - 0.97)` which is ~158 mg C. We will look at ways to compare these means later.
+What the summary tells us is that the expected mean value of CO2 emissions from bark is about 475.6 mg C. The coefficients on sand and soil are negative, so the emissions are lower from both of those surfaces, relative to bark. For example, the expected value of emissions from sand is 476.6 - 169.2 which is ~306.4 mg C. We will look at ways to compare these means later.
 
-We also see that there are built-in t-tests for each coefficient. The t-test for the intercept is not really meaningful because it is comparing the intercept against a value of zero. Of course all the CO2 fluxes are well above zero so it's not surprising to get a high t-statistic and low p-value here. However the other two t-tests are testing whether the difference between two surfaces (sand and bark, and soil and bark, respectively), is not zero. So those are meaningful. However these don't account for multiple comparisons or anything, so they aren't the best ones to report. We'll revisit that tomorrow!
-
-If you find the intercept thing confusing, you can force the model to fit the intercept at zero this way:
-
-```{r}
-fit_nointercept <- lm(log(CO2_mgC) ~ 0 + Surface, data = barnyard_ghg)
-
-summary(fit_nointercept)
-```
-
-Now we can see that there is no intercept coefficient. Instead there are three surface coefficients, one for each surface. Instead of the difference relative to the intercept (bark), we now have a mean for each surface. The only issue here is that the default t-tests can't be interpreted in a meaningful way anymore. They are comparing each coefficient against zero. Obviously none of them are anywhere close to zero so that isn't a very interesting comparison.
+We also see that there are built-in t-tests for each coefficient. The t-test for the intercept is not really meaningful because it is comparing the intercept against a value of zero. Of course all the CO2 fluxes are well above zero so it's not surprising to get a high t-statistic and low p-value here. However the other two t-tests are testing whether the difference between two surfaces (sand and bark, and soil and bark, respectively), is not zero. So those are meaningful. They show that both the other two surfaces are different from bark. However these don't account for multiple comparisons or anything, and there is no t-test showing whether sand and soil differ from one another, so they aren't the best ones to report. We'll revisit that tomorrow!
 
 # ANOVA
 
-FIXME INCLUDE ANOVA HERE
+We can get an ANOVA table for the linear model using the function `anova()`.
+
+```{r}
+anova(fit_oneway)
+```
 
 # Plot of the model results
 
@@ -135,10 +125,10 @@ The `barnyard_ghg` dataset also has a variable `Temp` indicating the temperature
 We can include continuous effects, categorical effects, and interactions between any of them.
 
 ```{r}
-fit_temp <- lm(log(CO2_mgC) ~ Temp, data = barnyard_ghg)
-fit_surfacetemp <- lm(log(CO2_mgC) ~ Surface + Temp, data = barnyard_ghg)
-fit_int <- lm(log(CO2_mgC) ~ Surface + Temp + Surface:Temp, data = barnyard_ghg)
-fit_int_shortcut <- lm(log(CO2_mgC) ~ Surface*Temp, data = barnyard_ghg)
+fit_temp <- lm(CO2_mgC ~ Temp, data = barnyard_ghg)
+fit_surfacetemp <- lm(CO2_mgC ~ Surface + Temp, data = barnyard_ghg)
+fit_int <- lm(CO2_mgC ~ Surface + Temp + Surface:Temp, data = barnyard_ghg)
+fit_int_shortcut <- lm(CO2_mgC ~ Surface*Temp, data = barnyard_ghg)
 ```
 
 # Separate regressions for each sampling unit
@@ -182,6 +172,45 @@ Mixed models do what is called "partial pooling."
 Here's our first mixed model. We are now using the `lmer()` function from the **lme4** package instead of `lm()` from base R.
 
 ```{r}
-fit_mm <- lmer(log(CO2_mgC) ~ Temp, data = barnyard_ghg)
+fit_mm <- lmer(CO2_mgC ~ Temp, data = barnyard_ghg)
 ```
 
+# Transformation of response variables
+
+- Log transformation
+
+# Generalized linear mixed models
+
+Taking the log transformation of the response variable before fitting the model is a good solution for many types of data. However it won't always work. INSERT MORE TEXT HERE
+
+- Count data (Poisson GLMM)
+- Binary outcome data (Logistic GLMM)
+
+- Show how the residuals cannot be normally distributed for these data
+- Discuss log link for Poisson, logit or log odds link for logistic regression
+
+- Show an example of each
+
+# Hey! What about ...
+
+- These are only a little bit of what you can do. I don't have time to cover all GLMM types in this workshop.
+- glmer() doesn't have all the possibilities
+- Other common ones are beta-regression, where the response variable is a probability or proportion bounded between 0 and 1
+- Cumulative logistic mixed model is another common case, where the response variable is a categorical outcome with more than two possibilities
+  + For example a choice trial where insects are released into an olfactometer and may go down one of four arms where different odor attractants are found.
+  
+- The Bayesian modeling packages **brms** and **rstanarm** are also great alternatives that I would recommend looking into. I'm going to do a workshop on **brms** soon.
+
+# What have we done so far
+
+You've learned the basics of R. You've learned how to work with data frames in R. You've fit a linear model, a linear mixed model, and a generalized linear mixed model in R. Impressive!
+
+# What we will do tomorrow
+
+Tomorrow, we will do a lot more fun stuff with mixed models. We will cover ...
+
+- Random slope models
+- How to compare means and test specific hypotheses with contrasts
+- How to make some basic plots and tables to present the results of your model
+
+Excited to see you all then!!!
