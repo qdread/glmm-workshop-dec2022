@@ -56,4 +56,5 @@ validation-report.json
 node_modules
 bower_components
 
-lesson_outline.md
+# Symbolic link
+lessons/datasets/

@@ -32,7 +32,13 @@ These are tutorials on data science for researchers including a lot of lessons o
 
 [UCLA Stats Consulting's page of R resources](https://stats.oarc.ucla.edu/r/){: .biglink }
 
-The stats consultants at UCLA do a great job putting together tutorials, lessons, and examples on statistics using R. (For SAS users, they also have a nice page of SAS lessons and examples: https://stats.oarc.ucla.edu/sas/).
+The stats consultants at UCLA do a great job putting together tutorials, lessons, and examples on statistics using R. (For SAS users, they also have a nice page of [SAS lessons and examples](https://stats.oarc.ucla.edu/sas/)).
+
+![](https://r.qcbs.ca/images/qcbs_logo_image0032.png){: align="left" style="padding-right: 25px" width="150px" }
+
+[QCBS R Workshop series](https://r.qcbs.ca/){: .biglink }
+
+Another excellent set of R lessons provided by the Qu&eacute;bec Centre for Biodiversity Science.
 
 ## Learning mixed models
 
