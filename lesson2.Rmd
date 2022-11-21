@@ -18,8 +18,8 @@ At the end of this lesson, students will ...
 
 - Read a CSV file of data into the R workspace.
 - Know what a data frame is and understand what constitutes "tidy" data.
+- Do basic manipulations and reshaping of data frames.
 - Calculate summary statistics by group.
-- Make a few basic plots.
 
 # What is a data frame?
 
@@ -217,48 +217,11 @@ INSERT DESCRIPTION HERE
 ```
 
 
-# Make a basic plot
-
-We will use the **ggplot2** package for plotting. In this workshop I will not explain how these plots work in great detail, but I plan to offer workshops on data visualization in the future.
-
-As a brief intro, we can "map" different columns of the data frame to different components of the plot. This is known as "aesthetic mapping" hence the function name `aes()`. For example, in this fake data frame, we map the `x` column to the x-axis aesthetic, the `y` column to the y-axis aesthetic, and the `g` column, which consists of letters, to the color aesthetic.
-
-Then you use the plus sign `+` to add "geoms" to the plot which correspond to different types of data visualizations you are probably familiar with. For instance `geom_point()` is a scatterplot.
-
-(insert cheat sheet)
-
-```{r, fig.width = 4, fig.height = 4}
-ggplot(dat, aes(x = x, y = y, color = g, fill = g)) +
-  geom_point()
-```
-
-As you can see, different types of plots can be made by changing the geom, with the variable mappings unchanged, such as a line graph or a stacked bar plot. The data are the same.
-
-```{r, fig.width = 4, fig.height = 4}
-ggplot(dat, aes(x = x, y = y, color = g, fill = g)) +
-  geom_line()
-
-ggplot(dat, aes(x = x, y = y, color = g, fill = g)) +
-  geom_col()
-```
-
-Additional arguments can be added to change the appearance of the plot, alter the geoms, or add other graphical elements that are not mapped from the data frame. For instance we can change our stacked bar plot to a grouped bar plot by an argument to `geom_col()`. Then we can change the theme by adding `theme_bw()`, and also add a horizontal dotted line on the plot by adding another geom.
-
-```{r}
-barplot <- ggplot(dat, aes(x = x, y = y, color = g, fill = g)) +
-  geom_col(position = 'dodge')
-
-barplot
-
-barplot + theme_bw()
-
-barplot + theme_bw() + geom_hline(yintercept = 15, linetype = 'dotted')
-```
-
 # Hey! What about ...
 
 - Joining two or more data frames together
 - Operations on lists of data frames or data frames containing lists
+- Making plots
 
 Those are very important topics that you will definitely need to learn about if you want to do serious data analysis with R. We don't have time to cover them today but I would recommend using the R resources I posted on the workshop page to learn more about them.
 

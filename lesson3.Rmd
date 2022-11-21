@@ -118,11 +118,16 @@ anova(fit_oneway)
 
 Here's a plot of the model results. For now I will not explain how it was made. You will learn about that tomorrow.
 
+```{r}
+# FIXME include this here.
+```
+
+
 # Different effects
 
 The `barnyard_ghg` dataset also has a variable `Temp` indicating the temperature at the time the gas flux measurement was taken. It is a continuous variable.
 
-We can include continuous effects, categorical effects, and interactions between any of them.
+We can include continuous effects, categorical effects, and interactions between any of them. Notice that I've written 
 
 ```{r}
 fit_temp <- lm(CO2_mgC ~ Temp, data = barnyard_ghg)
@@ -135,7 +140,7 @@ fit_int_shortcut <- lm(CO2_mgC ~ Surface*Temp, data = barnyard_ghg)
 
 People get hung up on checking relatively less important assumptions like normality of residuals. But a far more important assumption is that your data points are independent. If you fit a model to independent data points when it is truly non-independent, the results do not reflect reality. This is a much worse problem than the residuals not being normal.
 
-In this example model fit, we have 1981 degrees of freedom. That is far too many. 
+In this example model fit, we have 106 degrees of freedom. That is far too many. 
 
 We can look in the data and see that samples were taken in a bunch of different barnyards. 
 
@@ -143,7 +148,9 @@ We can look in the data and see that samples were taken in a bunch of different 
 table(barnyard_ghg$Barnyard)
 ```
 
-There are nine barnyards, each with about 200 measurements.
+There are nine barnyards, each with about a dozen measurements. The measurements that come from the same barnyard are not independent because they have a common cause: whatever properties the soil at barnyard 1 has that influence CO2 emissions are affecting all the CO2 measurements from barnyard 1 in the same way. Thus, 106 degrees of freedom is probably too many. But if we just average all the measurements from each combination of barnyard and surface type into a single measurement, we will only have 6 degrees of freedom in the model. A more appropriate value would be somewhere in between -- the measurements from the same barnyard are *partially*, but not completely, dependent on one another.
+
+INSERT MORE TEXT HEREREERERE
 
 Okay, so what if there is a different relationship between CO2 flux and temperature in each barnyard? One way you might think about dealing with this is to fit a separate regression model to each barnyard.
 
@@ -152,8 +159,10 @@ I will demonstrate how you might do this -- note this code is a little bit more 
 We will `group_by()` and `nest()`.
 
 ```{r}
-barnyard_ghg %>%
-  group_by()
+barnyard_separate_models <- barnyard_ghg %>%
+  group_by(Barnyard) %>%
+  nest %>%
+  mutate(model = map(data, ~ lm(CO2_mgC ~ Surface, data = .)))
 #FIXME put this in there
 ```
 
