@@ -181,6 +181,16 @@ x > 1 & x < 5
 x <= 1 | x >= 5
 ```
 
+Other important logical operators are `!` and `%in%`. 
+
+```{r}
+!(x == 3)
+
+c(1, 5, 6, 7) %in% x
+
+x %in% c(1, 5, 6, 7)
+```
+
 
 Missing data is coded as `NA`.
 

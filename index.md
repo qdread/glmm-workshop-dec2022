@@ -11,7 +11,7 @@ title: December 2022 R Statistics Training Workshop
 - **Where:** Raleigh, NC ([NCSU Plant Sciences Building, Room 3158, 840 Oval Drive](#directions-to-workshop-location)). The workshop will also be livestreamed and recorded.
 - **Instructor:** Quentin Read, ARS southeast area statistician
 
-> **NOTE**: This is a work in progress! All information on this site is subject to change. This site will eventually contain all the course materials. Please check back soon. Last updated 2022-11-09.
+> **NOTE**: This is a work in progress! All information on this site is subject to change. This site will eventually contain all the course materials. Please check back soon. Last updated 2022-11-21.
 
 [COURSE SCHEDULE](#course-schedule){: .biglink }  
 Schedule, including links to lesson content (below on this page).
