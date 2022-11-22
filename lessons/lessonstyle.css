@@ -1,0 +1,18 @@
+.spoiler {
+  visibility: hidden;
+}
+
+.spoiler::before {
+  visibility: visible;
+  content: "Spoiler alert! Hover over me to reveal.";
+  font-weight: bold;
+  background-color: coral;
+}
+
+.spoiler:hover {
+  visibility: visible;
+}
+
+.spoiler:hover::before {
+  display: none;
+}
