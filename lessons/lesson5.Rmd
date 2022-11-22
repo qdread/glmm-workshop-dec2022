@@ -52,3 +52,6 @@ Let's use one of the models we have worked with already. Reload the data and ref
 #FIXME do this
 ```
 
+# Comparison of estimated marginal means versus ANOVA
+
+- If you properly account for multiple comparisons you do not need to worry about the F-test

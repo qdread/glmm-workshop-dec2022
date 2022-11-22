@@ -1,6 +1,7 @@
 # Package notes
 
-- performance
+- performance (from easystats)
 - multcomp
-- gt
-- knitr
+- gt (not going to touch)
+- knitr (also no)
+- agridat

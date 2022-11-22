@@ -71,6 +71,9 @@ Before the course, you will need to have the following software installed on you
   + [tidyverse](https://www.tidyverse.org/) (this includes the packages [dplyr](https://dplyr.tidyverse.org/), [tidyr](https://tidyr.tidyverse.org/), [readr](https://readr.tidyverse.org/), and [ggplot2](https://ggplot2.tidyverse.org/) that we will be working with)
   + [lme4](https://cran.r-project.org/web/packages/lme4/index.html)
   + [emmeans](https://cran.r-project.org/web/packages/emmeans/index.html)
+  + [multcomp](https://cran.r-project.org/package=multcomp)
+  + [easystats](https://easystats.github.io/easystats/)
+  + [agridat](https://kwstat.github.io/agridat/)
 
 In addition, you will need to download the example datasets.
   

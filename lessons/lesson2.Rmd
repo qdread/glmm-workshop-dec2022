@@ -6,6 +6,7 @@ output:
   html_document:
     toc: true
     toc_depth: 2
+    css: lessonstyle.css
 ---
 
 ```{r setup, include=FALSE}
@@ -118,6 +119,19 @@ You can also get columns by name. Just make sure to pass the vector of column na
 ```{r}
 dat[20, c('taxonID', 'sex')]
 ```
+
+To extract a single column from a data frame as a vector, you can use the `$` operator. For example, let's look at all unique values in the `siteName` column using the `unique()` function.
+
+```{r}
+unique(dat$siteName)
+```
+
+Another function that you often use on single data frame columns is `table()`, which gives you the number of values of each category.
+
+```{r}
+table(dat$sex)
+```
+
 
 The tidyverse functions `filter()` and `select()` are used to give you subsets of rows and columns, respectively. A common use of `filter()` is to subset rows by a certain condition. For example we can use `filter()` to get all rows where `weight` is less than 10.
 
@@ -233,13 +247,14 @@ dat %>%
             sd_weight = sd(weight))
 ```
 
-We can `filter()` by more than one condition, and `group_by()` more than one column. For example we could get the mean and standard deviation of all non-missing values of body weight for each combination of sex and life stage, for one particular species. (`PELE` = *Peromyscus leucopus*, the white-footed mouse).
+We can `filter()` by more than one condition, and `group_by()` more than one column. We can also put as many summary statistics in the call to `summarize()` as we want. For example we could get the number of values (using the `n()` function), the mean, and the standard deviation of all non-missing values of body weight for each combination of sex and life stage, for one particular species. (`PELE` = *Peromyscus leucopus*, the white-footed mouse).
 
 ```{r}
 dat %>%
   filter(!is.na(weight), taxonID == 'PELE') %>%
   group_by(sex, lifeStage) %>%
-  summarize(mean_weight = mean(weight), 
+  summarize(n_individuals = n(),
+            mean_weight = mean(weight), 
             sd_weight = sd(weight))
 ```
 
@@ -257,7 +272,7 @@ dat %>%
   arrange(mean_weight)
 ```
 
-> This is equivalent to `summarize(group_by(select(filter(dat))))` but in my opinion much more readable.
+> This is equivalent to `arrange(summarize(group_by(filter(dat))))` but in my opinion much more readable.
 
 Here I'm also introducing the `arrange()` operator which sorts the data frame in ascending order by a given column or columns. `arrange(-mean_weight)` could be used to sort in descending order instead.
 
@@ -334,10 +349,26 @@ pivot_longer(billboard, cols = wk1:wk76, names_to = 'week', values_to = 'ranking
 
 - Joining two or more data frames together
 - Operations on lists of data frames or data frames containing lists
-- Making plots
 
 Those are very important topics that you will definitely need to learn about if you want to do serious data analysis with R. We don't have time to cover them today but I would recommend using the R resources I posted on the workshop page to learn more about them.
 
 # Exercises
 
-TBD
+The dataset used for these exercises comes from an experimental study measuring greenhouse gas emissions from experimentally constructed barnyards. The dataset is hosted on [Ag Data Commons](https://data.nal.usda.gov/dataset/data-gas-emissions-dairy-barnyards).
+
+You may combine the results from steps 3-6 into a single "piped" statement using the `%>%` operator.
+
+1. Read the `barnyard_ghg.csv` file, which is in the `datasets` directory, into R as a data frame. 
+2. Examine the data frame. What are the data types of the different columns? How many different values are there in the `Surface` column?
+  + *Hint*: 
+3. Create a subset of the data frame containing only the observations where the temperature (`Temp` column) is greater than 10. *Remember R is case-sensitive!*
+4. Group the data frame by surface type.
+5. Calculate the mean of the `CO2_mgC`, `CH4_mgC`, `NH3_ugN`, and `N2O_ugN` columns.
+6. Sort the result in increasing order of `CO2_mgC`.
+
+
+# Answers
+
+1. [`barnyard_ghg <- read.csv('datasets/barnyard_ghg.csv')`]{.spoiler}
+2. [You could use ]
+3-6. xxx

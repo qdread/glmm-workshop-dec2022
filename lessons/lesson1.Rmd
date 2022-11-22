@@ -85,14 +85,23 @@ Here are some simple things you can do with R.
 
 Things to note here: 
 
-- if you assign the result to a new variable, nothing will print to the console. But you can use the variable again later, as we do with `x` and `y` below.
-- any line preceded by `#` is a comment and will not be evaluated.
+- You can use R as a calculator using operators like `+` and `-`.
+- The assignment operator `<-` is used to create a new variable and give it a value. The syntax is `variable <- <value>`.
+- You can also use `=` as an assignment operator but we will use `<-` in this workshop. Consistent code is readable code!
+- Entering the name of a variable prints that variable's value to the console.
+- If you assign a value to a new variable, nothing will print to the console. But you can use the variable again later, as we do with `x` and `y` below.
+- A function followed by an argument in parentheses `()`, like `function(<value>)`, will input a value to a function and return some output.
+- Any line preceded by `#` is a comment and will not be evaluated.
+- Functions can take multiple arguments separated by commas `,`.
 
 ```{r}
 2 + 3
 
-x <- 2
-y <- 3
+x <- 2 + 3
+y = 3.5
+
+x
+y
 
 x + y
 x * 4
@@ -184,7 +193,16 @@ treatment <- factor(treatment, levels = c('low', 'medium', 'high'))
 treatment
 ```
 
-Logical is another important data type. It can take two values, `TRUE` and `FALSE`. We usually get a logical vector when we do a comparison.
+Logical is another important data type. It can take two values, `TRUE` and `FALSE`. We usually get a logical vector when we do a comparison. The following examples illustrate how the logical operators work:
+
+- `x == y`: is `x` equal to `y`?
+- `x != y`: is `x` not equal to `y`?
+- `x > y`: is `x` greater than `y`?
+- `x >= y`: is `x` greater than or equal to `y`?
+- `x < y`: is `x` less than `y`?
+- `x <= y`: is `x` less than or equal to `y`?
+- `x > y & x < z`: is `x` greater than `y` and less than `z`?
+- `x > y | x < z`: is `x` greater than `y` or less than `z`?
 
 ```{r}
 x <- 1:5
@@ -204,16 +222,21 @@ x <= 1 | x >= 5
 
 Other important logical operators are `!` and `%in%`. 
 
+`!` is the negation operator. It converts all `TRUE` values to `FALSE` and vice versa.
+
 ```{r}
 !(x == 3)
+```
 
+`%in%` is an operator that goes through the vector on the left-hand side and returns `TRUE` for the values that appear anywhere in the vector on the right-hand side, and `FALSE` otherwise.
+
+```{r}
 c(1, 5, 6, 7) %in% x
 
 x %in% c(1, 5, 6, 7)
 ```
 
-
-Missing data is coded as `NA`.
+The `%in%` operator is often used to subset data frames. We will see an example of this in the next lesson.
 
 Some functions work on vectors and return one value for each element in the vector. Others return only one or a few values. Here are some examples. The function `exp()` takes a vector as input and returns a vector of the same length, the exponential of each element in the vector. Notice I use `head()` to avoid printing all 1000 values. The functions `length()`, `mean()`, `median()`, and `sd()` take a vector as input and return a single value. The function `range()` returns a vector of two values, the minimum and maximum of the vector. The function `quantile()` is a little bit more complicated. It takes two vectors as input. The second vector, `probs`, contains the probabilities we want to calculate the quantiles for. The function returns a vector with the same length as `probs` containing the percentiles.
 
@@ -252,7 +275,7 @@ The four functions are:
 
 For example, the functions for the normal distribution are `rnorm()`, `dnorm()`, `pnorm()`, and `qnorm()`. All of these default to the standard normal distribution with `mean = 0` and `sd = 1`, but you can change those parameters by modifying the `mean` and `sd` arguments.
 
-These figures illustrate what `dnorm()`, `pnorm()`, and `qnorm()` do.
+We've already seen `rnorm()` above. These figures illustrate what `dnorm()`, `pnorm()`, and `qnorm()` do.
 
 ```{r, echo = FALSE, fig.show = 'hold', out.width = '50%', fig.width = 4.5, fig.height = 4.5}
 library(ggplot2)

@@ -60,3 +60,24 @@ The same logic applies if the predictor variable is continuous, instead of a dis
 
 - Give example of random slope model for just a LMM
 - We can also do random slopes in a GLMM
+
+
+# Generalized linear mixed models
+
+Taking the log transformation of the response variable before fitting the model is a good solution for many types of data. However it won't always work. INSERT MORE TEXT HERE
+
+- Count data (Poisson GLMM)
+- Binary outcome data (Logistic GLMM)
+
+- Show how the residuals cannot be normally distributed for these data
+- Discuss log link for Poisson, logit or log odds link for logistic regression
+
+- Show an example of each
+
+# Hey! What about ...
+
+- Repeated measures designs
+- Spatial autocorrelation
+- Different types of random effects (G-side versus R-side) and error structures
+
+These are "advanced topics" in mixed modeling. They are out of scope for this workshop. 
