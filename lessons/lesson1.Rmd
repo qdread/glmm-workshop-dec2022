@@ -87,12 +87,14 @@ Things to note here:
 
 - You can use R as a calculator using operators like `+` and `-`.
 - The assignment operator `<-` is used to create a new variable and give it a value. The syntax is `variable <- <value>`.
+- Variable names can contain `.` or `_` but can't contain spaces or start with a number.
 - You can also use `=` as an assignment operator but we will use `<-` in this workshop. Consistent code is readable code!
 - Entering the name of a variable prints that variable's value to the console.
 - If you assign a value to a new variable, nothing will print to the console. But you can use the variable again later, as we do with `x` and `y` below.
 - A function followed by an argument in parentheses `()`, like `function(<value>)`, will input a value to a function and return some output.
 - Any line preceded by `#` is a comment and will not be evaluated.
 - Functions can take multiple arguments separated by commas `,`.
+- When you put text inside quotes, you can use either `'single quotes'` or `"double quotes"`. Which one you choose is up to your personal style preferences, but again remember to be consistent!
 
 ```{r}
 2 + 3
@@ -118,7 +120,7 @@ sin(pi)
 
 my_name <- "Quentin"
 
-paste("Hello,", my_name)
+paste('Hello,', my_name)
 ```
 
 Use `?` to get help about a function.

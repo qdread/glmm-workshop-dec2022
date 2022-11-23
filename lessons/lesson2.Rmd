@@ -120,7 +120,15 @@ You can also get columns by name. Just make sure to pass the vector of column na
 dat[20, c('taxonID', 'sex')]
 ```
 
-To extract a single column from a data frame as a vector, you can use the `$` operator. For example, let's look at all unique values in the `siteName` column using the `unique()` function.
+To extract a single column from a data frame as a vector, you can use the `$` operator. 
+
+```{r}
+dat$siteName
+```
+
+If the data frame column name contains special characters, surround the name with backticks like `` dat$`column 10` ``.
+
+For example, let's look at all unique values in the `siteName` column using the `unique()` function.
 
 ```{r}
 unique(dat$siteName)
@@ -337,20 +345,27 @@ billboard
 
 We want tidy data where each row is an observation: a song identified by its artist name, track name, and the date it entered the top 100 ranking, the week at which the ranking was observed, and the ranking. We have to identify
 
-- `cols`: the columns that need to be pivoted to a longer format. In this example we can use a shorthand `wk1:wk76` to refer to all columns between `wk1` and `wk76` inclusive. 
+- `cols`: the columns that need to be pivoted to a longer format. In this example we can use a shorthand `wk1:wk76` to refer to all columns between `wk1` and `wk76` inclusive. You can also use the `-` sign to specify which columns will *not* be pivoted (the identifying columns for each observation).
 - `names_to`: the name of the column into which the column names will be put, as a quoted character string. (If you do not supply this, it will default to `name`.)
 - `values_to`: the name of the column into which the data values in the cells will be put, as a quoted character string. (If you do not supply this, it will default to `value`.)
 
 ```{r}
-pivot_longer(billboard, cols = wk1:wk76, names_to = 'week', values_to = 'ranking')
+pivot_longer(billboard, cols = c(wk1:wk76), names_to = 'week', values_to = 'ranking')
 ```
+
+This is identical to the code above, instead we are specifying the columns *not* to pivot.
+
+```{r}
+pivot_longer(billboard, cols = -c(artist, track, date.entered), names_to = 'week', values_to = 'ranking')
+```
+
 
 # Hey! What about ...
 
 - Joining two or more data frames together
 - Operations on lists of data frames or data frames containing lists
 
-Those are very important topics that you will definitely need to learn about if you want to do serious data analysis with R. We don't have time to cover them today but I would recommend using the R resources I posted on the workshop page to learn more about them.
+Those are very important topics that you will definitely need to learn about if you want to do serious data analysis with R. We don't have time to cover them today but I would recommend using the R resources I posted on the workshop page to learn more about them. What we did just now only scratches the surface of how to wrangle data in R. 
 
 # Exercises
 
@@ -360,15 +375,22 @@ You may combine the results from steps 3-6 into a single "piped" statement using
 
 1. Read the `barnyard_ghg.csv` file, which is in the `datasets` directory, into R as a data frame. 
 2. Examine the data frame. What are the data types of the different columns? How many different values are there in the `Surface` column?
-  + *Hint*: 
+  + *Hint*: [Use `str()`, `summary()`, and/or `glimpse()` to examine the data frame. Use `table()` or `unique()` for the `Surface` column.]{.spoiler}
 3. Create a subset of the data frame containing only the observations where the temperature (`Temp` column) is greater than 10. *Remember R is case-sensitive!*
 4. Group the data frame by surface type.
 5. Calculate the mean of the `CO2_mgC`, `CH4_mgC`, `NH3_ugN`, and `N2O_ugN` columns.
-6. Sort the result in increasing order of `CO2_mgC`.
-
+6. Sort the result in increasing order of the mean value of `CO2_mgC`.
+7. Load the `relig_income` example dataset which has survey data on the number of individuals of different religions by reported yearly income. (Use `data(relig_income)` to load the dataset.) Convert this dataset into "tidy" form so that each row has a religion, income level, and number of individuals.
+  + *Hint 1*: [Use `pivot_longer()`.]{.spoiler}
+  + *Hint 2*: [You may specify either the columns to pivot, or the columns not to pivot. There is only one column not to pivot, `religion`.]
 
 # Answers
 
 1. [`barnyard_ghg <- read.csv('datasets/barnyard_ghg.csv')`]{.spoiler}
-2. [You could use ]
-3-6. xxx
+2. [One way would be `glimpse(barnyard_ghg)` and `table(barnyard_ghg$Surface)`]{.spoiler}
+3-6. [`barnyard_ghg %>%`  
+`filter(Temp > 10) %>%`  
+`group_by(Surface) %>%`  
+`summarize(mean_CO2 = mean(CO2_mgC), mean_CH4 = mean(CH4_mgC), mean_NH3 = mean(NH3_ugN), mean_N2O = mean(N2O_ugN)) %>%`
+`arrange(mean_CO2)`]{.spoiler}
+7. [`pivot_longer(relig_income, cols = -religion)`, or if you want to give your own names to the newly created columns, `pivot_longer(relig_income, cols = -religion, names_to = 'income', values_to = 'individuals')`]{.spoiler}

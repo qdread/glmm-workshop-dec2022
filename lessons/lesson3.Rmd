@@ -24,7 +24,7 @@ At the end of this lesson, students will ...
 
 # Load some sample data
 
-We are going to use some data from Ag Data Commons. I've simplified the data and added some random noise to it as well.
+We are going to use some data from the **agridat** package. You can either load the example data from the package directly using `data()`, or read it in from a CSV in the `datasets` folder. Here are both ways of doing it.
 
 ```{r}
 library(tidyverse)
