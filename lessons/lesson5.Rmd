@@ -19,6 +19,7 @@ At the end of this lesson, students will ...
 - Generate predictions from a mixed model.
 - Test specific hypotheses with contrasts.
 - Compare multiple group means and correct for multiple comparisons.
+- Compare different models with likelihood ratio tests.
 
 # Estimated marginal means
 

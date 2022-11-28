@@ -58,9 +58,9 @@ ggplot(fakedat, aes(x = cover_crop, y = yield, group = plot_id, label = plot_id)
 
 The same logic applies if the predictor variable is continuous, instead of a discrete variable with two different levels like in our example above. For instance instead of cover crop treatment we might have biochar amendment applied in a regression design at levels 0, 1, 2, 3, 4, and 5 tons/hectare. The model would be set up in the same way.
 
-- Give example of random slope model for just a LMM
-- We can also do random slopes in a GLMM
+# Random slope model: categorical predictor variable
 
+# Random slope model: continuous predictor variable
 
 # Generalized linear mixed models
 
@@ -74,10 +74,23 @@ Taking the log transformation of the response variable before fitting the model 
 
 - Show an example of each
 
+- We can set up the model with all the same kinds of fixed and random effects as in plain vanilla linear mixed models. For example, we can have continuous and categorical predictors, interactions, crossed or nested random effects, random intercepts and/or random slopes.
+
+# Hey! What about ...
+
+- These are only a little bit of what you can do. I don't have time to cover all GLMM types in this workshop.
+- glmer() doesn't have all the possibilities
+- Other common ones are beta-regression, where the response variable is a probability or proportion bounded between 0 and 1
+- Cumulative logistic mixed model is another common case, where the response variable is a categorical outcome with more than two possibilities
+  + For example a choice trial where insects are released into an olfactometer and may go down one of four arms where different odor attractants are found.
+  
+- The Bayesian modeling packages **brms** and **rstanarm** are also great alternatives that I would recommend looking into. I'm going to do a workshop on **brms** soon.
+
 # Hey! What about ...
 
 - Repeated measures designs
 - Spatial autocorrelation
+- Overdispersion in count data
 - Different types of random effects (G-side versus R-side) and error structures
 
 These are "advanced topics" in mixed modeling. They are out of scope for this workshop. 

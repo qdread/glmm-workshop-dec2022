@@ -24,7 +24,7 @@ At the end of this lesson, students will ...
 
 # Load some sample data
 
-We are going to use some data from the **agridat** package. You can either load the example data from the package directly using `data()`, or read it in from a CSV in the `datasets` folder. Here are both ways of doing it.
+We are going to use some data from the **agridat** package, which has lots of example datasets from agricultural science. You can either load the example data from the package directly using `data()`, or read it in from a CSV in the `datasets` folder. Here are both ways of doing it.
 
 ```{r}
 library(tidyverse)
@@ -184,23 +184,28 @@ Here's our first mixed model. We are now using the `lmer()` function from the **
 fit_mm <- lmer(CO2_mgC ~ Temp, data = barnyard_ghg)
 ```
 
-# Transformation of response variables
-
-- Log transformation
-
 # ANOVA
 
 - How to get the F-tests
 
+# Nested random effects
+
+For this next example, we are going to use a dataset with results from a study of conservation agriculture practices (data hosted on [Ag Data Commons](https://data.nal.usda.gov/dataset/regionally-adapted-implementation-conservation-agriculture-delivers-rapid-improvements-soil-properties-associated-crop-yield-stability)). In this study, the experimental treatments were two different tillage systems crossed with presence or absence of rye cover crop. The original dataset contains results for both maize and soybean yields but I am giving you only the maize yield data for simplicity.
+
+# Transformation of response variables
+
+For this next 
+
+- Log transformation
+
+
+
+
+
+
 # Hey! What about ...
 
-- These are only a little bit of what you can do. I don't have time to cover all GLMM types in this workshop.
-- glmer() doesn't have all the possibilities
-- Other common ones are beta-regression, where the response variable is a probability or proportion bounded between 0 and 1
-- Cumulative logistic mixed model is another common case, where the response variable is a categorical outcome with more than two possibilities
-  + For example a choice trial where insects are released into an olfactometer and may go down one of four arms where different odor attractants are found.
-  
-- The Bayesian modeling packages **brms** and **rstanarm** are also great alternatives that I would recommend looking into. I'm going to do a workshop on **brms** soon.
+- Singular fits
 
 # What have we done so far
 

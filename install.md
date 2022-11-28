@@ -3,16 +3,16 @@ layout: page
 title: Installation instructions
 ---
 
-I am happy to announce that we now have access to [RStudio Cloud](https://rstudio.cloud). This allows participants in this course to have access to a fully functioning copy of RStudio through their web browser that has all the packages installed and contains all the datasets and worksheets needed for the course. This is a "demo" version of RStudio that is only suitable for the workshop, and shouldn't be used to work on analyzing your own USDA data. 
+I am happy to announce that we now have access to the paid version of [Posit Cloud](https://posit.cloud), formerly known as RStudio Cloud, through ARS. This allows participants in this course to have access to a fully functioning copy of RStudio through their web browser. The browser version of RStudio will have all the packages installed and contain all the datasets and worksheets needed for the course. This is a "demo" version of RStudio that is only suitable for the workshop, and shouldn't be used to work on analyzing your own USDA data. 
 
-You may also want to run all the R code locally on your own machine during the course. And if you want to continue using RStudio after the workshop, you will need to install everything on your own computer anyway. This page now contains two sets of instructions:
+You may also want to run all the R code locally on your own machine during the course. And if you want to continue using RStudio after the workshop, you will need to install everything on your own computer anyway. So this page has two sets of instructions, one for setting up your Posit Cloud access to RStudio and another for how to install R and RStudio on your own computer:
 
-- [How to get access to RStudio Cloud](#accessing-rstudio-cloud)
+- [How to get access to RStudio through Posit Cloud](#accessing-rstudio-through-posit-cloud)
 - [How to install R, RStudio, and the needed packages locally](#installing-r-and-rstudio-locally)
 
-## Accessing RStudio Cloud
+## Accessing RStudio through Posit Cloud
 
-> NOTE: Your RStudio Cloud access is for instructional purposes only. Please do not upload the government's data to this cloud server. To work with your USDA data using R, please install the software locally or use SciNet.
+> **NOTE**: Your cloud access to RStudio is for instructional purposes only. Please do not upload the government's data to this cloud server. To work with your USDA data using R, please install the software locally or use SciNet.
 
 #### Step 1. Create account
 
@@ -70,16 +70,17 @@ Before the course, you will need to have the following software installed on you
 - R packages:
   + [tidyverse](https://www.tidyverse.org/) (this includes the packages [dplyr](https://dplyr.tidyverse.org/), [tidyr](https://tidyr.tidyverse.org/), [readr](https://readr.tidyverse.org/), and [ggplot2](https://ggplot2.tidyverse.org/) that we will be working with)
   + [lme4](https://cran.r-project.org/web/packages/lme4/index.html)
+  + [lmerTest](https://cran.r-project.org/package=lmerTest)
   + [emmeans](https://cran.r-project.org/web/packages/emmeans/index.html)
   + [multcomp](https://cran.r-project.org/package=multcomp)
   + [easystats](https://easystats.github.io/easystats/)
   + [agridat](https://kwstat.github.io/agridat/)
 
-In addition, you will need to download the example datasets.
+In addition, you will need to download the example datasets and code worksheets.
   
 #### Step 1. Install R
 
-You will need to download R from [The Comprehensive R Archive Network](https://cran.r-project.org/), or CRAN. CRAN is a team of developers that maintain R and manage the packages that users contribute.
+You will need to download R from [The Comprehensive R Archive Network](https://cran.r-project.org/), or CRAN. 
 
 ![CRAN R download screenshot](../public/images/cran_screenshot.png){: align="left" style="padding-right: 25px" width="400px" }
 
@@ -102,21 +103,21 @@ To install the packages we will be working with in this course, you will need to
 ##### Installing packages from the R console
 
 - Open RStudio.
-- Type the following command into the R console and press enter. Voila!
+- Type the following command into the R console and press Enter. Voila!
 
 ```
-install.packages(c("tidyverse", "lme4", "lmerTest", "emmeans"))
+install.packages(c("tidyverse", "lme4", "lmerTest", "emmeans", "multcomp", "easystats", "agridat"))
 ```
 
 ##### Installing packages from the RStudio package installation window
 
 You can also install the packages using the RStudio package installation dialog.
 
-- The files pane has a tab called "Packages." Click on that and click the "Install" button in the upper left.
+- The files pane has a tab called "Packages." Click on the "Packages" tab and then click the "Install" button in the upper left.
 - Type the package names, separated by space or comma, into the box:
 
 ```
-tidyverse, lme4, lmerTest, emmeans
+tidyverse, lme4, lmerTest, emmeans, multcomp, easystats, agridat
 ```
 
 It should look like this:
@@ -129,4 +130,4 @@ It should look like this:
 
 #### Step 4. Download the worksheets and example datasets
 
-The [worksheets and example datasets]({{ site.baseurl}}/worksheets) are available for download on this site. 
+Go to the [worksheets and example datasets download page]({{ site.baseurl}}/worksheets) and download the datasets and worksheets. Unzip them to a directory on your local file system. You will need to specify the file path to that directory when you load the example datasets during the workshop.
