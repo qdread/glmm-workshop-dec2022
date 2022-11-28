@@ -16,9 +16,25 @@ knitr::opts_chunk$set(echo = TRUE, message = TRUE, warning = TRUE)
 
 At the end of this lesson, students will ...
 
-- Differentiate between a random intercept and random slope.
-- Be able to fit a mixed model including both random slope and random intercept terms.
-- Fit a generalized linear model with a different response distribution.
+- Fit a linear mixed model with crossed and nested random effects.
+- Fit a linear mixed model with a transformed response variable.
+- Fit a generalized linear mixed model to binary outcome data.
+- Fit a generalized linear mixed model to count outcome data.
+
+# Nested random effects
+
+For this next example, we are going to use a dataset with results from a study of conservation agriculture practices (data hosted on [Ag Data Commons](https://data.nal.usda.gov/dataset/regionally-adapted-implementation-conservation-agriculture-delivers-rapid-improvements-soil-properties-associated-crop-yield-stability)). In this study, the experimental treatments were two different tillage systems crossed with presence or absence of rye cover crop. The original dataset contains results for both maize and soybean yields but I am giving you only the maize yield data for simplicity.
+
+
+# Load some sample data
+
+We are going to use some data from the **agridat** package, which has lots of example datasets from agricultural science. You can either load the example data from the package directly using `data()`, or read it in from a CSV in the `datasets` folder. Here are both ways of doing it.
+
+```{r}
+library(tidyverse)
+library(lmerTest)
+
+```
 
 # Random slope models
 

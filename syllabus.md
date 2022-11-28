@@ -11,8 +11,8 @@ At the end of the workshop, students will be able to . . .
   +	Fixed effects
   +	Random intercepts and random slopes
   +	Estimated marginal means
-  +	Confidence intervals and prediction intervals
--	Interpret the output of a LMM
+- Understand the difference between a linear mixed model (LMM) and generalized linear mixed model (GLMM)
+-	Interpret the output of a LMM and GLMM
 
 ## Practical learning objectives
 
@@ -20,22 +20,19 @@ At the end of the workshop, students will be able to . . .
 
 - Read data into R
 - Do simple manipulations of R data frames
-- Use the R modeling package **lme4** to fit LMM models
+- Use the R modeling package **lme4** to fit LMM and GLMM models
 -	Generate predictions from a fitted model, including estimated marginal means
 -	Test specific hypotheses with contrasts
--	Make plots and tables of LMM results
+-	Make plots and tables of LMM and GLMM results
 
 ## R packages we will learn about
 
 -	“tidyverse” packages especially **readr**, **dplyr**, and **tidyr** (read and manipulate data)
 -	**lme4** (fit models)
+- **lmerTest** (do ANOVA tests on mixed models)
+- **easystats** (make diagnostic plots to test model assumptions)
 -	**emmeans** (estimate treatment effects and test hypotheses)
 -	**ggplot2** (make publication-quality graphics)
-
-## Before class, you will need to ...
-
--	Have access to a working version of R and RStudio on a laptop
--	Install the necessary packages (specific instructions coming soon)
 
 ## Note on general versus generalized models, and Bayesian versus classical statistics
 

@@ -16,55 +16,58 @@ knitr::opts_chunk$set(echo = TRUE, message = TRUE, warning = TRUE)
 
 At the end of this lesson, students will ...
 
-- Be able to fit a linear model with continuous and categorical predictor.
-- Be able to fit a linear model with interaction terms.
 - Understand the difference between a linear model and a linear mixed model.
-- Be able to fit a mixed model with fixed effect and random intercept.
+- Understand the difference between random intercepts and random slopes.
+- Be able to fit a mixed model with fixed effects, both continuous and categorical, and interactions.
+- Be able to fit a mixed model with random effects, both random intercepts and random slopes.
+- Examine diagnostic plots to ensure that model assumptions are met.
 - Examine summary information from mixed model output, including ANOVA tables.
 
 # Load some sample data
 
-We are going to use some data from the **agridat** package, which has lots of example datasets from agricultural science. You can either load the example data from the package directly using `data()`, or read it in from a CSV in the `datasets` folder. Here are both ways of doing it.
+For this lesson, we will keep it simple and use simulated data. First load the packages we will need for this lesson. Then read the `soilN_biomass.csv` file, creating a data frame called `dat`. This dataset might have come from a study where there are five different fields, each of which has 20 plots. In each plot, soil nitrogen and plant biomass is measured.
 
 ```{r}
 library(tidyverse)
 library(lmerTest)
+library(easystats)
 
-barnyard_ghg <- read_csv('https://data.nal.usda.gov/system/files/BYD_GHG.csv') %>%
-  filter(Days_elapsed == 0, !is.na(CO2_mgC)) %>%
-  select(Barnyard, Surface, Temp, CO2_mgC, NH3_mg, N2O_mg)
+dat <- read_csv('../datasets/soilN_biomass.csv')
 ```
 
-Let's look at the data. Typing the name of the data frame gives you the first few rows.
+Let's look at the data. Use functions you learned in lesson 2.
+
+```{r, eval = FALSE}
+dat
+
+summary(dat)
+
+glimpse(dat)
+```
+
+There is a character column to identify which field the measurement comes from, a numeric column for the soil N value, and a numeric column for the plant biomass value.
+
+# Plot the data
+
+Here is a plot made using the **ggplot2** package. Don't worry about the code used to make this plot for now.
 
 ```{r}
-barnyard_ghg
+ggplot(dat, aes(x = soilN, y = biomass, color = field)) +
+  geom_point(size = 1.5) +
+  theme_classic()
 ```
 
-Or you might prefer to use `str()` or `glimpse()`.
-
-```{r}
-glimpse(barnyard_ghg)
-```
-
-There is a numeric column to identify which barnyard the measurement comes from, a character column for what the surface type is, and numeric columns for temperature, CO2 emissions, NH3 emissions, and N2O emissions. Some of the values are missing (`NA`).
-
-There is a column called `Surface` which contains character data. Look at the distribution of values in it with the `table()` function:
-
-```{r}
-table(barnyard_ghg$Surface)
-```
-
+You can see from the plot that the relationship between soil N and plant biomass is sort of unclear. Let's look at how we might fit a model to this dataset.
 
 # Model Syntax in R
 
-The bare minimum we need is formula and data.
+The bare minimum we need to specify in R to fit a model is the model formula and the dataset that the variables in the model formula come from.
 
 The formula consists of a left-hand side (LHS), a tilde `~`, and a right-hand side (RHS).
 
-The left-hand side is the name of the response variable `y`. In this lesson we are only going to be focusing on models with a single response variable.
+The left-hand side is the name of the response variable (*y*). In this lesson we are only going to be focusing on models with a single response variable.
 
-The right-hand side contains the predictor variables `x`. Effects are separated by a plus sign `+`. Interaction effects are denoted with a colon `:`. The shorthand `*` indicates all possible combinations of interactions for a set of variables. I do not recommend using this shorthand but you may see it. Another shorthand is `.` which means all variables in the dataset.
+The right-hand side contains the predictor variables (*x*). Effects are separated by a plus sign `+`. Interaction effects are denoted with a colon `:`. The shorthand `*` indicates all possible combinations of interactions for a set of variables. I do not recommend using this shorthand but you may see it. Another shorthand is `.` which means all variables in the dataset other than the *y* variable.
 
 We will cover random effect syntax later. 
 
@@ -76,21 +79,57 @@ So a typical formula might be
 
 The `data` argument tells the model fitting function what data frame contains the variables in the model formula.
 
-# Linear model with categorical predictor
+# Linear model with continuous predictor
 
-This is a one-way ANOVA. We are looking at whether the mean CO2 flux from barnyard soil differs by surface type.
+Let's say we want to know the relationship between soil nitrogen in a plot and the biomass of plants in the plot. We might start by fitting a simple linear regression model, ignoring the field that each plot is located in.
+
+We use the `lm()` (linear model) function for this. The model formula is very simple. 
 
 ```{r}
-fit_oneway <- lm(CO2_mgC ~ Surface, data = barnyard_ghg)
+lm_fit <- lm(biomass ~ soilN, data = dat)
 ```
+
+You can use the `summary()` function to look at the model output.
+
+```{r}
+summary(lm_fit)
+```
+
+We can see that there is a positive coefficient of ~1.04 on `soilN` indicating that the simple regression finds that for every 1 unit increase in soil N, there is a 1.04 unit increase in biomass.
+
+If you just want the coefficients you can use the `coef()` function:
+
+```{r}
+lm_coefs <- coef(lm_fit)
+
+lm_coefs
+```
+But what does the fitted trend look like? We will recreate the plot we made previously but now include a fitted line with the intercept and slope coefficients from the model.
+
+```{r}
+ggplot(dat, aes(x = soilN, y = biomass, color = field)) +
+  geom_point(size = 1.5) +
+  theme_classic() +
+  geom_abline(intercept = lm_coefs[1], slope = lm_coefs[2], size = 1)
+```
+
+The fit is relatively poor because the linear regression assumes that a single relationship, with the same intercept and slope, holds across all fields. 
+
+# Separate linear regressions
+
+One way we might think about 
+
+
+
+FIXMEFIXMEFIXME THE STUFF BELOW HERE MAYN'T BE USED
 
 ## Diagnostic plots
 
-```{r}
-plot(fit_oneway)
-```
+I like using the `check_model()` function which is in the **performance** package that loads automatically when you load the **easystats** package. It produces a lot of diagnostic plots that you can use to make sure your model meets all the assumptions.
 
-Press `<Enter>` to bring up each plot in order.
+```{r}
+check_model(fit_oneway)
+```
 
 These diagnostic plots look reasonable. In particular, the first plot shows that the distributions of residuals are about the same for the three surface types, indicating there is no relationship between residual and fitted values (the assumption of homogeneous variance is met). The second plot shows that quantiles of the residuals fall very close to a straight line relative to the quantiles of a normal distribution. This indicates the residuals are roughly normally distributed. 
 
@@ -188,20 +227,6 @@ fit_mm <- lmer(CO2_mgC ~ Temp, data = barnyard_ghg)
 
 - How to get the F-tests
 
-# Nested random effects
-
-For this next example, we are going to use a dataset with results from a study of conservation agriculture practices (data hosted on [Ag Data Commons](https://data.nal.usda.gov/dataset/regionally-adapted-implementation-conservation-agriculture-delivers-rapid-improvements-soil-properties-associated-crop-yield-stability)). In this study, the experimental treatments were two different tillage systems crossed with presence or absence of rye cover crop. The original dataset contains results for both maize and soybean yields but I am giving you only the maize yield data for simplicity.
-
-# Transformation of response variables
-
-For this next 
-
-- Log transformation
-
-
-
-
-
 
 # Hey! What about ...
 
@@ -215,7 +240,9 @@ You've learned the basics of R. You've learned how to work with data frames in R
 
 Tomorrow, we will do a lot more fun stuff with mixed models. We will cover ...
 
-- Random slope models
+- Data transformations
+- Crossed and nested random effects
+- Generalized linear mixed models
 - How to compare means and test specific hypotheses with contrasts
 - How to make some basic plots and tables to present the results of your model
 
