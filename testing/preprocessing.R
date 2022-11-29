@@ -34,7 +34,7 @@ set.seed(1128)
 n_fields <- 5
 plots_per_field <- 20
 intercepts <- rep(c(10, 15, 20, 15, 30), each = plots_per_field)
-slopes <- rep(c(3, 1, -1, 3, 0.5), each = plots_per_field)
+slopes <- rep(c(3, 1, 0.25, 2.5, 0.5), each = plots_per_field)
 
 soilN <- runif(n_fields * plots_per_field, min = 0, max = 10)
 

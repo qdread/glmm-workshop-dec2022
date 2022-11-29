@@ -75,7 +75,18 @@ So a typical formula might be
 
 `weight ~ height + sex + height:sex`
 
-(In SAS this would be `model weight = height sex height*sex`). This means the expected value of weight is a linear combination of height (a continuous variable), sex (a binary variable), and the product or interaction of height and sex.
+(In SAS this would be `model weight = height sex height*sex`). This means the expected value of weight is a linear combination of height (a continuous variable), sex (a binary variable), and the product or interaction of height and sex. 
+
+By default, a model includes an intercept term without you having to explicitly specify one. You can include a `1` in the right-hand side if you want to be explicit that the model includes an intercept:
+
+`weight ~ 1 + height`
+
+By contrast, if you want to fit a model without an intercept, "forcing" the regression line to pass through the origin, you can do it by replacing the `1` with a `0` like this:
+
+`weight ~ 0 + height`
+
+
+In this lesson, we're only going to see model formulas with a single predictor variable but we will see more complex formulas later.
 
 The `data` argument tells the model fitting function what data frame contains the variables in the model formula.
 
@@ -113,25 +124,163 @@ ggplot(dat, aes(x = soilN, y = biomass, color = field)) +
   geom_abline(intercept = lm_coefs[1], slope = lm_coefs[2], size = 1)
 ```
 
-The fit is relatively poor because the linear regression assumes that a single relationship, with the same intercept and slope, holds across all fields. 
+The fit is relatively poor because the linear regression assumes that a single relationship, with the same intercept and slope, holds across all fields. However, this might not be a good assumption. Fields might have different unmeasured environmental conditions that cause them to have different relationships between soil nitrogen and biomass. For instance, some fields might have higher soil phosphorus, or better soil moisture conditions -- or the variation might even be completely random.
+
+Also, there are five fields, each with 20 measurements. The measurements that come from the same field are not independent because they have a common cause: whatever properties the soil in field A has that influence biomass are affecting all the biomass measurements from field A in the same way. Our call of `summary(lm_fit)` above showed that the model had 100 degrees of freedom (100 data points - 2 parameters, the intercept and slope = 98). 100 degrees of freedom is probably too many. But if we just average all the measurements from each field into a single measurement, we will only have 3 degrees of freedom in the model. A more appropriate value would be somewhere in between -- the measurements from the same barnyard are *partially*, but not completely, dependent on one another.
 
 # Separate linear regressions
 
-One way we might think about 
+OK, so we are missing something if we lump all the fields together, because the relationship between soil N and plant biomass may be different in each field. Well then, you might say, why not fit separate models for each field?
 
+I will demonstrate how you might do this -- note this code is a little bit more complex than what we'll be covering in this workshop so take this more as a demonstration. It is not something you would typically want to do. We're fitting five separate linear regression models, estimating an intercept and slope for each field, and then pulls out the coefficients and makes a plot of the fitted lines. 
 
+```{r}
+separate_lm_fits <- dat %>%
+  group_by(field) %>%
+  group_map(~ lm(biomass ~ soilN, data = .))
 
-FIXMEFIXMEFIXME THE STUFF BELOW HERE MAYN'T BE USED
+separate_lm_coefs <- data.frame(field = c('a', 'b', 'c', 'd', 'e'), 
+                                intercept = map_dbl(separate_lm_fits, ~ coef(.)[1]),
+                                slope = map_dbl(separate_lm_fits, ~ coef(.)[2]))
+
+separate_lm_coefs
+
+ggplot(dat, aes(x = soilN, y = biomass, color = field)) +
+  geom_point(size = 1.5) +
+  theme_classic() +
+  geom_abline(aes(intercept = intercept, slope = slope, color = field), size = 1, data = separate_lm_coefs)
+```
+
+That is an improvement because we now have a separate relationship for each field. But we are still missing something: we believe that there is some overall tendency of soil N to affect plant biomass, a process that is occurring in every field but has different outcomes because of the different environments in each field. How do we account for this?
+
+# Our first linear mixed model
+
+It might seem like we have dealt with the issue that the different fields might have different relationships between soil nitrogen and plant biomass. But we went a little bit too far. We really want to know how soil nitrogen affects plant biomass in general, not in one particular barnyard ... the goal of our scientific inference is usually to generalize what we find in a particular study to a larger population of fields (only a few of which we actually visited to get soil N and plant biomass measurements in our study). Doing separate regressions for each field doesn't quite get us there because it doesn't give us an estimate of the overall relationship between soil nitrogen and plant biomass in fields, while at the same time accounting for variation due to the unknown factors that may be different from field to field. 
+
+How can we solve that problem? You probably already guessed it ... a mixed model! I'm calling these mixed models but they go by a lot of other names.
+
+![Mixed models meme courtesy of Chelsea Parlett-Pelleriti on Twitter](../public/images/mixedmodelsmeme.jpg){: width="500px" }
+
+Mixed models do what is called "partial pooling." This means they don't lump all observations together into a single group ("Complete pooling" as we did in the simple linear regression above). Instead, they "partially" group them: some of the parameters, the fixed effects, are shared by all the groups, but other parameters, the random effects, are unique to each group. They're called *mixed* models because they have a *mix* of fixed and random effects.
+
+## Random intercept model
+
+Here's our first mixed model. We are now using the `lmer()` function from the **lme4** package instead of `lm()` from base R.
+
+```{r}
+mm_fit <- lmer(biomass ~ soilN + (1 | field), data = dat)
+```
+
+This looks just like the `lm()` call except for the `+ (1 | field)` part. What is that? It indicates that a separate *random intercept* will be fit to each field. The random effect term is contained within parentheses `()` and has a vertical bar `|` in the middle of it. To the left of the `|` is the design component, where the `1` indicates an intercept. To the right are the grouping factors; here it is only `field`. We will see more complicated random-effects specifications later.
+
+There are a lot of other mixed model fitting packages in R besides **lme4** but it is a very good one for basic models like the ones we will be covering in this workshop.
+
+## Visualizing model fit of random intercept model
+
+What result do we get? First let's look at a plot of the results. Again, this code is for demonstration purposes only for now. This plot includes a thin line for each of the group-level predictions (separate for each field) as well as a thick black line for the population-level prediction (average expected value across all fields).
+
+```{r}
+pred_grid <- expand.grid(soilN = c(0, 10), field = letters[1:5])
+mm_pred_group <- cbind(pred_grid, biomass = predict(mm_fit, newdata = pred_grid))
+mm_pred_population <- data.frame(soilN = c(0, 10), biomass = predict(mm_fit, newdata = data.frame(soilN = c(0, 10)), re.form = ~ 0))
+
+ggplot(dat, aes(x = soilN, y = biomass, color = field)) +
+  geom_point(size = 1.5) +
+  theme_classic() +
+  geom_line(data = mm_pred_group) +
+  geom_line(data = mm_pred_population, color = 'black', size = 1)
+```
+
+This model has accounted for different overall biomass levels in each field: the intercepts of each of the five lines are different. The thick black line shows the population-level expectation for the "average" field. The mixed model fits the intercepts of each field as if they were drawn from a normal distribution, and the population-level prediction's intercept is the mean of that distribution. But this model still does not allow for there to be a different trend in biomass as soil nitrogen increases within each field: the lines are all parallel with the same slope.
+
+## Random slope model
+
+We can allow not only the intercepts, but also the slopes, to vary by field. The syntax for that model differs from the random intercept model because the `1`, indicating intercept only, in the design part of the random effects term is replaced with `soilN`, meaning the slope with respect to `soilN` will be different for each grouping factor `field`.
+
+```{r}
+mm_fit_randomslopes <- lmer(biomass ~ soilN + (soilN | field), data = dat)
+```
+
+## Visualizing model fit of random slope model
+
+Now what does the model fit look like?
+
+```{r}
+mm_pred_group_randomslopes <- cbind(pred_grid, biomass = predict(mm_fit_randomslopes, newdata = pred_grid))
+mm_pred_population_randomslopes <- data.frame(soilN = c(0, 10), biomass = predict(mm_fit_randomslopes, newdata = data.frame(soilN = c(0, 10)), re.form = ~ 0))
+
+ggplot(dat, aes(x = soilN, y = biomass, color = field)) +
+  geom_point(size = 1.5) +
+  theme_classic() +
+  geom_line(data = mm_pred_group_randomslopes) +
+  geom_line(data = mm_pred_population_randomslopes, color = 'black', size = 1)
+```
+
+Now, we have group-level predictions that capture the different trends within each field, as well as a population-level prediction for the "average" field.
+
+# Delving into mixed model output
+
+Let's look at some of the ways we can extract output from a fitted mixed model object.
 
 ## Diagnostic plots
+
+First let's take a step back and make sure our statistical model meets all assumptions. For a linear mixed model, this means not only do the residuals need to be roughly normally distributed and have no trend with respect to the fitted values, but also the random effects need to be normally distributed.
 
 I like using the `check_model()` function which is in the **performance** package that loads automatically when you load the **easystats** package. It produces a lot of diagnostic plots that you can use to make sure your model meets all the assumptions.
 
 ```{r}
-check_model(fit_oneway)
+check_model(mm_fit_randomslopes)
 ```
 
-These diagnostic plots look reasonable. In particular, the first plot shows that the distributions of residuals are about the same for the three surface types, indicating there is no relationship between residual and fitted values (the assumption of homogeneous variance is met). The second plot shows that quantiles of the residuals fall very close to a straight line relative to the quantiles of a normal distribution. This indicates the residuals are roughly normally distributed. 
+These diagnostic plots look great (obviously so, because I simulated this dataset using normal distributions for everything)! The linearity and homogeneity of variance plots show no trend. The normal Q-Q plots for the overall residuals (bottom left) and for the random effects (bottom right) all fall on a straight line so we can be satisfied with that. 
+
+I personally do not recommend running any formal tests on residuals such as the Shapiro-Wilk test. Whenever scientists ask me about them, I try to dissuade them. This is because assumptions like the normality of residuals assumption are only approximations. A true perfect normal distribution does not exist in nature. Just like a perfect circle, it is a human construct. There will always be small deviations. For your model to be valid, it just has to be "close enough." Minor differences between the residuals and the normal distribution are not a problem; we will explore how to use generalized linear mixed models to deal with situations when there are really big discrepancies.
+
+But the most important assumption of any linear model is not one you can test with any of these graphs. People get hung up on these assumptions because you can easily run tests and make plots to check them. But by far the most important assumption for a statistical model of this kind is that individual data points are *independent samples*. Or if there is any dependence between them, it has to be accounted for. That's why mixed models are so crucial -- they allow us to account for the *partial* dependency of data points. 
+
+## Model summaries
+
+Here are some ways we can look at the quantitative results of the model fit. (Tomorrow we will go over more sophisticated ways of presenting this output.)
+
+We can use `summary()` to get a lot of output. What's in here? We have information about the distribution of residuals and random effects, and the fixed effect coefficients with t-tests.
+
+```{r}
+summary(mm_fit_randomslopes)
+```
+
+The three functions `ranef()`, `fixef()`, and `coef()` give us the random effects, the fixed effects (population-level intercept and slope), and the coefficients (sum of random and fixed effects, resulting in the group-level intercepts and slopes).
+
+```{r}
+ranef(mm_fit_randomslopes)
+fixef(mm_fit_randomslopes)
+coef(mm_fit_randomslopes)
+```
+## ANOVA
+
+We can get an ANOVA table for the linear mixed model using the function `anova()`.
+
+```{r}
+anova(mm_fit_randomslopes)
+```
+
+The degrees of freedom for the F-test are estimated with an approximation -- because linear mixed models' degrees of freedom are "somewhere in between" fully independent and fully dependent, we have to use an approximate method to estimate them.
+
+# Mixed models with categorical predictor
+
+We just saw how to fit a mixed model with a continuous predictor variable. If the predictor variable is categorical, such as a treatment variable with a control and one or more treatment levels, it isn't too much different to fit a mixed model.
+
+We'll need some different data for this part.
+
+
+
+
+
+
+
+
+
+
+
 
 Examine the output using the `summary()` function.
 
@@ -145,26 +294,10 @@ What the summary tells us is that the expected mean value of CO2 emissions from 
 
 We also see that there are built-in t-tests for each coefficient. The t-test for the intercept is not really meaningful because it is comparing the intercept against a value of zero. Of course all the CO2 fluxes are well above zero so it's not surprising to get a high t-statistic and low p-value here. However the other two t-tests are testing whether the difference between two surfaces (sand and bark, and soil and bark, respectively), is not zero. So those are meaningful. They show that both the other two surfaces are different from bark. However these don't account for multiple comparisons or anything, and there is no t-test showing whether sand and soil differ from one another, so they aren't the best ones to report. We'll revisit that tomorrow!
 
-# ANOVA
-
-We can get an ANOVA table for the linear model using the function `anova()`.
-
-```{r}
-anova(fit_oneway)
-```
-
-# Plot of the model results
-
-Here's a plot of the model results. For now I will not explain how it was made. You will learn about that tomorrow.
-
-```{r}
-# FIXME include this here.
-```
 
 
-# Different effects
 
-The `barnyard_ghg` dataset also has a variable `Temp` indicating the temperature at the time the gas flux measurement was taken. It is a continuous variable.
+
 
 We can include continuous effects, categorical effects, and interactions between any of them. Notice that I've written 
 
@@ -175,57 +308,9 @@ fit_int <- lm(CO2_mgC ~ Surface + Temp + Surface:Temp, data = barnyard_ghg)
 fit_int_shortcut <- lm(CO2_mgC ~ Surface*Temp, data = barnyard_ghg)
 ```
 
-# Separate regressions for each sampling unit
 
-People get hung up on checking relatively less important assumptions like normality of residuals. But a far more important assumption is that your data points are independent. If you fit a model to independent data points when it is truly non-independent, the results do not reflect reality. This is a much worse problem than the residuals not being normal.
 
-In this example model fit, we have 106 degrees of freedom. That is far too many. 
 
-We can look in the data and see that samples were taken in a bunch of different barnyards. 
-
-```{r}
-table(barnyard_ghg$Barnyard)
-```
-
-There are nine barnyards, each with about a dozen measurements. The measurements that come from the same barnyard are not independent because they have a common cause: whatever properties the soil at barnyard 1 has that influence CO2 emissions are affecting all the CO2 measurements from barnyard 1 in the same way. Thus, 106 degrees of freedom is probably too many. But if we just average all the measurements from each combination of barnyard and surface type into a single measurement, we will only have 6 degrees of freedom in the model. A more appropriate value would be somewhere in between -- the measurements from the same barnyard are *partially*, but not completely, dependent on one another.
-
-INSERT MORE TEXT HEREREERERE
-
-Okay, so what if there is a different relationship between CO2 flux and temperature in each barnyard? One way you might think about dealing with this is to fit a separate regression model to each barnyard.
-
-I will demonstrate how you might do this -- note this code is a little bit more complex than what we'll be covering in this workshop so take this more as a demonstration. It is not something you would typically want to do.
-
-We will `group_by()` and `nest()`.
-
-```{r}
-barnyard_separate_models <- barnyard_ghg %>%
-  group_by(Barnyard) %>%
-  nest %>%
-  mutate(model = map(data, ~ lm(CO2_mgC ~ Surface, data = .)))
-#FIXME put this in there
-```
-
-# Our first mixed model
-
-It might seem like we have dealt with the issue that the different barnyards might have different relationships between surface type and CO2 emissions. But we went a little bit too far. We really want to know how surface type affects CO2 emissions in general, not in one particular barnyard ... the goal of our scientific inference is usually to generalize what we find in a particular study to a larger population of barnyards (only a few of which we actually visited to get CO2 measurements in our study). Doing separate regressions for each barnyard doesn't quite get us there because it doesn't give us *an estimate of the overall relationship between surface and CO2 emissions in barnyards, while at the same time accounting for variation due to the unknown factors that may be different from barnyard to barnyard*. 
-
-How can we solve that problem? You probably already guessed it ... a mixed model! I'm calling these mixed models but they go by a lot of other names.
-
-(dumb picture courtesy of Chelsea Parlett-Pelleriti on Twitter)
-
-Mixed models do what is called "partial pooling." 
-
-(insert some other description of mixed models)
-
-Here's our first mixed model. We are now using the `lmer()` function from the **lme4** package instead of `lm()` from base R.
-
-```{r}
-fit_mm <- lmer(CO2_mgC ~ Temp, data = barnyard_ghg)
-```
-
-# ANOVA
-
-- How to get the F-tests
 
 
 # Hey! What about ...
@@ -247,3 +332,7 @@ Tomorrow, we will do a lot more fun stuff with mixed models. We will cover ...
 - How to make some basic plots and tables to present the results of your model
 
 Excited to see you all then!!!
+
+# Exercises
+
+TBD
