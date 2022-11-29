@@ -18,6 +18,8 @@ library(readxl)
 pzm <- read_xlsx('C:/Users/qdread/onedrive_usda/training/ARS_stats_workshop_Dec2022/example_datasets/PZM_yields_stability_soil.xlsx', sheet = 1)
 # I think this actually does not require that much preprocessing.
 
+pzm_maize <- pzm %>% filter(crop == 'm')
+write_csv(pzm_maize, 'datasets/pzm_maize.csv')
 
 ### Barnyard GHG
 barnyard_ghg <- read_csv('https://data.nal.usda.gov/system/files/BYD_GHG.csv')
@@ -92,3 +94,24 @@ summary(lmm_ris)
 anova(lmm_ri)
 anova(lmm_rs)
 anova(lmm_ris)
+
+
+### Non-normal data: Logan's DON data
+
+DON <- read_excel("C:/Users/qdread/onedrive_usda/ars_projects/cowger_clark/DONallyears.xlsx") 
+
+# Just use one year
+DON2021 <- DON %>% filter(Year %in% c(2021), Timing == 'Medium') %>%
+  rename(weight_kg = `Wght (kg)`, mean_index = `Mean IND`, DON_ppm = `DON (ppm)`, PIK = `PIK%`, yield_bu_ac = `Yield (bu/ac)`) %>%
+  select(-c(`Trtmt #`, Timing, Year, logDON, TW, mean_index, logIND)) %>%
+  mutate(Rep = factor(Rep, labels = LETTERS[1:4]))
+
+
+
+fit_don <- lmer(DON_ppm ~ Variety + Fungicide + Variety:Fungicide + (1|Rep), data = DON2021)
+fit_don_log <- lmer(log(DON_ppm) ~ Variety + Fungicide + Variety:Fungicide + (1|Rep), data = DON2021)
+
+check_model(fit_don, check = 'qq')
+check_model(fit_don_log, check = 'qq')
+
+write_csv(DON2021, 'datasets/barley_don.csv')

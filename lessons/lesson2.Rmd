@@ -270,19 +270,22 @@ Notice there are some `NA` values in the grouping columns. The `group_by()` func
 
 # More pipe!
 
-We can use the pipe `%>%` operator to chain an arbitrarily long sequence of operations together. This makes for more readable code.
+We can use the pipe `%>%` operator to chain an arbitrarily long sequence of operations together. This makes for more readable code. 
 
 ```{r}
 dat %>%
   filter(!is.na(weight), taxonID == 'PELE') %>%
+  mutate(weight_mg = weight * 1000) %>%
   group_by(siteName) %>%
-  summarize(mean_weight = mean(weight)) %>%
+  summarize(mean_weight = mean(weight_mg)) %>%
   arrange(mean_weight)
 ```
 
-> This is equivalent to `arrange(summarize(group_by(filter(dat))))` but in my opinion much more readable.
+> This is equivalent to `arrange(summarize(group_by(mutate(filter(dat)))))` but in my opinion much more readable.
 
-Here I'm also introducing the `arrange()` operator which sorts the data frame in ascending order by a given column or columns. `arrange(-mean_weight)` could be used to sort in descending order instead.
+I introduced two new functions here. One is the `mutate()` function, which can be used to change the value of a column or create a new column. For instance we can use it to convert the units of weight from g to mg, making a new column, `weight_mg`.
+
+Here I'm also introducing the `arrange()` function, which sorts the data frame in ascending order by a given column or columns. `arrange(-mean_weight)` could be used to sort in descending order instead.
 
 # Tidy data and reshaping data frames
 

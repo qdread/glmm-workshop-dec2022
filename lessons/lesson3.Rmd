@@ -299,14 +299,6 @@ We also see that there are built-in t-tests for each coefficient. The t-test for
 
 
 
-We can include continuous effects, categorical effects, and interactions between any of them. Notice that I've written 
-
-```{r}
-fit_temp <- lm(CO2_mgC ~ Temp, data = barnyard_ghg)
-fit_surfacetemp <- lm(CO2_mgC ~ Surface + Temp, data = barnyard_ghg)
-fit_int <- lm(CO2_mgC ~ Surface + Temp + Surface:Temp, data = barnyard_ghg)
-fit_int_shortcut <- lm(CO2_mgC ~ Surface*Temp, data = barnyard_ghg)
-```
 
 
 
