@@ -27,6 +27,7 @@ For this next example, we are finally going to use some real data! We're going t
 
 ```{r}
 library(tidyverse)
+library(easystats)
 library(lmerTest)
 
 maize <- read_csv('../datasets/pzm_maize.csv')
@@ -102,10 +103,46 @@ Here is an example situation where you might want to consider doing a log transf
 barley_don <- read_csv('../datasets/barley_don.csv')
 ```
 
+What do the data look like?
+
+```{r}
+glimpse(barley_don)
+```
+
+```{r}
+ggplot(barley_don, aes(x = Variety, y = DON_ppm, fill = Fungicide)) +
+  geom_boxplot(position = position_dodge()) +
+  theme_bw()
+```
+
+We can fit a fairly simple model to these data, with variety, fungicide type, and their interaction as fixed effects, and experimental block (`Rep`) as random intercept.
+
+```{r}
+fit_don <- lmer(DON_ppm ~ Variety + Fungicide + Variety:Fungicide + (1|Rep), data = DON2021)
+```
+
+However, I would recommend fitting a model with the log-transformed `DON_ppm` variable as the response variable. You can do the log transformation directly in the model statement by surrounding the name of the variable with `log()`.
+
+```{r}
+fit_don_log <- lmer(log(DON_ppm) ~ Variety + Fungicide + Variety:Fungicide + (1|Rep), data = DON2021)
+```
+
+It makes sense to fit the model to the logarithm of DON concentration because concentration is on a ratio scale, so multiplicative changes in concentration are the most meaningful to consider.
+
+Even though I just said that the rationale behind transforming data should be scientific and not just about making the data behave well, it does help us improve the residuals. In this case we can see that the residuals of the model fit to the untransformed data show very non-homogeneous variance and many points that far fall off the normal Q-Q plot. The situation is much improved for the model fit to the log-transformed data.
+
+> Notice we're using the `check_model()` function from **easystats** but with the `check` argument to tell it to produce only the two diagnostic plots we are interested in. Look at the help documentation for `?check_model` to see all the options.
+
+```{r}
+check_model(fit_don, check = c('homogeneity', 'qq'))
+check_model(fit_don_log, check = c('homogeneity', 'qq'))
+```
+
+We will revisit this model in the next lesson when we talk about comparing means.
 
 # Generalized linear mixed models
 
-Taking the log transformation of the response variable before fitting the model is a good solution for many types of data. However it won't always work. INSERT MORE TEXT HERE
+Taking the log transformation of the response variable before fitting the model is a good solution for many types of data. However it won't always work. For many classes of data, **PUT MORE TEXT HERE**
 
 - Count data (Poisson GLMM)
 - Binary outcome data (Logistic GLMM)
@@ -116,6 +153,12 @@ Taking the log transformation of the response variable before fitting the model 
 - Show an example of each
 
 - We can set up the model with all the same kinds of fixed and random effects as in plain vanilla linear mixed models. For example, we can have continuous and categorical predictors, interactions, crossed or nested random effects, random intercepts and/or random slopes.
+
+# GLMM with binary response variable
+
+For these next two examples, we are going to use data from the **agridat** package.
+
+# GLMM with count response variable
 
 # Hey! What about ...
 
