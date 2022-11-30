@@ -18,8 +18,6 @@ At the end of this lesson, students will ...
 
 - Fit a linear mixed model with crossed and nested random effects.
 - Fit a linear mixed model with a transformed response variable.
-- Fit a generalized linear mixed model to binary outcome data.
-- Fit a generalized linear mixed model to count outcome data.
 
 # Crossed and nested random effects
 
@@ -138,67 +136,8 @@ check_model(fit_don, check = c('homogeneity', 'qq'))
 check_model(fit_don_log, check = c('homogeneity', 'qq'))
 ```
 
-We will revisit this model in the next lesson when we talk about comparing means.
+We will revisit this model in a later lesson when we talk about comparing means.
 
-# Generalized linear mixed models
+# Exercises
 
-Taking the log transformation of the response variable before fitting the model is a good solution for many types of data. However it won't always work. For many classes of data, we can't just do a transformation to "shoehorn" the data into a form that will work with a general linear mixed model. So that means we need to take the next step and enter the world of general*ized* linear mixed models. (It's a terrible name because general linear mixed model and generalized linear mixed model begin with the same letters, so it's a little bit confusing, but we are stuck with that.)
-
-Let's say we have response data that is binary. For example, what if we are testing the ability of a vaccine to prevent some disease in chickens? We would have a control group that was not inoculated and a treatment group that was inoculated. The response variable is whether or not the disease is present. The chickens are raised in different pens in a complete block design so we need to account for the effect of pen on disease as well, using a random intercept.
-
-We might have data like this:
-
-```{r}
-
-```
-
-
-What if we tried to just use a linear mixed model as we have done before? We could code disease absent as 0 and disease present as 1.
-
-```{r}
-
-```
-
-That seems reasonable at first glance. The intercept is 0.78, so the baseline rate is 78% disease, and the coefficient on inoculation is -0.64, so the inoculation treatment makes disease go down by 64%. What is wrong with that?
-
-Well, what about if we wanted to make predictions? Let's say we had a population where the baseline rate of disease was only 40%. Our model would predict that it would have -20% disease if we gave that population the inoculation treatment. That is logically impossible. It makes more sense to think about the effect of inoculation in terms of relative changes to the odds of getting the disease. So if the baseline rate is very low, there isn't that much that inoculation can do to reduce it further. But if the baseline rate is high, we can easily lower it with even a moderately effective treatment.
-
-Modeling change in a binary response in this way can be done with a generalized linear model. We use a link function to convert the predicted response value into a scale that can be normally distributed. What we are predicting is the probability that an individual from each pen with or without the inoculation treatment will get the disease. 
-
-**more text here**
-
-
-- Count data (Poisson GLMM)
-- Binary outcome data (Logistic GLMM)
-
-- Show how the residuals cannot be normally distributed for these data
-- Discuss log link for Poisson, logit or log odds link for logistic regression
-
-- Show an example of each
-
-- We can set up the model with all the same kinds of fixed and random effects as in plain vanilla linear mixed models. For example, we can have continuous and categorical predictors, interactions, crossed or nested random effects, random intercepts and/or random slopes.
-
-# GLMM with binary response variable
-
-For these next two examples, we are going to use data from the **agridat** package. The **agridat** package is just a bunch of example classic datasets from the agricultural science literature.
-
-# GLMM with count response variable
-
-# Hey! What about ...
-
-- These are only a little bit of what you can do. I don't have time to cover all GLMM types in this workshop.
-- glmer() doesn't have all the possibilities
-- Other common ones are beta-regression, where the response variable is a probability or proportion bounded between 0 and 1
-- Cumulative logistic mixed model is another common case, where the response variable is a categorical outcome with more than two possibilities
-  + For example a choice trial where insects are released into an olfactometer and may go down one of four arms where different odor attractants are found.
-  
-- The Bayesian modeling packages **brms** and **rstanarm** are also great alternatives that I would recommend looking into. I'm going to do a workshop on **brms** soon.
-
-# Hey! What about ...
-
-- Repeated measures designs
-- Spatial autocorrelation
-- Overdispersion in count data
-- Different types of random effects (G-side versus R-side) and error structures
-
-These are "advanced topics" in mixed modeling. They are out of scope for this workshop. 
+TBD

@@ -11,7 +11,7 @@ title: December 2022 R Statistics Training Workshop
 - **Where:** Raleigh, NC ([NCSU Plant Sciences Building, Room 3158, 840 Oval Drive](#directions-to-workshop-location)). The workshop will also be livestreamed and recorded.
 - **Instructor:** Quentin Read, ARS southeast area statistician
 
-> **NOTE**: This is a work in progress! All information on this site is subject to change. This site will eventually contain all the course materials. Please check back soon. Last updated 2022-11-21.
+> **NOTE**: This is a work in progress! All information on this site is subject to change. This site will eventually contain all the course materials. Please check back soon. Last updated 2022-11-30.
 
 [COURSE SCHEDULE](#course-schedule){: .biglink }  
 Schedule, including links to lesson content (below on this page).
@@ -43,22 +43,22 @@ Time                      | Activity
 10:15-10:45 AM            | *break*
 10:45-11:30 AM            | [**Lesson 2**: R Boot Camp: working with data frames]({{ site.baseurl }}/lesson2.html)
 11:30-11:45 AM            | *break*
-11:45 AM-12:30 PM         | [**Lesson 3**: What are LMMs? Fit our first LMM!]({{ site.baseurl }}/lesson3.html)
-12:30-1:30 PM             | *lunch break*
-1:30 PM-4:00 PM           | **Office Hours**: Students will work on data and code. Quentin will answer questions and troubleshoot.
+11:45 AM-12:45 PM         | [**Lesson 3**: What are LMMs? Fit our first LMM!]({{ site.baseurl }}/lesson3.html)
+12:45-2:00 PM             | *lunch break*
+2:00 PM-4:00 PM           | **Office Hours**: Students will work on data and code. Quentin will answer questions and troubleshoot.
 
 ### DAY 2: Friday, December 9
 
 Time                      | Activity
 ------------------------- | ----------------------------------------------------------
 9:00-9:15 AM              | Recap of Day 1
-9:15-10:15 AM             | [**Lesson 4**: Random intercept and random slope models]({{ site.baseurl }}/lesson4.html)
+9:15-10:15 AM             | [**Lesson 4**: Going further with mixed models]({{ site.baseurl }}/lesson4.html)
 10:15-10:45 AM            | *break*
-10:45-11:30 AM            | [**Lesson 5**: Estimating and comparing treatment means]({{ site.baseurl }}/lesson5.html)
+10:45-11:30 AM            | [**Lesson 5**: Generalized linear mixed models]({{ site.baseurl }}/lesson5.html)
 11:30-11:45 AM            | *break*
-11:45 AM-12:30 PM         | [**Lesson 6**: Making plots and tables]({{ site.baseurl }}/lesson6.html)
-12:30-1:30 PM             | *lunch break*
-1:30 PM-4:00 PM           | **Office Hours**: Students will work on data and code. Quentin will answer questions and troubleshoot.
+11:45 AM-12:45 PM         | [**Lesson 6**: Estimating and comparing treatment means]({{ site.baseurl }}/lesson6.html)
+12:45-2:00 PM             | *lunch break*
+2:00 PM-4:00 PM           | **Office Hours**: Students will work on data and code. Quentin will answer questions and troubleshoot.
 
 ## Directions to workshop location
 

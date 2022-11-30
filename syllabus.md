@@ -23,7 +23,6 @@ At the end of the workshop, students will be able to . . .
 - Use the R modeling package **lme4** to fit LMM and GLMM models
 -	Generate predictions from a fitted model, including estimated marginal means
 -	Test specific hypotheses with contrasts
--	Make plots and tables of LMM and GLMM results
 
 ## R packages we will learn about
 

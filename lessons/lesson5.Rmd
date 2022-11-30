@@ -1,5 +1,5 @@
 ---
-title: "Lesson 5: Making predictions and testing hypotheses"
+title: "Lesson 5: Generalized linear mixed models"
 author: "Quentin D. Read"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: 
@@ -16,43 +16,69 @@ knitr::opts_chunk$set(echo = TRUE, message = TRUE, warning = TRUE)
 
 At the end of this lesson, students will ...
 
-- Generate predictions from a mixed model.
-- Test specific hypotheses with contrasts.
-- Compare multiple group means and correct for multiple comparisons.
-- Compare different models with likelihood ratio tests.
+- Know what a generalized linear mixed model is and why you might want to use one.
+- Fit a generalized linear mixed model to binary outcome data.
+- Fit a generalized linear mixed model to count outcome data.
 
-# Estimated marginal means
+# Generalized linear mixed models
 
-We are going to talk about estimated marginal means. You might know the term "least square means" or "lsmeans" if you are a SAS user. This statistical technique was pioneered by statisticians working for SAS. Estimated marginal means are the same thing as lsmeans in most cases. It is probably better to use the term estimated marginal means because the least squares method is not always used to calculate them. 
+Taking the log transformation of the response variable before fitting the model is a good solution for many types of data. However it won't always work. For many classes of data, we can't just do a transformation to "shoehorn" the data into a form that will work with a general linear mixed model. So that means we need to take the next step and enter the world of general*ized* linear mixed models. (It's a terrible name because general linear mixed model and generalized linear mixed model begin with the same letters, so it's a little bit confusing, but we are stuck with that.)
 
-The name estimated marginal means makes sense because they are estimates from a model, **not data**. It's best to keep that in mind -- when we calculate these estimated means, they are functions of model parameters and sensitive to all the assumptions we've made in constructing the model. And remember, all models are wrong and only some of them are useful. They're called marginal because they can be calculated averaged across the margins of all other fixed and random effects in the model. 
+Let's say we have response data that is binary. For example, what if we are testing the ability of a vaccine to prevent some disease in chickens? We would have a control group that was not inoculated and a treatment group that was inoculated. The response variable is whether or not the disease is present. The chickens are raised in different pens in a complete block design so we need to account for the effect of pen on disease as well, using a random intercept.
 
-# Note on estimated means
-
-These estimated means are population-level predictions. It's important to note that the confidence interval or uncertainty around an estimated marginal mean is not the range of values that any individual in the population might have. 
-
-For instance, a dataset gathered between 2015 and 2018 shows that [the population level mean of the height of an adult female in the United States](https://www.cdc.gov/nchs/data/series/sr_03/sr03-046-508.pdf) is 161.3 cm (5' 3.5") and the heights are roughly normally distributed. The 90% confidence interval around that estimate goes from 160.9 cm to 161.6 cm (5' 3.38" to 5' 3.63"). Because this mean was estimated from a large sample of 5,510 women, we are really sure we have that number pinned down to within a tiny range of uncertainty.
-
-But if we took a random adult female from the United States and measured her height, does that mean we are 90% confident it would be between 160.9 cm and 161.6 cm? No! In fact, the 5th and 95th percentile are 149.8 cm (4'11") and 172.5 cm (5'8") -- so 90% of the time if we selected a random female we would expect her height to be between those much more widely separated values. So estimated means tell us what the most likely expected value of a random individual from the population would be, but not about the variation in the population itself. 
-
-This is even more important to keep in mind when we are averaging the estimated means across random effects, where the subpopulations we are averaging across may be very different from each other. The estimated mean is a "construct" that may not correspond to any individual, like the proverbial household with 2.2 children.
-
-# The emmeans package
-
-The [**emmeans** package](https://cran.r-project.org/package=emmeans) is the workhorse of this section. It was developed by Russ Lenth, an emeritus statistics professor from the University of Iowa. I am very indebted to Russ for all his help -- even though he is retired, he somehow always manages to answer any question I post on the emmeans package's GitHub page within a few hours, and almost always fixes the problem right away. He is like the "man behind the curtain" in the Wizard of Oz -- whenever I appear to be helping ARS scientists with their stats, I am actually going to him to get the answer!
-
-(insert goofy pictures here)
-
-Today we're only going to have time for a brief introduction to the capabilities of **emmeans**. The [**emmeans** package page](https://cran.r-project.org/package=emmeans) has a long list of vignettes that you might find helpful if you want to get deeper into it. For example, **emmeans** also works with some of the Bayesian modeling packages in R, so you can use similar code to get the estimated means regardless of what method you used to fit the model.
-
-# Use emmeans to estimate means
-
-Let's use one of the models we have worked with already. Reload the data and refit the model. Load the **emmeans** package along with the other ones we need.
+We might have data like this:
 
 ```{r}
-#FIXME do this
+
 ```
 
-# Comparison of estimated marginal means versus ANOVA
 
-- If you properly account for multiple comparisons you do not need to worry about the F-test
+What if we tried to just use a linear mixed model as we have done before? We could code disease absent as 0 and disease present as 1.
+
+```{r}
+
+```
+
+That seems reasonable at first glance. The intercept is 0.78, so the baseline rate is 78% disease, and the coefficient on inoculation is -0.64, so the inoculation treatment makes disease go down by 64%. What is wrong with that?
+
+Well, what about if we wanted to make predictions? Let's say we had a population where the baseline rate of disease was only 40%. Our model would predict that it would have -20% disease if we gave that population the inoculation treatment. That is logically impossible. It makes more sense to think about the effect of inoculation in terms of relative changes to the odds of getting the disease. So if the baseline rate is very low, there isn't that much that inoculation can do to reduce it further. But if the baseline rate is high, we can easily lower it with even a moderately effective treatment.
+
+Modeling change in a binary response in this way can be done with a generalized linear model. We use a link function to convert the predicted response value into a scale that can be normally distributed. What we are predicting is the probability that an individual from each pen with or without the inoculation treatment will get the disease. 
+
+**more text here**
+
+
+- Count data (Poisson GLMM)
+- Binary outcome data (Logistic GLMM)
+
+- Show how the residuals cannot be normally distributed for these data
+- Discuss log link for Poisson, logit or log odds link for logistic regression
+
+- Show an example of each
+
+- We can set up the model with all the same kinds of fixed and random effects as in plain vanilla linear mixed models. For example, we can have continuous and categorical predictors, interactions, crossed or nested random effects, random intercepts and/or random slopes.
+
+# GLMM with binary response variable
+
+For these next two examples, we are going to use data from the **agridat** package. The **agridat** package is just a bunch of example classic datasets from the agricultural science literature.
+
+# GLMM with count response variable
+
+# Hey! What about ...
+
+- These are only a little bit of what you can do. I don't have time to cover all GLMM types in this workshop.
+- glmer() doesn't have all the possibilities
+- Other common ones are beta-regression, where the response variable is a probability or proportion bounded between 0 and 1
+- Cumulative logistic mixed model is another common case, where the response variable is a categorical outcome with more than two possibilities
+  + For example a choice trial where insects are released into an olfactometer and may go down one of four arms where different odor attractants are found.
+  
+- The Bayesian modeling packages **brms** and **rstanarm** are also great alternatives that I would recommend looking into. I'm going to do a workshop on **brms** soon.
+
+# Hey! What about ...
+
+- Repeated measures designs
+- Spatial autocorrelation
+- Overdispersion in count data
+- Different types of random effects (G-side versus R-side) and error structures
+
+These are "advanced topics" in mixed modeling. They are out of scope for this workshop. 
