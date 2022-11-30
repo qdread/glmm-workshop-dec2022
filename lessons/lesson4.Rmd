@@ -92,16 +92,14 @@ If we wanted to do random slopes in this model, we would have to specify which t
 
 These examples demonstrate how many modeling decisions have to be made for even a relatively clean and neat dataset.
 
-# Non-normal 
+# Data transformations
 
-# Load some sample data
+Typically, researchers think of data transformation as something you only need to do to "make the data normal" (which really means making the residuals roughly normally distributed). This is not really the best approach. Transforming data should be done for scientific reasons, not just on an ad hoc basis. For example, if a response variable is a ratio or a concentration, it typically would make sense to take the logarithm of that value before fitting the statistical model. This is because the difference between two values on a logarithmic scale is *multiplicative*, not additive. The difference between a ratio of 0.01 and 1 is 100 times, which is the same difference as the difference between a ratio of 1 and 100. That is only true on a logarithmic scale.
 
-We are going to use some data from the **agridat** package, which has lots of example datasets from agricultural science. You can either load the example data from the package directly using `data()`, or read it in from a CSV in the `datasets` folder. Here are both ways of doing it.
+Here is an example situation where you might want to consider doing a log transformation. These data are a small subset of an ARS scientist's data. We have different varieties of barley crossed with different types of fungicide. Multiple plots of each combination of variety and fungicide were grown in an experimental block (called `Rep` in the dataset). Among other responses, the amount of DON (a mycotoxin) produced was measured, which is given here in units of parts per million (column `DON_ppm`).
 
 ```{r}
-library(tidyverse)
-library(lmerTest)
-
+barley_don <- read_csv('../datasets/barley_don.csv')
 ```
 
 
