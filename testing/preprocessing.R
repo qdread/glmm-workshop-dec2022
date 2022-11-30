@@ -76,6 +76,8 @@ treatments <- rep(c('fertilized', 'control'), each = plots_per_field/2)
 fakedat2 <- data.frame(field = rep(letters[6:10], each = plots_per_field), treatment = treatments,
                        biomass = intercepts + slopes + rnorm(n_fields * plots_per_field, mean = 0, sd = 3))
 
+write_csv(fakedat2, 'datasets/fertilizer_biomass.csv')
+
 ggplot(fakedat2, aes(x=treatment, y = biomass, group = field, color = field)) + geom_point(position = position_dodge(width = .3)) +
   stat_summary(fun = median, geom = 'point', size = 2, shape = 2, position = position_dodge(width = .3)) +
   stat_summary(fun = median, geom = 'line', position = position_dodge(width = .3))
@@ -95,6 +97,28 @@ anova(lmm_ri)
 anova(lmm_rs)
 anova(lmm_ris)
 
+#### Categorical except that we have three levels, unfertilized, low, and high.
+set.seed(1121)
+n_fields <- 5
+plots_per_trt <- 10
+n_trts <- 3
+intercepts <- rep(c(10, 15, 20, 15, 30), each = plots_per_trt * n_trts)
+slopes <- rep(rep(c(5, 2.5, 0), each = plots_per_trt), n_fields)
+treatments <- rep(rep(c('high', 'low', 'control'), each = plots_per_trt), n_fields)
+
+fakedat2 <- data.frame(field = rep(letters[6:10], each = plots_per_trt * n_trts), treatment = treatments,
+                       biomass = intercepts + slopes + rnorm(n_fields * plots_per_trt * n_trts, mean = 0, sd = 1.5))
+
+m1 <- lmer(biomass~treatment+(1|field),data=fakedat2)
+ranef(m1)
+m2 <- lmer(biomass~treatment+(treatment|field),data=fakedat2)
+ranef(m2)
+
+write_csv(fakedat2, 'datasets/fertilizer_biomass.csv')
+
+ggplot(fakedat2, aes(x=treatment, y = biomass, group = field, color = field)) + geom_point(position = position_dodge(width = .3)) +
+  stat_summary(fun = median, geom = 'point', size = 2, shape = 2, position = position_dodge(width = .3)) +
+  stat_summary(fun = median, geom = 'line', position = position_dodge(width = .3))
 
 ### Non-normal data: Logan's DON data
 
@@ -128,7 +152,11 @@ logistic_dat <- data.frame(pen = rep(LETTERS[1:5], each = 2),
 # Individual version
 logistic_long <- logistic_dat %>%
   group_by(pen, inoc) %>%
-  group_modify(~ data.frame(disease = rep(c(0, 1), c(.$n_absent, .$n_present))))
+  group_modify(~ data.frame(disease = rep(c(0, 1), c(.$n_absent, .$n_present)))) %>%
+  mutate(animal = 1:n()) %>%
+  select(pen, animal, inoc, disease)
+
+write_csv(logistic_long, 'datasets/disease.csv')
 
 disease_lmm <- lmer(disease ~ inoc + (1|pen), data = logistic_long)
 disease_glmm <- glmer(disease ~ inoc + (1|pen), data = logistic_long, family = binomial)

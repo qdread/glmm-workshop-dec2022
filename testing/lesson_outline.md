@@ -1,5 +1,7 @@
 # Learning objectives for each lesson
 
+NOTE: this is currently out of data as of 11/30.
+
 ## Lesson 1
 
 At the end of this lesson, students will ...

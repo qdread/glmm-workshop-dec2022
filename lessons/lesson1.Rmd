@@ -61,7 +61,7 @@ There are four panes that you see when you open RStudio:
 
 R is both a language and an interpreter.
 
-Everything in R is either a variable or a function.
+The two main types of objects you need to know about in R (which is true for many other programming languages as well) are variables and functions.
 
 - **variable**: a structure that holds data. Examples:
   + a vector of integers `c(1, 2, 3)`

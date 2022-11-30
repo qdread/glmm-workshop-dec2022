@@ -25,24 +25,24 @@ At the end of this lesson, students will ...
 
 # Load some sample data
 
-For this lesson, we will keep it simple and use simulated data. First load the packages we will need for this lesson. Then read the `soilN_biomass.csv` file, creating a data frame called `dat`. This dataset might have come from a study where there are five different fields, each of which has 20 plots. In each plot, soil nitrogen and plant biomass is measured.
+For this lesson, we will keep it simple and use simulated data. First load the packages we will need for this lesson. Then read the `soilN_biomass.csv` file, creating a data frame called `soilN_biomass`. This dataset might have come from a study where there are five different fields, each of which has 20 plots. In each plot, soil nitrogen and plant biomass is measured.
 
 ```{r}
 library(tidyverse)
 library(lmerTest)
 library(easystats)
 
-dat <- read_csv('../datasets/soilN_biomass.csv')
+soilN_biomass <- read_csv('../datasets/soilN_biomass.csv')
 ```
 
 Let's look at the data. Use functions you learned in lesson 2.
 
 ```{r, eval = FALSE}
-dat
+soilN_biomass
 
-summary(dat)
+summary(soilN_biomass)
 
-glimpse(dat)
+glimpse(soilN_biomass)
 ```
 
 There is a character column to identify which field the measurement comes from, a numeric column for the soil N value, and a numeric column for the plant biomass value.
@@ -52,7 +52,7 @@ There is a character column to identify which field the measurement comes from, 
 Here is a plot made using the **ggplot2** package. Don't worry about the code used to make this plot for now.
 
 ```{r}
-ggplot(dat, aes(x = soilN, y = biomass, color = field)) +
+ggplot(soilN_biomass, aes(x = soilN, y = biomass, color = field)) +
   geom_point(size = 1.5) +
   theme_classic()
 ```
@@ -97,7 +97,7 @@ Let's say we want to know the relationship between soil nitrogen in a plot and t
 We use the `lm()` (linear model) function for this. The model formula is very simple. 
 
 ```{r}
-lm_fit <- lm(biomass ~ soilN, data = dat)
+lm_fit <- lm(biomass ~ soilN, data = soilN_biomass)
 ```
 
 You can use the `summary()` function to look at the model output.
@@ -118,7 +118,7 @@ lm_coefs
 But what does the fitted trend look like? We will recreate the plot we made previously but now include a fitted line with the intercept and slope coefficients from the model.
 
 ```{r}
-ggplot(dat, aes(x = soilN, y = biomass, color = field)) +
+ggplot(soilN_biomass, aes(x = soilN, y = biomass, color = field)) +
   geom_point(size = 1.5) +
   theme_classic() +
   geom_abline(intercept = lm_coefs[1], slope = lm_coefs[2], size = 1)
@@ -135,7 +135,7 @@ OK, so we are missing something if we lump all the fields together, because the 
 I will demonstrate how you might do this -- note this code is a little bit more complex than what we'll be covering in this workshop so take this more as a demonstration. It is not something you would typically want to do. We're fitting five separate linear regression models, estimating an intercept and slope for each field, and then pulls out the coefficients and makes a plot of the fitted lines. 
 
 ```{r}
-separate_lm_fits <- dat %>%
+separate_lm_fits <- soilN_biomass %>%
   group_by(field) %>%
   group_map(~ lm(biomass ~ soilN, data = .))
 
@@ -145,7 +145,7 @@ separate_lm_coefs <- data.frame(field = c('a', 'b', 'c', 'd', 'e'),
 
 separate_lm_coefs
 
-ggplot(dat, aes(x = soilN, y = biomass, color = field)) +
+ggplot(soilN_biomass, aes(x = soilN, y = biomass, color = field)) +
   geom_point(size = 1.5) +
   theme_classic() +
   geom_abline(aes(intercept = intercept, slope = slope, color = field), size = 1, data = separate_lm_coefs)
@@ -168,7 +168,7 @@ Mixed models do what is called "partial pooling." This means they don't lump all
 Here's our first mixed model. We are now using the `lmer()` function from the **lme4** package instead of `lm()` from base R.
 
 ```{r}
-mm_fit <- lmer(biomass ~ soilN + (1 | field), data = dat)
+mm_fit <- lmer(biomass ~ soilN + (1 | field), data = soilN_biomass)
 ```
 
 This looks just like the `lm()` call except for the `+ (1 | field)` part. What is that? It indicates that a separate *random intercept* will be fit to each field. The random effect term is contained within parentheses `()` and has a vertical bar `|` in the middle of it. To the left of the `|` is the design component, where the `1` indicates an intercept. To the right are the grouping factors; here it is only `field`. We will see more complicated random-effects specifications later.
@@ -184,7 +184,7 @@ pred_grid <- expand.grid(soilN = c(0, 10), field = letters[1:5])
 mm_pred_group <- cbind(pred_grid, biomass = predict(mm_fit, newdata = pred_grid))
 mm_pred_population <- data.frame(soilN = c(0, 10), biomass = predict(mm_fit, newdata = data.frame(soilN = c(0, 10)), re.form = ~ 0))
 
-ggplot(dat, aes(x = soilN, y = biomass, color = field)) +
+ggplot(soilN_biomass, aes(x = soilN, y = biomass, color = field)) +
   geom_point(size = 1.5) +
   theme_classic() +
   geom_line(data = mm_pred_group) +
@@ -198,7 +198,7 @@ This model has accounted for different overall biomass levels in each field: the
 We can allow not only the intercepts, but also the slopes, to vary by field. The syntax for that model differs from the random intercept model because the `1`, indicating intercept only, in the design part of the random effects term is replaced with `soilN`, meaning the slope with respect to `soilN` will be different for each grouping factor `field`.
 
 ```{r}
-mm_fit_randomslopes <- lmer(biomass ~ soilN + (soilN | field), data = dat)
+mm_fit_randomslopes <- lmer(biomass ~ soilN + (soilN | field), data = soilN_biomass)
 ```
 
 ## Visualizing model fit of random slope model
@@ -209,7 +209,7 @@ Now what does the model fit look like?
 mm_pred_group_randomslopes <- cbind(pred_grid, biomass = predict(mm_fit_randomslopes, newdata = pred_grid))
 mm_pred_population_randomslopes <- data.frame(soilN = c(0, 10), biomass = predict(mm_fit_randomslopes, newdata = data.frame(soilN = c(0, 10)), re.form = ~ 0))
 
-ggplot(dat, aes(x = soilN, y = biomass, color = field)) +
+ggplot(soilN_biomass, aes(x = soilN, y = biomass, color = field)) +
   geom_point(size = 1.5) +
   theme_classic() +
   geom_line(data = mm_pred_group_randomslopes) +
@@ -269,45 +269,65 @@ The degrees of freedom for the F-test are estimated with an approximation -- bec
 
 We just saw how to fit a mixed model with a continuous predictor variable. If the predictor variable is categorical, such as a treatment variable with a control and one or more treatment levels, it isn't too much different to fit a mixed model.
 
-We'll need some different data for this part.
+We'll need some different data for this part. We are still going to stick with fake data I made, but this time let's say we have different fields, each of which has ten plots that received a nitrogen fertilization treatment and ten plots that are unfertilized controls. As before, we measured biomass in each plot.
 
-
-
-
-
-
-
-
-
-
-
-
-Examine the output using the `summary()` function.
+Read the data, then sort the fertilizer levels so that the order makes sense.
 
 ```{r}
-summary(fit_oneway)
+fert_biomass <- read_csv('../datasets/fertilizer_biomass.csv') %>%
+  mutate(treatment = factor(treatment, levels = c('control', 'low', 'high')))
 ```
 
-You can see that there are three coefficients in the model: the intercept, sand, and soil. Even though there are three surfaces (bark, sand, and soil), only two of them (sand and soil) have their own coefficient. This is because we have an intercept already, and the mean value of one of the three surfaces is set as the intercept. Then we only need two additional coefficients to define the means for the other two levels. "Bark" is set as the reference level because it is the first in alphabetical order. This is the default, which you can change by changing the order of factor levels.
+What do the data look like? Let's make a box plot for each treatment within each field.
 
-What the summary tells us is that the expected mean value of CO2 emissions from bark is about 475.6 mg C. The coefficients on sand and soil are negative, so the emissions are lower from both of those surfaces, relative to bark. For example, the expected value of emissions from sand is 476.6 - 169.2 which is ~306.4 mg C. We will look at ways to compare these means later.
+```{r}
+ggplot(fert_biomass, aes(x = field, fill = treatment, y = biomass)) +
+  geom_boxplot() + theme_bw()
+```
 
-We also see that there are built-in t-tests for each coefficient. The t-test for the intercept is not really meaningful because it is comparing the intercept against a value of zero. Of course all the CO2 fluxes are well above zero so it's not surprising to get a high t-statistic and low p-value here. However the other two t-tests are testing whether the difference between two surfaces (sand and bark, and soil and bark, respectively), is not zero. So those are meaningful. They show that both the other two surfaces are different from bark. However these don't account for multiple comparisons or anything, and there is no t-test showing whether sand and soil differ from one another, so they aren't the best ones to report. We'll revisit that tomorrow!
+There is a lot of variation among fields, but we see that the means tend to increase from control to low to high.
 
+Let's fit a model. We will try the random intercept model first.
 
+```{r}
+fert_mm <- lmer(biomass ~ treatment + (1 | field), data = fert_biomass)
+```
 
+What does the model summary show us?
 
+```{r}
+summary(fert_mm)
+```
 
+You can see that there are three coefficients in the model: the intercept, `treatmentlow`, and `treatmenthigh`. Even though there are three treatments (control, low, and high), only two of them have their own coefficient. This is because we have an intercept already, and the mean value of one of the three treatments is set as the intercept. Then we only need two additional coefficients to define the means for the other two levels. 
 
+What the summary tells us is that the expected mean value of biomass in unfertilized control plots is about 18.1. The coefficients on low and high are positive, so the biomass is greater than the control in both cases. For example, the expected value of biomass in the low fertilizer treatment is about 18.1 + 2.5 = 20.6. We will look at ways to compare these means later.
 
+We also see that there are built-in t-tests for each coefficient. The t-test for the intercept is not really meaningful because it is comparing the intercept against a value of zero. Of course all the biomass values are well above zero so it's not surprising to get a high t-statistic and low p-value here. However the other two t-tests are testing whether the difference between each other treatment and the control is not zero. So those are meaningful. They show that both the other two treatments are different from the control. However these don't account for multiple comparisons or anything, and there is no t-test showing whether low and high differ from one another, so these default tests aren't the best statistical tests to report. We'll revisit that tomorrow!
 
+# Random slopes model with categorical predictor
 
+Let's try the random-slopes version of the biomass versus fertilizer model.
 
+```{r, message = TRUE, warning =  TRUE}
+fert_mm_slopes <- lmer(biomass ~ treatment + (treatment | field), data = fert_biomass)
+```
 
+We get a message that the fit is singular. What does this mean? Some components of the variance-covariance matrix of the random effects are either exactly zero or exactly one. OK what about in English? Basically it means that the algorithm that fits the model parameters doesn't have enough data to get a good estimate. This often happens when we are trying to fit a model that is too complex for the amount of data we have, or when the random effects are very small and can't be distinguished from zero. We still get some output but this message should make us take a close look at the random effects and their variances.
 
-# Hey! What about ...
+```{r}
+ranef(fert_mm_slopes)
+```
 
-- Singular fits
+The random slopes look OK. We can look at the variance-covariance matrix of the random effects using the `VarCorr()` function:
+
+```{r}
+VarCorr(fert_mm_slopes)
+```
+
+The correlations between the random intercepts and the random slopes are exactly 1 or exactly -1. This means no additional information is being provided by the random slopes, so we can just stick with the random intercepts model in this case. However the random slopes model is still statistically valid, it's just a little overly complex for the data we have here.
+
+> NOTE: That isn't surprising here because I purposefully simulated data with almost zero variation in the treatment effect between fields. But this is something you see a lot in real datasets.
 
 # What have we done so far
 
@@ -321,10 +341,15 @@ Tomorrow, we will do a lot more fun stuff with mixed models. We will cover ...
 - Crossed and nested random effects
 - Generalized linear mixed models
 - How to compare means and test specific hypotheses with contrasts
-- How to make some basic plots and tables to present the results of your model
 
 Excited to see you all then!!!
 
 # Exercises
 
-TBD
+1. What is the `lmer()` model formula for a random intercepts mixed model where the fixed effects are `temperature`, `rainfall`, and their interactions, the grouping variable is `block`, and the response variable is `yield`?
+2. 
+
+# Answers
+
+1. [`yield ~ temperature + rainfall + temperature:rainfall + (1 | block)`]{.spoiler}
+2. 

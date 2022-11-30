@@ -23,6 +23,8 @@ At the end of this lesson, students will ...
 
 # Estimated marginal means
 
+Welcome to the final lesson of the mixed models in R workshop! Pat yourselves on the back for making it this far.
+
 We are going to talk about estimated marginal means. You might know the term "least square means" or "lsmeans" if you are a SAS user. This statistical technique was pioneered by statisticians working for SAS. Estimated marginal means are the same thing as lsmeans in most cases. It is probably better to use the term estimated marginal means because the least squares method is not always used to calculate them. 
 
 The name estimated marginal means makes sense because they are estimates from a model, **not data**. It's best to keep that in mind -- when we calculate these estimated means, they are functions of model parameters and sensitive to all the assumptions we've made in constructing the model. And remember, all models are wrong and only some of them are useful. They're called marginal because they can be calculated averaged across the margins of all other fixed and random effects in the model. 
@@ -47,11 +49,62 @@ Today we're only going to have time for a brief introduction to the capabilities
 
 # Use emmeans to estimate means
 
-Let's use one of the models we have worked with already. Reload the data and refit the model. Load the **emmeans** package along with the other ones we need.
+Let's revisit the fake biomass versus fertilization dataset that we worked with earlier. Reload the data and refit the model. Load the **emmeans** and **multcomp** packages along with the other ones we need.
 
 ```{r}
-#FIXME do this
+library(tidyverse)
+library(lmerTest)
+library(emmeans)
+library(multcomp)
+
+fert_biomass <- read_csv('../datasets/fertilizer_biomass.csv') %>%
+  mutate(treatment = factor(treatment, levels = c('control', 'low', 'high')))
+
+fert_mm <- lmer(biomass ~ treatment + (1 | field), data = fert_biomass)
 ```
+
+If you recall, we could use `summary(fert_mm)` to show the coefficients for the intercept and the two non-control treatment levels, and t-tests associated with each one. But the inference that you're often interested in is whether the means of each treatment differ from one another.
+
+We can use the `emmeans()` function to make that comparison. The function can take many arguments, but it needs at least two. The first argument is a fitted model object. The second argument is a one-sided formula beginning with `~` that gives the variable or combination of variables for which we want to estimate the marginal means. In this model there is only one such variable, `treatment`. The result is an object which contains the estimated marginal means, which are averaged across all other fixed effects and all the random effects as well.
+
+```{r}
+fert_emm <- emmeans(fert_mm, ~ treatment)
+
+fert_emm
+```
+
+Note that we now have estimated marginal means and a confidence interval (default 95%) for each one. The degrees of freedom are approximated, as must be the case with mixed models. 
+
+You can use the `plot()` function because `emmeans` objects have a built-in plotting method which will show the means and 95% confidence intervals.
+
+```{r}
+plot(fert_emm)
+```
+
+We can see from the plot that the 95% confidence intervals of the means overlap; however this does not mean they are not significantly different from one another. The `contrast()` function allows us to do a comparison 
+
+```{r}
+contrast(fert_emm, method = 'pairwise')
+```
+
+```{r}
+contrast(fert_emm, method = 'pairwise', adjust = 'bonferroni')
+```
+```{r}
+cld(fert_emm, adjust = 'bonferroni')
+```
+
+```{r}
+cld(fert_emm, adjust = 'bonferroni', Letters = letters)
+```
+
+We can use other contrast methods. For instance we might only be concerned with the difference between the control and each other treatment. 
+
+```{r}
+contrast(fert_emm, method = 'trt.vs.ctrl')
+```
+
+
 
 # Comparison of estimated marginal means versus ANOVA
 

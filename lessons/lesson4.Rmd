@@ -50,6 +50,8 @@ maize <- maize %>%
   )
 ```
 
+> PROTIP: If you give your plot and block columns character ID's, not numeric ID's, to begin with (such as `P1`, `P2`, etc.), you will not have to worry about them accidentally being considered numeric variables in your models.
+
 Make boxplots of the yield data using `geom_boxplot()`. Tillage treatment is on the *x* axis, cover treatment is distinguished by color of the boxes, and yield is on the *y* axis. We use `facet_grid()` to make a separate plot for each combination of location and year.
 
 ```{r}
@@ -140,4 +142,12 @@ We will revisit this model in a later lesson when we talk about comparing means.
 
 # Exercises
 
-TBD
+We will use the `besag.beans` dataset which is part of the **agridat** package, an R package that has a bunch of classic datasets from agricultural science. You can load the dataset using 
+
+```{r, eval = FALSE}
+data(besag.beans, package = 'agridat')
+```
+
+> NOTE: If you are running R locally and were unable to install the **agridat** package, I have provided the dataset as a CSV file: `besag.beans <- read_csv('datasets/besag.beans.csv')`
+
+1. Examine the dataset. We have genotypes being grown in 
