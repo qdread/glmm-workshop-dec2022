@@ -115,3 +115,20 @@ check_model(fit_don, check = 'qq')
 check_model(fit_don_log, check = 'qq')
 
 write_csv(DON2021, 'datasets/barley_don.csv')
+
+
+### Example fake data for logistic GLMM
+
+logistic_dat <- data.frame(pen = rep(LETTERS[1:5], each = 2),
+                           inoc = c('no', 'yes'),
+                           n_absent = c(0, 6, 3, 9, 4, 9, 3, 9, 1, 10),
+                           n_present = c(10, 4, 7, 1, 6, 1, 7, 1, 9, 0),
+                           n_total = 10)
+
+# Individual version
+logistic_long <- logistic_dat %>%
+  group_by(pen, inoc) %>%
+  group_modify(~ data.frame(disease = rep(c(0, 1), c(.$n_absent, .$n_present))))
+
+disease_lmm <- lmer(disease ~ inoc + (1|pen), data = logistic_long)
+disease_glmm <- glmer(disease ~ inoc + (1|pen), data = logistic_long, family = binomial)

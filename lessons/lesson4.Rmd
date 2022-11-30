@@ -142,7 +142,31 @@ We will revisit this model in the next lesson when we talk about comparing means
 
 # Generalized linear mixed models
 
-Taking the log transformation of the response variable before fitting the model is a good solution for many types of data. However it won't always work. For many classes of data, **PUT MORE TEXT HERE**
+Taking the log transformation of the response variable before fitting the model is a good solution for many types of data. However it won't always work. For many classes of data, we can't just do a transformation to "shoehorn" the data into a form that will work with a general linear mixed model. So that means we need to take the next step and enter the world of general*ized* linear mixed models. (It's a terrible name because general linear mixed model and generalized linear mixed model begin with the same letters, so it's a little bit confusing, but we are stuck with that.)
+
+Let's say we have response data that is binary. For example, what if we are testing the ability of a vaccine to prevent some disease in chickens? We would have a control group that was not inoculated and a treatment group that was inoculated. The response variable is whether or not the disease is present. The chickens are raised in different pens in a complete block design so we need to account for the effect of pen on disease as well, using a random intercept.
+
+We might have data like this:
+
+```{r}
+
+```
+
+
+What if we tried to just use a linear mixed model as we have done before? We could code disease absent as 0 and disease present as 1.
+
+```{r}
+
+```
+
+That seems reasonable at first glance. The intercept is 0.78, so the baseline rate is 78% disease, and the coefficient on inoculation is -0.64, so the inoculation treatment makes disease go down by 64%. What is wrong with that?
+
+Well, what about if we wanted to make predictions? Let's say we had a population where the baseline rate of disease was only 40%. Our model would predict that it would have -20% disease if we gave that population the inoculation treatment. That is logically impossible. It makes more sense to think about the effect of inoculation in terms of relative changes to the odds of getting the disease. So if the baseline rate is very low, there isn't that much that inoculation can do to reduce it further. But if the baseline rate is high, we can easily lower it with even a moderately effective treatment.
+
+Modeling change in a binary response in this way can be done with a generalized linear model. We use a link function to convert the predicted response value into a scale that can be normally distributed. What we are predicting is the probability that an individual from each pen with or without the inoculation treatment will get the disease. 
+
+**more text here**
+
 
 - Count data (Poisson GLMM)
 - Binary outcome data (Logistic GLMM)
@@ -156,7 +180,7 @@ Taking the log transformation of the response variable before fitting the model 
 
 # GLMM with binary response variable
 
-For these next two examples, we are going to use data from the **agridat** package.
+For these next two examples, we are going to use data from the **agridat** package. The **agridat** package is just a bunch of example classic datasets from the agricultural science literature.
 
 # GLMM with count response variable
 
