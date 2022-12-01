@@ -157,3 +157,25 @@ Examine the dataset. We have genotypes being grown in
 # Answers
 
 ## Exercise 1
+
+<p class="spoiler">
+
+</p>
+
+## Exercise 2
+
+<p class="spoiler">
+
+</p>
+
+## Exercise 3
+
+<p class="spoiler">
+
+</p>
+
+## Exercise 4
+
+<p class="spoiler">
+
+</p>
