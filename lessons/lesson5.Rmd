@@ -194,7 +194,27 @@ Then from the Poisson GLMM:
 check_model(glmm_borers)
 ```
 
-The residual diagnostics actually look acceptable for both models, because the count data are really not that far off from normal. But compare the predictive check plots. You can see that the 
+The residual diagnostics actually look acceptable for both models, because the count data are really not that far off from normal. But compare the predictive check plots. You can see that the first model produces a lot of negative predictions. So the GLMM is ideal to use here, not just to "make the residuals behave" but also because it allows us to make meaningful predictions.
+
+Let's look at the coefficients of the model.
+
+```{r}
+summary(glmm_borers)
+```
+
+Again, we have to back-transform the coefficient estimates from the link function scale back to the original scale of the data. In this case, because the logarithm `log()` was the link function, we use exponentiation `exp()` as the inverse. The intercept, 3.42, represents the estimated mean for the "None" treatment (control group) on a log scale.
+
+```{r}
+exp(3.42)
+```
+
+This is a population-level prediction for the control group of about 30.6 borers per plot on the original data scale. We can get similar predictions for the other treatment groups by adding their coefficients to the intercept and exponentiating. For example, the "Early" treatment's coefficient was -0.24:
+
+```{r}
+exp(3.42 - 0.24)
+```
+
+This corresponds to a prediction of 24.0 borers per plot.
 
 # Hey! What about ...
 
