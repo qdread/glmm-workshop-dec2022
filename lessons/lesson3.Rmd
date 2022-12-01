@@ -343,13 +343,63 @@ Excited to see you all then!!!
 
 # Exercises
 
-1. What is the `lmer()` model formula for a random intercepts mixed model where the fixed effects are `temperature`, `rainfall`, and their interactions, the grouping variable is `block`, and the response variable is `yield`?
+## Exercise 1
 
-For exercises 2-4, you will need to load a new example dataset. This is data modified from an ARS study (simplified and with some random noise added). It is a set of measurements taken on fish fillets. The thickness and hardness of each fillet were measured in eight different locations on the fillet. There were two different species of catfish (Channel and Hybrid) and three methods of preparation (raw, fresh, and frozen). Read the data into a data frame with `catfish <- read_csv('datasets/catfish.csv')`. 
+What is the `lmer()` model formula for a random intercepts mixed model where the fixed effects are `temperature`, `rainfall`, and their interactions, the grouping variable is `block`, and the response variable is `yield`?
 
-2. 
+## Exercise 2
+
+For exercises 2-5, you will need to load a new example dataset. This is data modified from an ARS study (simplified and with some random noise added). It is a set of measurements taken on fish fillets. The thickness and hardness of each fillet were measured in eight different locations on the fillet. There were two different species of catfish (Channel and Hybrid) and three methods of preparation (raw, fresh, and frozen). Read the data into a data frame with `fish_fillets <- read_csv('datasets/fish_fillets.csv')`. **These exercises are in increasing order of difficulty.**
+
+Examine the data. Which species has highest average hardness and thickness (averaged ignoring preparation method, fish ID, and position)?
+  + *Hint 1*: [Use `group_by()` and `summarize()` to calculate means grouped by species.]{.spoiler}
+  + *Hint 2*: [You will need to use `mean(..., na.rm = TRUE)` because there are missing values.]{.spoiler}
+
+## Exercise 3
+
+A) Fit a linear mixed model to answer the question of whether fillet thickness differs by species, with random intercepts fit to each individual fish ID.
+B) What do the model diagnostic plots tell us?
+C) What does the model summary tell us?
+
+## Exercise 4
+
+A) Fit a linear mixed model to answer the question of whether fillet thickness is associated with fillet hardness, with random intercepts fit to each individual fish ID. 
+B) What do the model diagnostic plots tell us?
+C) What does the model summary tell us?
+
+## Exercise 5
+
+A) Fit a linear mixed model to answer the question of whether preparation method, species, and the interaction between them are associated with differences in average thickness of the fillets.
+B) What do the model diagnostic plots tell us?
+C) What does the model summary tell us?
 
 # Answers
 
-1. [`yield ~ temperature + rainfall + temperature:rainfall + (1 | block)`]{.spoiler}
-2.
+## Exercise 1
+
+[`yield ~ temperature + rainfall + temperature:rainfall + (1 | block)`]{.spoiler}
+
+## Exercise 2
+
+<p class="spoiler">
+
+</p>
+
+## Exercise 3
+
+<p class="spoiler">
+
+</p>
+
+## Exercise 4
+
+<p class="spoiler">
+
+</p>
+
+## Exercise 5
+
+<p class="spoiler">
+
+</p>
+

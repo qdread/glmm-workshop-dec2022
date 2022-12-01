@@ -406,15 +406,32 @@ Those are really important things but we aren't going to cover them in this less
 
 # Exercises
 
-1. Use R to find the arc-sine of the square root of 0.5. (Hint: you may need to use help documentation or Google to figure out what function or functions to use).
-2. Use R to find the sum of all positive integers from 1 to 12345.
-3. Use R to "flip a coin" with 0.5 probability of getting heads 1000 times. You can do this by generating 1 random variable from a binomial distribution with 1000 trials and probability 0.5. How many heads were flipped in the simulation if you set the random seed to 1 beforehand? 
-  + *Hint 1*: [Use `set.seed()` to set the random seed.]{.spoiler }
-  + *Hint 2*: [There are a few ways to do this, but one way is to use `rbinom()`. The arguments `n`, `size`, and `prob` are given in the question above in the correct order! Type `?rbinom` into the console if you need help.]{.spoiler}
+## Exercise 1
+
+Use R to find the arc-sine of the square root of 0.5. (Hint: you may need to use help documentation or Google to figure out what function or functions to use).
+
+## Exercise 2
+
+Use R to find the sum of all positive integers from 1 to 12345.
+
+## Exercise 3
+
+Use R to "flip a coin" with 0.5 probability of getting heads 1000 times. You can do this by generating 1 random variable from a binomial distribution with 1000 trials and probability 0.5. How many heads were flipped in the simulation if you set the random seed to 1 beforehand? 
+
+- *Hint 1*: [Use `set.seed()` to set the random seed.]{.spoiler }
+- *Hint 2*: [There are a few ways to do this, but one way is to use `rbinom()`. The arguments `n`, `size`, and `prob` are given in the question above in the correct order! Type `?rbinom` into the console if you need help.]{.spoiler}
 
 # Answers
 
-1. [`asin(sqrt(0.5))`]{.spoiler}
-2. [`sum(1:12345)`]{.spoiler}
-3. [`set.seed(1)`  
+## Exercise 1
+
+[`asin(sqrt(0.5))`]{.spoiler}
+
+## Exercise 2
+
+[`sum(1:12345)`]{.spoiler}
+
+## Exercise 3
+
+[`set.seed(1)`  
 `rbinom(n = 1, size = 1000, prob = 0.5)`]{.spoiler}

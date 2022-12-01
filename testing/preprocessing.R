@@ -130,7 +130,13 @@ DON2021 <- DON %>% filter(Year %in% c(2021), Timing == 'Medium') %>%
   select(-c(`Trtmt #`, Timing, Year, logDON, TW, mean_index, logIND)) %>%
   mutate(Rep = factor(Rep, labels = LETTERS[1:4]))
 
-
+#Add noise
+set.seed(1239)
+DON2021 <- DON2021 %>%
+  mutate(weight_kg = weight_kg + rnorm(nrow(DON2021), mean = 0, sd = 0.1),
+         DON_ppm = DON_ppm + rnorm(nrow(DON2021), mean = 0, sd = 0.1),
+         yield_bu_ac = yield_bu_ac + rnorm(nrow(DON2021), mean = 0, sd = 1),
+         PIK = PIK + rbinom(nrow(DON2021), size = 5, prob = .25))
 
 fit_don <- lmer(DON_ppm ~ Variety + Fungicide + Variety:Fungicide + (1|Rep), data = DON2021)
 fit_don_log <- lmer(log(DON_ppm) ~ Variety + Fungicide + Variety:Fungicide + (1|Rep), data = DON2021)
@@ -190,3 +196,11 @@ channel_data <- example_fillet_data %>% filter(species == 'Channel')
 
 m2 <- lmer(thickness ~ hardness + (1|fishID), data = channel_data)
 m3 <- lmer(thickness ~ hardness + (hardness|fishID), data = channel_data)
+
+# Add noise
+set.seed(1233)
+example_fillet_data <- example_fillet_data %>%
+  mutate(hardness = hardness + rbinom(nrow(example_fillet_data), size = 5, prob = .5),
+         thickness = thickness + rnorm(nrow(example_fillet_data), mean = 0, sd = 1))
+
+write_csv(example_fillet_data, 'datasets/fish_fillets.csv')

@@ -376,24 +376,56 @@ The dataset used for these exercises comes from an experimental study measuring 
 
 You may combine the results from steps 3-6 into a single "piped" statement using the `%>%` operator.
 
-1. Read the `barnyard_ghg.csv` file, which is in the `datasets` directory, into R as a data frame. 
-2. Examine the data frame. What are the data types of the different columns? How many different values are there in the `Surface` column?
-  + *Hint*: [Use `str()`, `summary()`, and/or `glimpse()` to examine the data frame. Use `table()` or `unique()` for the `Surface` column.]{.spoiler}
-3. Create a subset of the data frame containing only the observations where the temperature (`Temp` column) is greater than 10. *Remember R is case-sensitive!*
-4. Group the data frame by surface type.
-5. Calculate the mean of the `CO2_mgC`, `CH4_mgC`, `NH3_ugN`, and `N2O_ugN` columns.
-6. Sort the result in increasing order of the mean value of `CO2_mgC`.
-7. Load the `relig_income` example dataset which has survey data on the number of individuals of different religions by reported yearly income. (Use `data(relig_income)` to load the dataset.) Convert this dataset into "tidy" form so that each row has a religion, income level, and number of individuals.
-  + *Hint 1*: [Use `pivot_longer()`.]{.spoiler}
-  + *Hint 2*: [You may specify either the columns to pivot, or the columns not to pivot. There is only one column not to pivot, `religion`.]
+## Exercise 1
+
+Read the `barnyard_ghg.csv` file, which is in the `datasets` directory, into R as a data frame. 
+
+## Exercise 2
+
+Examine the data frame. What are the data types of the different columns? How many different values are there in the `Surface` column?
+
+*Hint*: [Use `str()`, `summary()`, and/or `glimpse()` to examine the data frame. Use `table()` or `unique()` for the `Surface` column.]{.spoiler}
+
+## Exercise 3
+
+Create a subset of the data frame containing only the observations where the temperature (`Temp` column) is greater than 10. *Remember R is case-sensitive!*
+
+## Exercise 4
+
+Group the data frame by surface type.
+
+## Exercise 5
+
+Calculate the mean of the `CO2_mgC`, `CH4_mgC`, `NH3_ugN`, and `N2O_ugN` columns.
+
+## Exercise 6
+
+Sort the result in increasing order of the mean value of `CO2_mgC`.
+
+## Exercise 7
+
+Load the `relig_income` example dataset which has survey data on the number of individuals of different religions by reported yearly income. (Use `data(relig_income)` to load the dataset.) Convert this dataset into "tidy" form so that each row has a religion, income level, and number of individuals.
+- *Hint 1*: [Use `pivot_longer()`.]{.spoiler}
+- *Hint 2*: [You may specify either the columns to pivot, or the columns not to pivot. There is only one column not to pivot, `religion`.]{.spoiler}
 
 # Answers
 
-1. [`barnyard_ghg <- read.csv('datasets/barnyard_ghg.csv')`]{.spoiler}
-2. [One way would be `glimpse(barnyard_ghg)` and `table(barnyard_ghg$Surface)`]{.spoiler}
-3-6. [`barnyard_ghg %>%`  
+## Exercise 1
+
+[`barnyard_ghg <- read.csv('datasets/barnyard_ghg.csv')`]{.spoiler}
+
+## Exercise 2
+
+[One way would be `glimpse(barnyard_ghg)` and `table(barnyard_ghg$Surface)`]{.spoiler}
+
+## Exercises 3-6
+
+[`barnyard_ghg %>%`  
 `filter(Temp > 10) %>%`  
 `group_by(Surface) %>%`  
 `summarize(mean_CO2 = mean(CO2_mgC), mean_CH4 = mean(CH4_mgC), mean_NH3 = mean(NH3_ugN), mean_N2O = mean(N2O_ugN)) %>%`
 `arrange(mean_CO2)`]{.spoiler}
-7. [`pivot_longer(relig_income, cols = -religion)`, or if you want to give your own names to the newly created columns, `pivot_longer(relig_income, cols = -religion, names_to = 'income', values_to = 'individuals')`]{.spoiler}
+
+## Exercise 7
+
+[`pivot_longer(relig_income, cols = -religion)`, or if you want to give your own names to the newly created columns, `pivot_longer(relig_income, cols = -religion, names_to = 'income', values_to = 'individuals')`]{.spoiler}
