@@ -85,10 +85,7 @@ By contrast, if you want to fit a model without an intercept, "forcing" the regr
 
 `weight ~ 0 + height`
 
-
-In this lesson, we're only going to see model formulas with a single predictor variable but we will see more complex formulas later.
-
-The `data` argument tells the model fitting function what data frame contains the variables in the model formula.
+Finally, the `data` argument tells the model fitting function what data frame contains the variables in the model formula.
 
 # Linear model with continuous predictor
 
@@ -327,7 +324,7 @@ VarCorr(fert_mm_slopes)
 
 The correlations between the random intercepts and the random slopes are exactly 1 or exactly -1. This means no additional information is being provided by the random slopes, so we can just stick with the random intercepts model in this case. However the random slopes model is still statistically valid, it's just a little overly complex for the data we have here.
 
-> NOTE: That isn't surprising here because I purposefully simulated data with almost zero variation in the treatment effect between fields. But this is something you see a lot in real datasets.
+> NOTE: It isn't surprising that the random slopes model doesn't work well with this dataset. That's because I purposefully simulated data with almost zero variation in the treatment effect between fields so that the slope estimates would be near zero. But this is something you see a lot in real datasets.
 
 # What have we done so far
 
@@ -347,9 +344,12 @@ Excited to see you all then!!!
 # Exercises
 
 1. What is the `lmer()` model formula for a random intercepts mixed model where the fixed effects are `temperature`, `rainfall`, and their interactions, the grouping variable is `block`, and the response variable is `yield`?
+
+For exercises 2-4, you will need to load a new example dataset. This is data modified from an ARS study (simplified and with some random noise added). It is a set of measurements taken on fish fillets. The thickness and hardness of each fillet were measured in eight different locations on the fillet. There were two different species of catfish (Channel and Hybrid) and three methods of preparation (raw, fresh, and frozen). Read the data into a data frame with `catfish <- read_csv('datasets/catfish.csv')`. 
+
 2. 
 
 # Answers
 
 1. [`yield ~ temperature + rainfall + temperature:rainfall + (1 | block)`]{.spoiler}
-2. 
+2.

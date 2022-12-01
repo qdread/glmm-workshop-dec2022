@@ -160,3 +160,33 @@ write_csv(logistic_long, 'datasets/disease.csv')
 
 disease_lmm <- lmer(disease ~ inoc + (1|pen), data = logistic_long)
 disease_glmm <- glmer(disease ~ inoc + (1|pen), data = logistic_long, family = binomial)
+
+
+### Catfish data
+library(tidyverse)
+library(readxl)
+library(lmerTest)
+
+fillet_data <- read_xlsx('C:/Users/qdread/OneDrive - USDA/ars_projects/misc/Updated Sensory TPA data-2 -with graphs.xlsx', sheet = "John's data set", .name_repair = 'universal')
+
+
+fillet_data_by_pos <- fillet_data %>%
+  select(-starts_with('Avg')) %>% 
+  pivot_longer(-c(fish.ID, location, season, prep, species, gender, fish.wt, fillet.wt)) %>%
+  mutate(name = gsub('\\.', '_', name)) %>%
+  separate(name, into = c('variable', 'position'), sep = '_P') %>%
+  pivot_wider(id_cols = c(fish.ID, location, season, prep, species, gender, fish.wt, fillet.wt, position), names_from = 'variable', values_from = 'value') %>%
+  mutate(position = factor(position))
+
+example_fillet_data <- fillet_data_by_pos %>%
+  select(fishID = fish.ID, prep, species, position, hardness = Hardness_1, thickness = Thickness_1) %>%
+  filter(prep %in% c('Fresh', 'froz', 'raw')) %>%
+  mutate(prep = factor(tolower(prep), labels = c('fresh', 'frozen', 'raw')))
+
+m1 <- lmer(thickness ~ species + (1|fishID), data = example_fillet_data)
+m1b <- lmer(thickness ~ species + prep + species:prep + (1|fishID), data = example_fillet_data)
+
+channel_data <- example_fillet_data %>% filter(species == 'Channel')
+
+m2 <- lmer(thickness ~ hardness + (1|fishID), data = channel_data)
+m3 <- lmer(thickness ~ hardness + (hardness|fishID), data = channel_data)
