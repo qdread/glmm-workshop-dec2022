@@ -1,25 +1,25 @@
 experiment,replicate,treatment,biomass
-1,BR-1,negative control 1,205210.96341646928
-1,BR-1,experimental,121085.57990868614
-1,BR-1,negative control 2,329306.35469708854
-2,BR-1,negative control 1,781008.1931444948
-2,BR-1,experimental,345791.53889528837
-2,BR-1,negative control 2,504803.7431977098
-2,BR-2,negative control 1,947575.1646083423
-2,BR-2,experimental,334209.1894064526
-2,BR-2,negative control 2,539268.2982808071
-2,BR-3,negative control 1,697776.49025596
-2,BR-3,experimental,234999.42764428293
-2,BR-3,negative control 2,415003.7509870536
-3,BR-1,negative control 1,117789.13411280027
-3,BR-1,experimental,52846.596126870434
-3,BR-1,negative control 2,165133.839606736
-4,BR-1,negative control 1,837173.5278715462
-4,BR-1,experimental,530893.5312296626
-4,BR-1,negative control 2,1167218.3477113007
-4,BR-2,negative control 1,926258.5314328818
-4,BR-2,experimental,434342.9525117226
-4,BR-2,negative control 2,928238.1058791835
-4,BR-3,negative control 1,1013995.1233951151
-4,BR-3,experimental,389317.69269700465
-4,BR-3,negative control 2,890283.4961867495
+experiment1,BR-1,negative control 1,205210.96341646928
+experiment1,BR-1,experimental,121085.57990868614
+experiment1,BR-1,negative control 2,329306.35469708854
+experiment2,BR-1,negative control 1,781008.1931444948
+experiment2,BR-1,experimental,345791.53889528837
+experiment2,BR-1,negative control 2,504803.7431977098
+experiment2,BR-2,negative control 1,947575.1646083423
+experiment2,BR-2,experimental,334209.1894064526
+experiment2,BR-2,negative control 2,539268.2982808071
+experiment2,BR-3,negative control 1,697776.49025596
+experiment2,BR-3,experimental,234999.42764428293
+experiment2,BR-3,negative control 2,415003.7509870536
+experiment3,BR-1,negative control 1,117789.13411280027
+experiment3,BR-1,experimental,52846.596126870434
+experiment3,BR-1,negative control 2,165133.839606736
+experiment4,BR-1,negative control 1,837173.5278715462
+experiment4,BR-1,experimental,530893.5312296626
+experiment4,BR-1,negative control 2,1167218.3477113007
+experiment4,BR-2,negative control 1,926258.5314328818
+experiment4,BR-2,experimental,434342.9525117226
+experiment4,BR-2,negative control 2,928238.1058791835
+experiment4,BR-3,negative control 1,1013995.1233951151
+experiment4,BR-3,experimental,389317.69269700465
+experiment4,BR-3,negative control 2,890283.4961867495

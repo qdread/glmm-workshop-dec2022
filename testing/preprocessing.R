@@ -229,4 +229,4 @@ mod <- lmer(log(value) ~ treatment + (1|experiment), data = dat)
 check_model(modnolog)
 check_model(mod)
 
-write_csv(dat %>% rename(biomass=value), 'datasets/bioassay.csv')
+write_csv(dat %>% rename(biomass=value) %>% mutate(experiment = paste0('experiment', experiment)), 'datasets/bioassay.csv')
