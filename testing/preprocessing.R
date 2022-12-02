@@ -204,3 +204,15 @@ example_fillet_data <- example_fillet_data %>%
          thickness = thickness + rnorm(nrow(example_fillet_data), mean = 0, sd = 1))
 
 write_csv(example_fillet_data, 'datasets/fish_fillets.csv')
+
+### Data to use for an exercise with data transformation: Balint-Kurti and Kim data
+## FIXME this is not up to date
+dat <- read_xlsx('data/misc/balint_kurti_kim_data_v2.xlsx', sheet = 1, skip = 2, n_max = 11, na = '.') %>%
+  rename('experiment' = Treatment, 'replicate' = ...2) %>%
+  fill(experiment, .direction = 'down') %>%
+  pivot_longer(A:H, names_to = 'treatment')
+
+trt_names <- c('35sRP1D+547 (experimental)', '547-5+EV (negative control)', '35sRp1D+EV (negative control)')
+trt_names_short <- c('35sRP1D+547', '547-5+EV', '35sRp1D+EV')
+
+mod <- lmer(log(value) ~ treatment + (1|experiment), data = dat)

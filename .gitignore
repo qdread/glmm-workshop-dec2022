@@ -57,4 +57,4 @@ node_modules
 bower_components
 
 # Symbolic link
-lessons/datasets/
+lessons/datasets
