@@ -218,7 +218,7 @@ This corresponds to a prediction of 24.0 borers per plot.
 
 # Hey! What about ...
 
-Unfortunately we are only barely scratching the surface of generalized linear mixed models today. These are only a little bit of what you can do. I don't have time to cover all GLMM types in this workshop. For one thing, `glmer()` can only fit a small subset of GLMMs. For example, your response variable might be a categorical outcome with more than two possibilities. This would be the case in a choice trial where insects are released into an olfactometer and may go down one of four arms where different odor attractants are found. In that case, you would want to fit a multinomial GLMM. 
+Unfortunately we are only barely scratching the surface of generalized linear mixed models today. These are only a little bit of what you can do. I don't have time to cover all GLMM types in this workshop. For one thing, `glmer()` can only fit a small subset of GLMMs. For example, your response variable might be a categorical outcome with more than two possibilities. This would be the case in a choice trial. In that case, you would want to fit a multinomial GLMM. Some categorical response variables are ordered, such as disease ratings on a 1-5 scale. There are also GLMMs for that.
 
 Other topics that you might be wondering about include
 
@@ -236,5 +236,73 @@ We have one more lesson coming up today, where we are going to look at comparing
 
 # Exercises
 
+These are more open-ended exercises to give you more practice with GLMMs.
+
+The first example will use the Jansen apple dataset from the **agridat** package. Load it with `data('jansen.apple', package = 'agridat')` or if you are running R locally and don't have access to the **agridat** package, use `jansen.apple <- read_csv('datasets/jansen.apple.csv')`.
+
+The dataset has five columns: `inoculum`, the amount of fungus apple tree shoots were infected with, `gen`, the variety of apple, `block`, the experimental block ID, `y`, the number of trees that developed apple canker, and `n`, the total number of shoots (there were 5 in all blocks).
+
+Before proceeding, convert `inoculum` to a factor.
+
+```{r, eval = FALSE}
+jansen.apple <- jansen.apple %>%
+  mutate(inoculum = factor(inoculum))
+```
 
 
+## Exercise 1
+
+What is the average number of trees that got apple canker by inoculum level? By genotype? By combination of inoculum level and genotype?
+  + *Hint*: [Use `group_by()`, `summarize()`, and `mean()`.]{.spoiler}
+
+## Exercise 2
+
+A) Fit a generalized linear mixed model with infection status as the response variable, genotype, inoculum level, and their interaction as fixed effects, and block as a random intercept. 
+
+> NOTE: This dataset has a different format. Instead of one row per individual, the numbers of infected trees in each block are in each row. `glmer()` can take data in this format if you use `cbind(y, n - y)` as the response variable.
+
+  + *Hint*: [Don't forget `family = binomial(link = 'logit')`!]{.spoiler}
+
+B) What do the diagnostic plots tell us?
+C) What does the model summary tell us?
+
+# Answers
+
+## Exercise 1
+
+<p class="spoiler">
+```{r, eval = FALSE}
+# By inoculum level
+jansen.apple %>% group_by(inoculum) %>% summarize(infected = mean(y))
+# By genotype
+jansen.apple %>% group_by(gen) %>% summarize(infected = mean(y))
+# Combination
+jansen.apple %>% group_by(inoculum, gen) %>% summarize(infected = mean(y))
+```
+</p>
+
+## Exercise 2
+
+<p class="spoiler">
+```{r, eval = FALSE}
+fit <- glmer(cbind(y, n - y) ~ gen + inoculum + gen:inoculum + (1|block), data = jansen.apple, family = binomial)
+check_model(fit)
+summary(fit)
+```
+
+The diagnostics look reasonably good but we get a singular fit. The random effect estimates for block are all zero. The effect of block is very small and probably negligible. The model summary shows us that as inoculum increases, the probability of infection increases. The interaction term between Jonathan and inoculum level 5000 indicates that the increase in infection probability as inoculum increases is much weaker for the Jonathan variety.
+</p>
+
+## Exercise 3
+
+For the next two exercises we will use another **agridat** dataset, the Beall webworms dataset from 1940. This dataset has counts of webworms in a beet field with two different insecticide treatments
+
+<p class="spoiler">
+
+</p>
+
+## Exercise 4
+
+<p class="spoiler">
+
+</p>

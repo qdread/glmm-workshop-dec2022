@@ -29,6 +29,7 @@ At the end of this lesson, students will ...
 - The course is divided up into lessons. For each lesson, I'm going to give you a worksheet. The worksheet will have a bunch of code in it, but parts of the code will be missing and replaced with a `...`. 
 - Your job will be to fill in the `...` with the code. Don't worry, you will have access to the full code on the lesson webpage as well as being able to see it when I present it on the screen.
 - I strongly recommend TYPING IN THE CODE yourself instead of copy+pasting it. Research shows that this helps you learn it better. Also, if you make a mistake and get an error or different output than you expected, you might learn something about how the code works (or doesn't work).
+- Each lesson has some exercises at the end. They are an optional way to get more practice, but don't feel any pressure to do them. We will have "office hours" with open Q and A time for two hours each afternoon, which would be a good time to go over the exercises.
 
 ## A practical toolkit
 
