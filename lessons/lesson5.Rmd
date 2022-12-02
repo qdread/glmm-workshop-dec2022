@@ -218,20 +218,23 @@ This corresponds to a prediction of 24.0 borers per plot.
 
 # Hey! What about ...
 
-- These are only a little bit of what you can do. I don't have time to cover all GLMM types in this workshop.
-- glmer() doesn't have all the possibilities
-- Other common ones are beta-regression, where the response variable is a probability or proportion bounded between 0 and 1
-- Cumulative logistic mixed model is another common case, where the response variable is a categorical outcome with more than two possibilities
-  + For example a choice trial where insects are released into an olfactometer and may go down one of four arms where different odor attractants are found.
-  
-- The Bayesian modeling packages **brms** and **rstanarm** are also great alternatives that I would recommend looking into. I'm going to do a workshop on **brms** soon.
+Unfortunately we are only barely scratching the surface of generalized linear mixed models today. These are only a little bit of what you can do. I don't have time to cover all GLMM types in this workshop. For one thing, `glmer()` can only fit a small subset of GLMMs. For example, your response variable might be a categorical outcome with more than two possibilities. This would be the case in a choice trial where insects are released into an olfactometer and may go down one of four arms where different odor attractants are found. In that case, you would want to fit a multinomial GLMM. 
 
-# Hey! What about ...
+Other topics that you might be wondering about include
 
 - Repeated measures designs
 - Spatial autocorrelation
 - Overdispersion in count data
-- Zero inflation
+- Zero-inflation
 - Different types of random effects (G-side versus R-side) and error structures
 
-These are "advanced topics" in mixed modeling. They are out of scope for this workshop. 
+These topics are very near and dear to my heart and I am planning to develop workshops that cover them.
+
+Finally, you may have noticed there was no mention of Bayesian statistics. In many real world cases of data analysis, the "frequentist" methods we have covered today simply will not work. The best alternative is to use a Bayesian approach. I highly recommend the Bayesian R modeling packages **brms** and **rstanarm** to fit Bayesian GLMMs. I'm going to do a workshop on **brms** soon.
+
+We have one more lesson coming up today, where we are going to look at comparing means and testing hypotheses.
+
+# Exercises
+
+
+

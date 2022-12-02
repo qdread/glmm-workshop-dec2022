@@ -62,6 +62,13 @@ fert_biomass <- read_csv('datasets/fertilizer_biomass.csv') %>%
 fert_mm <- lmer(biomass ~ treatment + (1 | field), data = fert_biomass)
 ```
 
+By the way I am also going to set the global **ggplot2** theme to black on white because the default gray on white theme burns my eyeballs.
+
+```{r}
+theme_set(theme_bw())
+```
+
+
 If you recall, we could use `summary(fert_mm)` to show the coefficients for the intercept and the two non-control treatment levels, and t-tests associated with each one. But the inference that you're often interested in is whether the means of each treatment differ from one another.
 
 We can use the `emmeans()` function to make that comparison. The function can take many arguments, but it needs at least two. The first argument is a fitted model object. The second argument is a one-sided formula beginning with `~` that gives the variable or combination of variables for which we want to estimate the marginal means. In this model there is only one such variable, `treatment`. The result is an object which contains the estimated marginal means, which are averaged across all other fixed effects and all the random effects as well.
@@ -77,7 +84,7 @@ Note that we now have estimated marginal means and a confidence interval (defaul
 You can use the `plot()` function because `emmeans` objects have a built-in plotting method which will show the means and 95% confidence intervals.
 
 ```{r}
-plot(fert_emm) + theme_bw()
+plot(fert_emm)
 ```
 
 We can see from the plot that the 95% confidence intervals of the means overlap; however this does not mean they are not significantly different from one another. The `contrast()` function allows us to do comparisons between means. The first argument is the `emmeans` object we created just now, and the second argument, `method`, is the type of contrast. Using `method = 'pairwise'` means compare all pairs of treatments. It takes the difference between each pair of means and calculates the associated *t*-statistic and *p*-value. It automatically adjusts the *p*-value for multiple comparisons using the Tukey adjustment.
@@ -86,10 +93,10 @@ We can see from the plot that the 95% confidence intervals of the means overlap;
 contrast(fert_emm, method = 'pairwise')
 ```
 
-We can choose other methods of *p*-value adjustment using the `adjust` argument. In this case it makes very little difference.
+We can choose other methods of *p*-value adjustment using the `adjust` argument. I usually prefer the Sidak adjustment. In this case it makes very little difference.
 
 ```{r}
-contr_bonferroni <- contrast(fert_emm, method = 'pairwise', adjust = 'bonferroni')
+contr_bonferroni <- contrast(fert_emm, method = 'pairwise', adjust = 'sidak')
 
 contr_bonferroni
 ```
@@ -107,16 +114,16 @@ plot(contr_bonferroni) + geom_vline(xintercept = 0, linetype = 'dashed', linewid
 
 In this case, all of them are very far from 0.
 
-If you have many pairwise contrasts, it's pretty common to summarize them with "multiple comparison letters." You can get the letters for a comparison of `emmeans` using the `cld()` function from the **multcomp** package.
+If you have many pairwise contrasts, it's pretty common to summarize them with "multiple comparison letters." You can get the letters for a comparison of `emmeans` using the `cld()` function from the **multcomp** package. (CLD stands for Compact Letter Display.)
 
 ```{r}
-cld(fert_emm, adjust = 'bonferroni')
+cld(fert_emm, adjust = 'sidak')
 ```
 
 By default, you get labels `1`, `2`, `3` instead of `a`, `b`, `c`, but here is how to get the more familiar letters:
 
 ```{r}
-cld(fert_emm, adjust = 'bonferroni', Letters = letters)
+cld(fert_emm, adjust = 'sidak', Letters = letters)
 ```
 
 We can use other contrast methods. For instance we might only be concerned with the difference between the control and each other treatment. Specifying `method = 'trt.vs.ctrl'` means to only do contrasts between each other level and the reference level (the first level in the factor ordering). This will apply Dunnett's adjustment to the p-values which has higher power to detect differences from the control as we are ignoring differences between the non-control levels.
@@ -157,23 +164,81 @@ emm_borers
 Let's take the contrasts between each pair of treatments.
 
 ```{r}
-contrast(emm_borers, method = 'pairwise', adjust = 'bonferroni')
+contrast(emm_borers, method = 'pairwise', adjust = 'sidak')
 ```
 
 Notice that the second column is now called `ratio`. This is because when you subtract two values on a log scale, that is equivalent to taking the ratio of those values when you back-transform to the original data scale. Because our count data model uses a log link function, any comparisons we make are on a ratio scale. For example, the ratio `None / Late` is 2.72, meaning that the model estimates about 2.72 times as many corn borers would be expected on a plot with no fungal spores applied, versus one that received the late fungal spore application treatment.
 
+# Estimated marginal means with multiple predictor variables
+
+So far we've only looked at estimated marginal means for a single predictor variable. Let's look at a model where we had multiple main effects and an interaction effect. Remember back to the fish fillets model from the Lesson 3 exercises. Let's load that dataset again and fit the interaction model. The main effects are species (channel catfish and hybrid catfish) and preparation method (fresh, frozen, and raw), and the random intercept is for individual fish where there are multiple thickness measurements per fish.
+
+```{r}
+fish_fillets <- read_csv('datasets/fish_fillets.csv')
+fit_fillets <- lmer(thickness ~ species + prep + species:prep + (1|fishID), data = fish_fillets)
+```
+
+We can estimate the marginal means for species, which will average across all the preparation method types, and do the same for preparation method averaged across species.
+
+```{r}
+emm_species <- emmeans(fit_fillets, ~ species)
+emm_prep <- emmeans(fit_fillets, ~ prep)
+
+emm_species
+emm_prep
+```
+
+Notice we get a message that the `species` and `prep` variables are involved in an interaction. So we need to be careful about how we interpret these estimates.
+
+What if we wanted to get the estimated marginal mean for combinations of species and preparation method? We can do that by separating terms with a `+`:
+
+```{r}
+emm_species_x_prep <- emmeans(fit_fillets, ~ species + prep)
+
+emm_species_x_prep
+```
+
+Then if we use the `cld()` function to get the multiple comparisons letters, the comparison will be done for all six estimates.
+
+```{r}
+cld(emm_species_x_prep, adjust = 'sidak', Letters = letters)
+```
+
+If we want to do multiple comparisons of one variable grouped by another variable, we use the `|` symbol. For example, this code will allow us to compare preparation methods and do a multiple comparisons test, separately by species. `prep | species` means get estimated marginal means for `prep` grouped by `species`. Then the `cld()` comparison will be done within each species separately (correcting for a fewer number of comparisons in each case).
+
+```{r}
+emm_prep_within_species <- emmeans(fit_fillets, ~ prep | species)
+
+cld(emm_prep_within_species, adjust = 'sidak', Letters = letters)
+```
+
+The relative ordering of the prep methods is the same for both species, so whatever interaction there may be is not too strong.
+
 # Comparison of estimated marginal means versus ANOVA
 
-- If you properly account for multiple comparisons you do not need to worry about the F-test
+Some people have learned a "two-step" process where the first step is to examine the ANOVA table. If the *p*-value associated with the F-test is less than 0.05, only then do you proceed to the step of means comparisons; otherwise, you declare that the means are not different, end of story. However, if you properly account for multiple comparisons you do not need to worry about the F-test. I typically recommend against considering the F-test because it does not really give you a useful inference in most cases. The best it can do is say that there is *some* difference between the groups, but it does not tell you which are different or by how much.  
 
 # Hey! What about ...
 
-Likelihood ratio tests
+Another important component of hypothesis testing is model comparison. Different models that we can build represent different hypotheses about how the world works, and we might want to evaluate the relative amount of evidence for each one. You may have heard of likelihood ratio tests and information criteria. Those are probably the main ways of selecting or comparing mixed models, to decide whether particular fixed effect terms should be included. I would have loved to cover that in this workshop, but there is so much to learn and so little time. Baby steps ... I hope to cover that topic in a future workshop.
 
 # Course Recap
 
-What have we learned?
+This concludes the mixed models in R workshop. We have learned a lot in the past two days!
+
+- The basics of R, including variables, functions, scripts, and packages.
+- How to work with data frames in R, including tidying, reshaping, and summarizing.
+- How to fit linear mixed models with random intercepts and random slopes.
+- How to fit mixed models with crossed and nested effects and transformed responses.
+- How to fit generalized linear mixed models.
+- How to compare estimated marginal means from linear mixed models.
+
+This only scratches the surface of mixed models with R. Feel free to contact your friendly neighborhood area statistician (me) if you ever need help! I'm looking forward to seeing folks at the next workshop!
 
 # Exercises
 
-TBD
+## Exercise 1
+
+## Exercise 2
+
+## Exercise 3
