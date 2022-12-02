@@ -32,7 +32,7 @@ library(tidyverse)
 library(lmerTest)
 library(easystats)
 
-soilN_biomass <- read_csv('../datasets/soilN_biomass.csv')
+soilN_biomass <- read_csv('datasets/soilN_biomass.csv')
 ```
 
 Let's look at the data. Use functions you learned in lesson 2.
@@ -54,7 +54,7 @@ Here is a plot made using the **ggplot2** package. Don't worry about the code us
 ```{r}
 ggplot(soilN_biomass, aes(x = soilN, y = biomass, color = field)) +
   geom_point(size = 1.5) +
-  theme_classic()
+  theme_bw()
 ```
 
 You can see from the plot that the relationship between soil N and plant biomass is sort of unclear. Let's look at how we might fit a model to this dataset.
@@ -117,7 +117,7 @@ But what does the fitted trend look like? We will recreate the plot we made prev
 ```{r}
 ggplot(soilN_biomass, aes(x = soilN, y = biomass, color = field)) +
   geom_point(size = 1.5) +
-  theme_classic() +
+  theme_bw() +
   geom_abline(intercept = lm_coefs[1], slope = lm_coefs[2], size = 1)
 ```
 
@@ -144,7 +144,7 @@ separate_lm_coefs
 
 ggplot(soilN_biomass, aes(x = soilN, y = biomass, color = field)) +
   geom_point(size = 1.5) +
-  theme_classic() +
+  theme_bw() +
   geom_abline(aes(intercept = intercept, slope = slope, color = field), size = 1, data = separate_lm_coefs)
 ```
 
@@ -183,7 +183,7 @@ mm_pred_population <- data.frame(soilN = c(0, 10), biomass = predict(mm_fit, new
 
 ggplot(soilN_biomass, aes(x = soilN, y = biomass, color = field)) +
   geom_point(size = 1.5) +
-  theme_classic() +
+  theme_bw() +
   geom_line(data = mm_pred_group) +
   geom_line(data = mm_pred_population, color = 'black', size = 1)
 ```
@@ -208,7 +208,7 @@ mm_pred_population_randomslopes <- data.frame(soilN = c(0, 10), biomass = predic
 
 ggplot(soilN_biomass, aes(x = soilN, y = biomass, color = field)) +
   geom_point(size = 1.5) +
-  theme_classic() +
+  theme_bw() +
   geom_line(data = mm_pred_group_randomslopes) +
   geom_line(data = mm_pred_population_randomslopes, color = 'black', size = 1)
 ```
@@ -271,7 +271,7 @@ We'll need some different data for this part. We are still going to stick with f
 Read the data, then sort the fertilizer levels so that the order makes sense.
 
 ```{r}
-fert_biomass <- read_csv('../datasets/fertilizer_biomass.csv') %>%
+fert_biomass <- read_csv('datasets/fertilizer_biomass.csv') %>%
   mutate(treatment = factor(treatment, levels = c('control', 'low', 'high')))
 ```
 

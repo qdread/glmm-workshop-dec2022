@@ -28,7 +28,7 @@ library(tidyverse)
 library(easystats)
 library(lmerTest)
 
-maize <- read_csv('../datasets/pzm_maize.csv')
+maize <- read_csv('datasets/pzm_maize.csv')
 ```
 
 Take a look at the data frame.
@@ -100,7 +100,7 @@ Typically, researchers think of data transformation as something you only need t
 Here is an example situation where you might want to consider doing a log transformation. These data are a small subset of an ARS scientist's data. We have different varieties of barley crossed with different types of fungicide. Multiple plots of each combination of variety and fungicide were grown in an experimental block (called `Rep` in the dataset). Among other responses, the amount of DON (a mycotoxin) produced was measured, which is given here in units of parts per million (column `DON_ppm`).
 
 ```{r}
-barley_don <- read_csv('../datasets/barley_don.csv')
+barley_don <- read_csv('datasets/barley_don.csv')
 ```
 
 What do the data look like?

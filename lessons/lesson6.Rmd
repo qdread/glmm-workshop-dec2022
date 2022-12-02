@@ -19,7 +19,6 @@ At the end of this lesson, students will ...
 - Generate predictions from a mixed model.
 - Test specific hypotheses with contrasts.
 - Compare multiple group means and correct for multiple comparisons.
-- Compare different models with likelihood ratio tests.
 
 # Estimated marginal means
 
@@ -57,7 +56,7 @@ library(lmerTest)
 library(emmeans)
 library(multcomp)
 
-fert_biomass <- read_csv('../datasets/fertilizer_biomass.csv') %>%
+fert_biomass <- read_csv('datasets/fertilizer_biomass.csv') %>%
   mutate(treatment = factor(treatment, levels = c('control', 'low', 'high')))
 
 fert_mm <- lmer(biomass ~ treatment + (1 | field), data = fert_biomass)
@@ -73,42 +72,103 @@ fert_emm <- emmeans(fert_mm, ~ treatment)
 fert_emm
 ```
 
-Note that we now have estimated marginal means and a confidence interval (default 95%) for each one. The degrees of freedom are approximated, as must be the case with mixed models. 
+Note that we now have estimated marginal means and a confidence interval (default 95%) for each one. The degrees of freedom are approximated, as must be the case with mixed models. (There are different methods we can choose from to approximate the degrees of freedom but we will not get into that right now.)
 
 You can use the `plot()` function because `emmeans` objects have a built-in plotting method which will show the means and 95% confidence intervals.
 
 ```{r}
-plot(fert_emm)
+plot(fert_emm) + theme_bw()
 ```
 
-We can see from the plot that the 95% confidence intervals of the means overlap; however this does not mean they are not significantly different from one another. The `contrast()` function allows us to do a comparison 
+We can see from the plot that the 95% confidence intervals of the means overlap; however this does not mean they are not significantly different from one another. The `contrast()` function allows us to do comparisons between means. The first argument is the `emmeans` object we created just now, and the second argument, `method`, is the type of contrast. Using `method = 'pairwise'` means compare all pairs of treatments. It takes the difference between each pair of means and calculates the associated *t*-statistic and *p*-value. It automatically adjusts the *p*-value for multiple comparisons using the Tukey adjustment.
 
 ```{r}
 contrast(fert_emm, method = 'pairwise')
 ```
 
+We can choose other methods of *p*-value adjustment using the `adjust` argument. In this case it makes very little difference.
+
 ```{r}
-contrast(fert_emm, method = 'pairwise', adjust = 'bonferroni')
+contr_bonferroni <- contrast(fert_emm, method = 'pairwise', adjust = 'bonferroni')
+
+contr_bonferroni
 ```
+The `contrast` objects also have a built-in plotting method using the `plot()` function. 
+
+```{r}
+plot(contr_bonferroni)
+```
+
+I like to add a dashed line at zero which helps identify the contrasts for which the 95% confidence interval does not contain zero.
+
+```{r}
+plot(contr_bonferroni) + geom_vline(xintercept = 0, linetype = 'dashed', linewidth = 1)
+```
+
+In this case, all of them are very far from 0.
+
+If you have many pairwise contrasts, it's pretty common to summarize them with "multiple comparison letters." You can get the letters for a comparison of `emmeans` using the `cld()` function from the **multcomp** package.
+
 ```{r}
 cld(fert_emm, adjust = 'bonferroni')
 ```
+
+By default, you get labels `1`, `2`, `3` instead of `a`, `b`, `c`, but here is how to get the more familiar letters:
 
 ```{r}
 cld(fert_emm, adjust = 'bonferroni', Letters = letters)
 ```
 
-We can use other contrast methods. For instance we might only be concerned with the difference between the control and each other treatment. 
+We can use other contrast methods. For instance we might only be concerned with the difference between the control and each other treatment. Specifying `method = 'trt.vs.ctrl'` means to only do contrasts between each other level and the reference level (the first level in the factor ordering). This will apply Dunnett's adjustment to the p-values which has higher power to detect differences from the control as we are ignoring differences between the non-control levels.
 
 ```{r}
 contrast(fert_emm, method = 'trt.vs.ctrl')
 ```
 
+# Back-transformation
 
+In the example above, we weren't dealing with a model with a transformed response, or a GLMM with a link function. However if either of those things is true, the estimated marginal means will be output on the transformed scale and not the original data scale by default. But this is easy to fix. You can add an extra argument, `type = 'response'`, to `emmeans()`. This will tell it to present the estimated marginal means transformed back to the original data scale (known as the response scale).
+
+Let's revisit one of the examples from lesson 5 to illustrate this, the Stirret corn borers dataset.
+
+```{r}
+data('stirret.borers', package = 'agridat')
+
+stirret.borers <- stirret.borers %>%
+  mutate(trt = factor(trt, levels = c('None', 'Early', 'Late', 'Both')))
+
+glmm_borers <- glmer(count2 ~ trt + (1|block), data = stirret.borers, family = poisson)
+```
+
+Here are the estmated marginal means on the log scale.
+
+```{r}
+emmeans(glmm_borers, ~ trt)
+```
+
+And here they are on the response scale.
+
+```{r}
+emm_borers <- emmeans(glmm_borers, ~ trt, type = 'response')
+
+emm_borers
+```
+
+Let's take the contrasts between each pair of treatments.
+
+```{r}
+contrast(emm_borers, method = 'pairwise', adjust = 'bonferroni')
+```
+
+Notice that the second column is now called `ratio`. This is because when you subtract two values on a log scale, that is equivalent to taking the ratio of those values when you back-transform to the original data scale. Because our count data model uses a log link function, any comparisons we make are on a ratio scale. For example, the ratio `None / Late` is 2.72, meaning that the model estimates about 2.72 times as many corn borers would be expected on a plot with no fungal spores applied, versus one that received the late fungal spore application treatment.
 
 # Comparison of estimated marginal means versus ANOVA
 
 - If you properly account for multiple comparisons you do not need to worry about the F-test
+
+# Hey! What about ...
+
+Likelihood ratio tests
 
 # Course Recap
 

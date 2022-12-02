@@ -31,7 +31,7 @@ Let's say we have response data that is binary. For example, what if we are test
 Here is an example of what data from that study might look like. 
 
 ```{r}
-disease <- read_csv('../datasets/disease.csv')
+disease <- read_csv('datasets/disease.csv')
 ```
 
 Here I will use the `group_by()` and `summarize()` functions to make a table of how many animals in each pen and each treatment got the disease.

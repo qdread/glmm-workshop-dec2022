@@ -44,7 +44,7 @@ Note we are going to use tidyverse packages.
 
 # Reading in data
 
-If you are using RStudio Cloud, the file `xxxx.csv` is included in the `datasets` folder. Otherwise, you will need to download the file locally and replace `datasets` with the file path to the location on your system where the file is found. For example it might be `C:/Users/yourname/Documents/r_workshop_datasets/xxxx.csv`. Notice that `/` (forward slash) is used, even on Windows!
+If you are using RStudio on the cloud, the file `small_mammals.csv` is included in the `datasets` folder. Otherwise, you will need to download the file locally and replace `datasets` with the file path to the location on your system where the file is found. For example it might be `C:/Users/yourname/Documents/r_workshop_datasets/small_mammals.csv`. Notice that `/` (forward slash) is used, even on Windows!
 
 Load the packages we'll need for this library. Read in an external file using the `read_csv()` function from the tidyverse package **readr**. There is a base R function for this as well but the **readr** function has better default values and reads large files more quickly. Also, `read_csv` returns a special kind of data frame called a "tibble" that works better with the other tidyverse functions.
 
