@@ -142,24 +142,50 @@ We will revisit this model in a later lesson when we talk about comparing means.
 
 # Exercises
 
-For these exercises, we will use the `besag.beans` dataset which is part of the **agridat** package, an R package that has a bunch of classic datasets from agricultural science. You can load the dataset using 
+For Exercise 1 and 2, we will use the `fisher.barley` dataset which is part of the **agridat** package, an R package that has a bunch of classic datasets from agricultural science. You can load the dataset using 
 
 ```{r, eval = FALSE}
-data(besag.beans, package = 'agridat')
+data(fisher.barley, package = 'agridat')
 ```
 
-> NOTE: If you are running R locally and were unable to install the **agridat** package, I have provided the dataset as a CSV file: `besag.beans <- read_csv('datasets/besag.beans.csv')`
+> NOTE: If you are running R locally and were unable to install the **agridat** package, I have provided the dataset as a CSV file: `fisher.barley <- read_csv('datasets/fisher.barley.csv')`
 
 ## Exercise 1
 
-Examine the dataset. We have genotypes being grown in
+Examine the dataset. We have five genotypes of barley (`gen`) being grown across six locations in Minnesota (`loc`) in two different years (`year`): 1931 and 1932.
+
+Convert year to a factor varaible in the data frame. Why is it important to do this?
+  + *Hint*: [Use `mutate()` and `factor()`.]{.spoiler}
+
+## Exercise 2
+
+A) Fit a linear mixed model with `protein` as a response variable, genotype `gen` as a fixed effect, and combination of location `loc` and year `year` as a 
+
+## Exercise 3
+
+For exercises 3 and 4, we will use data collected by ARS scientists (with details removed and random noise added). The data come from a bioassay where bacterial biomass was measured in an experimental treatment with the goal of reducing biomass, and compared with two different negative controls. The scientists did four runs of the growth assay, with variable numbers of replicates in each run. THe response variable is `biomass` which must be a positive value.
+
+Read the data in:
+
+```{r, eval = FALSE}
+bioassay <- read_csv('datasets/bioassay.csv')
+```
+
+Fit a linear mixed model with biomass as the response variable, 
+
+## Exercise 4
 
 # Answers
 
 ## Exercise 1
 
 <p class="spoiler">
+```{r, eval = FALSE}
+fisher.barley <- fisher.barley %>%
+  mutate(year = factor(year))
+```
 
+We need to do this because we are treating year as a categorical variable, essentially as a component of the environment. With only two years, it is not possible to treat year as a continuous variable to estimate linear trends in the responses over time.
 </p>
 
 ## Exercise 2

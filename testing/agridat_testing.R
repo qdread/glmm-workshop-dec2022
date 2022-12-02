@@ -16,3 +16,15 @@ data(stirret.borers)
 notglm2 <- lmer(count2 ~ trt + (1|block), data = stirret.borers)
 
 glm2 <- glmer(count2 ~ trt + (1|block), data = stirret.borers, family = poisson)
+
+# Data that have multiple random effects 
+
+data(besag.beans, package = 'agridat')
+library(lmerTest)
+library(easystats)
+
+m1 <- lmer(yield ~ gen + (1|row) + (1|col), data = besag.beans)
+
+check_model(m1)
+
+# Data requiring a transformation

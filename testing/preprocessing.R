@@ -206,13 +206,27 @@ example_fillet_data <- example_fillet_data %>%
 write_csv(example_fillet_data, 'datasets/fish_fillets.csv')
 
 ### Data to use for an exercise with data transformation: Balint-Kurti and Kim data
-## FIXME this is not up to date
-dat <- read_xlsx('data/misc/balint_kurti_kim_data_v2.xlsx', sheet = 1, skip = 2, n_max = 11, na = '.') %>%
+library(readxl)
+library(tidyverse)
+dat <- read_xlsx('C:/Users/qdread/onedrive_usda/ars_projects/misc/balint_kurti_kim_data_v2.xlsx', sheet = 1, skip = 2, n_max = 11, na = '.') %>%
   rename('experiment' = Treatment, 'replicate' = ...2) %>%
   fill(experiment, .direction = 'down') %>%
-  pivot_longer(A:H, names_to = 'treatment')
+  pivot_longer(A:H, names_to = 'treatment') %>%
+  filter(treatment %in% c('D', 'E', 'F')) %>%
+  mutate(treatment = factor(treatment, labels = c('negative control 1', 'experimental', 'negative control 2')))
 
-trt_names <- c('35sRP1D+547 (experimental)', '547-5+EV (negative control)', '35sRp1D+EV (negative control)')
-trt_names_short <- c('35sRP1D+547', '547-5+EV', '35sRp1D+EV')
+# Add noise
+set.seed(631)
+dat <- dat %>%
+  mutate(value = exp(log(value) + rnorm(n(), 0, 0.1)))
 
+dat <- dat %>%
+  mutate(experiment = factor(experiment))
+
+modnolog <- lmer(value ~ treatment + (1|experiment), data = dat)
 mod <- lmer(log(value) ~ treatment + (1|experiment), data = dat)
+
+check_model(modnolog)
+check_model(mod)
+
+write_csv(dat %>% rename(biomass=value), 'datasets/bioassay.csv')
