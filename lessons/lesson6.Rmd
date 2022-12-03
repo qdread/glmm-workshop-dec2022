@@ -237,10 +237,65 @@ This only scratches the surface of mixed models with R. Feel free to contact you
 
 # Exercises
 
-For these exercises, we will refit some of the other models from previous lessons, estimate the marginal means, and compare them.
+For these exercises, we will get practice with estimated marginal means in the same way that we did in the rest of this lesson: refitting a model from a previous lesson, estimating the marginal means, and comparing them.
+
+We will refit the Jansen apple model from the lesson 5 exercises:
+
+```{r, eval = FALSE}
+data(jansen.apple, package = 'agridat')
+jansen.apple <- jansen.apple %>%
+  mutate(inoculum = factor(inoculum))
+fit_apples <- glmer(cbind(y, n - y) ~ gen + inoculum + gen:inoculum + (1|block), data = jansen.apple, family = binomial(link = 'logit'))
+```
+## Exercise 1
+
+A) Find the estimated marginal means of number of infected apple trees by inoculum. Produce the means on the response scale, not the logit scale.
+  + *Hint*: [You will need the formula `~ inoculum` and `type = 'response'`.]{.spoiler}
+B) Make a plot of the estimated marginal means.
+C) Take the pairwise contrasts between them, using the Sidak adjustment for multiple comparisons.
+  + *Hint*: [You will need to use `method = 'pairwise'` and `adjust = 'sidak'`.]{.spoiler}
+D) Output the compact letter display with the same multiple comparison adjustment.
+  + *Hint*: [You can use `Letters = letters` to get lowercase letters instead of numbers for the groups.]{.spoiler}
+  
+## Exercise 2
+
+Do the same as in Exercise 1, but for genotype.
+
+## Exercise 3
+
+Find the estimated marginal means by inoculum within each genotype and output the compact letter display, again using the Sidak adjustment. 
+  + *Hint*: [Use the formula `~ inoculum | genotype`.]{.spoiler}
+
+# Answers
 
 ## Exercise 1
 
+<p class="spoiler">
+```{r, eval = FALSE}
+emm_inoculum <- emmeans(fit_apples, ~ inoculum, type = 'response')
+plot(emm_inoculum)
+contrast(emm_inoculum, method = 'pairwise', adjust = 'sidak')
+cld(emm_inoculum, adjust = 'sidak', Letters = letters)
+```
+</p>
+
 ## Exercise 2
 
+<p class="spoiler">
+```{r, eval = FALSE}
+emm_genotype <- emmeans(fit_apples, ~ gen, type = 'response')
+plot(emm_genotype)
+contrast(emm_genotype, method = 'pairwise', adjust = 'sidak')
+cld(emm_genotype, adjust = 'sidak', Letters = letters)
+```
+</p>
+
 ## Exercise 3
+
+<p class="spoiler">
+```{r, eval = FALSE}
+emm_inoc_within_genotype <- emmeans(fit_apples, ~ inoculum | gen, type = 'response')
+cld(emm_inoc_within_genotype, adjust = 'sidak', Letters = letters)
+```
+</p>
+

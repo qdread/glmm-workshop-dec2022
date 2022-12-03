@@ -118,13 +118,13 @@ ggplot(barley_don, aes(x = Variety, y = DON_ppm, fill = Fungicide)) +
 We can fit a fairly simple model to these data, with variety, fungicide type, and their interaction as fixed effects, and experimental block (`Rep`) as random intercept.
 
 ```{r}
-fit_don <- lmer(DON_ppm ~ Variety + Fungicide + Variety:Fungicide + (1|Rep), data = DON2021)
+fit_don <- lmer(DON_ppm ~ Variety + Fungicide + Variety:Fungicide + (1|Rep), data = barley_don)
 ```
 
 However, I would recommend fitting a model with the log-transformed `DON_ppm` variable as the response variable. You can do the log transformation directly in the model statement by surrounding the name of the variable with `log()`.
 
 ```{r}
-fit_don_log <- lmer(log(DON_ppm) ~ Variety + Fungicide + Variety:Fungicide + (1|Rep), data = DON2021)
+fit_don_log <- lmer(log(DON_ppm) ~ Variety + Fungicide + Variety:Fungicide + (1|Rep), data = barley_don)
 ```
 
 It makes sense to fit the model to the logarithm of DON concentration because concentration is on a ratio scale, so multiplicative changes in concentration are the most meaningful to consider.

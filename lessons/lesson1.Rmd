@@ -136,6 +136,42 @@ If you don't even know the name of the function you're searching for, use `??` t
 ??sequence
 ```
 
+## Types of output
+
+When you execute some R code, there may be some output. As we just mentioned, it will print to the console unless you assign the output to a variable. Some code may produce other output as a "side effect" other than what is printed to the console. For instance, `plot()` produces a plot image in a different window.
+
+As an example here is some plotting code using a built-in R dataset called `mtcars` which will plot gas mileage `mpg` as a function of horsepower `hp`.
+
+```{r}
+plot(mpg ~ hp, data = mtcars)
+```
+
+There are also three types of messages that code can produce in addition to its output: *errors*, *warnings*, and *notes*.
+
+## Errors
+
+An error indicates that something is wrong with the code so that it cannot produce any output. For instance if we use an uneven number of parentheses:
+
+```{r}
+sin(pi))
+```
+
+## Warnings
+
+Both warnings and notes mean that the code ran and produced output, but they are R trying to tell you something potentially important. For instance if we try to take the logarithm of a negative number, the result will be returned as `NaN` (not a number), and R will issue a warning.
+
+```{r}
+log(-5)
+```
+
+## Notes
+
+A note is just that, a note. Everything is still fine! For example if we try to print an extremely long sequence of 0s to the console, it will only print a limited number and then give us a message of how many were omitted.
+
+```{r}
+rep(0, 100000)
+```
+
 
 # Data types in R
 
