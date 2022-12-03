@@ -259,12 +259,27 @@ What is the average number of trees that got apple canker by inoculum level? By 
 
 A) Fit a generalized linear mixed model with infection status as the response variable, genotype, inoculum level, and their interaction as fixed effects, and block as a random intercept. 
 
-> NOTE: This dataset has a different format. Instead of one row per individual, the numbers of infected trees in each block are in each row. `glmer()` can take data in this format if you use `cbind(y, n - y)` as the response variable.
+> NOTE: This dataset has a different format than what we saw previously for binary data. Instead of one row per individual, the numbers of infected trees in each block are in each row. `glmer()` can take data in this format if you use `cbind(y, n - y)` as the response variable.
 
   + *Hint*: [Don't forget `family = binomial(link = 'logit')`!]{.spoiler}
 
 B) What do the diagnostic plots tell us?
 C) What does the model summary tell us?
+
+## Exercise 3
+
+For the next two exercises we will use another **agridat** dataset, the Beall webworms dataset from 1940. This dataset has counts of webworms in a beet field arranged into experimental blocks (`block`) with two different insecticide treatments, spray insecticide (`spray`) and lead arsenate insecticide (`lead`). The `y` column is the number of webworms counted in the experimental plot. 
+
+Load the data with `data('beall.webworms', package = 'agridat')` or if you are running R locally and don't have access to the **agridat** package, use `beall.webworms <- read_csv('datasets/beall.webworms.csv')`.
+
+A) Fit a generalized linear mixed model with webworm count as the response variable, a random intercept for block, and fixed effects for spray insecticide, lead insecticide, and their interaction. Use Poisson distribution for the response family.
+B) What do the diagnostic plots tell us?
+C) What does the model summary tell us?
+
+## Exercise 4
+
+This is a bonus exercise because we did not address count data with excessive zeros yet. One way to deal with count data with too many zeros to get a good fit with the Poisson distribution is to fit a negative binomial GLMM instead. This can be done with the `glmer.nb()` function. Try it out and see if you can get a better fit.
+  + *Hint*: [Get help by calling `?glmer.nb`.]{.spoiler}
 
 # Answers
 
@@ -285,7 +300,7 @@ jansen.apple %>% group_by(inoculum, gen) %>% summarize(infected = mean(y))
 
 <p class="spoiler">
 ```{r, eval = FALSE}
-fit <- glmer(cbind(y, n - y) ~ gen + inoculum + gen:inoculum + (1|block), data = jansen.apple, family = binomial)
+fit <- glmer(cbind(y, n - y) ~ gen + inoculum + gen:inoculum + (1|block), data = jansen.apple, family = binomial(link = 'logit'))
 check_model(fit)
 summary(fit)
 ```
@@ -295,14 +310,24 @@ The diagnostics look reasonably good but we get a singular fit. The random effec
 
 ## Exercise 3
 
-For the next two exercises we will use another **agridat** dataset, the Beall webworms dataset from 1940. This dataset has counts of webworms in a beet field with two different insecticide treatments
-
 <p class="spoiler">
+```{r, eval = FALSE}
+fit <- glmer(y ~ spray + lead + spray:lead + (1|block), data = beall.webworms, family = poisson(link = 'log'))
+check_model(fit)
+summary(fit)
+```
 
+Some of the model diagnostics are problematic, particularly the overdispersion diagnostic. This indicates there are too many counts of 0 in the dataset for the Poisson distribution to be a good fit. We see large differences between the different treatments in the model summary, but it is unclear whether this is a good model.
 </p>
 
 ## Exercise 4
 
 <p class="spoiler">
+```{r, eval = FALSE}
+fit_nb <- glmer.nb(y ~ spray + lead + spray:lead + (1|block), data = beall.webworms)
+check_model(fit_nb)
+summary(fit_nb)
+```
 
+We see similar but somewhat weaker effects in the negative binomial model. The diagnostic plots are improved but still not ideal. This may be adequate but it may also be an option to use a nonparametric model or a zero-inflated Poisson model.
 </p>

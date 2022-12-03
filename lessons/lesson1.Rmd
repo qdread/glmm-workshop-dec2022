@@ -321,7 +321,7 @@ Type `?Distributions` in your console to see help documentation about all the bu
 
 If you get an error or your code doesn't work, here are some things to check.
 
-- Punctuation: close all parentheses, brackets, and quotation marks. (Notice parentheses can be used both for function arguments and to group expressions together.)
+- *Punctuation*: close all parentheses, brackets, and quotation marks. (Notice parentheses can be used both for function arguments and to group expressions together.)
 
 ```{r}
 (5+3))/2 # Nope
@@ -329,7 +329,7 @@ If you get an error or your code doesn't work, here are some things to check.
 (5+3)/2 # Yep
 ```
 
-- Spelling: are the functions and variables spelled correctly?
+- *Spelling*: are the functions and variables spelled correctly?
 
 ```{r}
 my_variable <- 100000
@@ -337,7 +337,7 @@ my_variable <- 100000
 myvariable
 ```
 
-- Spaces: You can put spaces in between most things in R to make the code more readable, but never break up the name of a function or variable.
+- *Spaces*: You can put spaces in between most things in R to make the code more readable. I recommend using spaces in this way. For example `x<-log(500,base=2)` is the same as `x <- log(500, base = 2)` but the latter is much easier to read especially when you have long and complicated expressions. But you can't put spaces in the middle of the name of a function or variable, otherwise you will get an error.
 
 ```{r}
 some_numbers <- 1:5
@@ -350,7 +350,7 @@ some_numbers <- 1:5
 ```
 
 
-- Case: R is CASE-SENSITIVE.
+- *Case*: R is CASE-SENSITIVE.
 
 ```{r}
 sum(1:10)

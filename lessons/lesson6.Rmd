@@ -237,6 +237,8 @@ This only scratches the surface of mixed models with R. Feel free to contact you
 
 # Exercises
 
+For these exercises, we will refit some of the other models from previous lessons, estimate the marginal means, and compare them.
+
 ## Exercise 1
 
 ## Exercise 2
