@@ -39,11 +39,11 @@ If you want to study up on R or statistical models before the workshop, here are
 Time                      | Activity
 ------------------------- | ----------------------------------------------------------
 9:00-9:15 AM              | Introductions, troubleshooting
-9:15-10:15 AM             | [**Lesson 1**: R Boot Camp: the very basics](lessons/lesson1.html)
+9:15-10:15 AM             | [**Lesson 1**: R Boot Camp: the very basics](lessons/lesson1)
 10:15-10:45 AM            | *break*
-10:45-11:30 AM            | [**Lesson 2**: R Boot Camp: working with data frames](lessons/lesson2.html)
+10:45-11:30 AM            | [**Lesson 2**: R Boot Camp: working with data frames](lessons/lesson2)
 11:30-11:45 AM            | *break*
-11:45 AM-12:45 PM         | [**Lesson 3**: What are LMMs? Fit our first LMM!](lessons/lesson3.html)
+11:45 AM-12:45 PM         | [**Lesson 3**: What are LMMs? Fit our first LMM!](lessons/lesson3)
 12:45-2:00 PM             | *lunch break*
 2:00 PM-4:00 PM           | **Office Hours**: Students will work on data and code. Quentin will answer questions and troubleshoot.
 
@@ -52,11 +52,11 @@ Time                      | Activity
 Time                      | Activity
 ------------------------- | ----------------------------------------------------------
 9:00-9:15 AM              | Recap of Day 1
-9:15-10:15 AM             | [**Lesson 4**: Going further with mixed models](lessons/lesson4.html)
+9:15-10:15 AM             | [**Lesson 4**: Going further with mixed models](lessons/lesson4)
 10:15-10:45 AM            | *break*
-10:45-11:30 AM            | [**Lesson 5**: Generalized linear mixed models](lessons/lesson5.html)
+10:45-11:30 AM            | [**Lesson 5**: Generalized linear mixed models](lessons/lesson5)
 11:30-11:45 AM            | *break*
-11:45 AM-12:45 PM         | [**Lesson 6**: Estimating and comparing treatment means](lessons/lesson6.html)
+11:45 AM-12:45 PM         | [**Lesson 6**: Estimating and comparing treatment means](lessons/lesson6)
 12:45-2:00 PM             | *lunch break*
 2:00 PM-4:00 PM           | **Office Hours**: Students will work on data and code. Quentin will answer questions and troubleshoot.
 
