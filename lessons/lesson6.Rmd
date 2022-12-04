@@ -12,7 +12,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE, message = TRUE, warning = TRUE)
 ```
 
-# Learning objectives
+# Lesson 6 learning objectives
 
 At the end of this lesson, students will ...
 
@@ -42,7 +42,9 @@ This is even more important to keep in mind when we are averaging the estimated 
 
 The [**emmeans** package](https://cran.r-project.org/package=emmeans) is the workhorse of this section. It was developed by Russ Lenth, an emeritus statistics professor from the University of Iowa. I am very indebted to Russ for all his help -- even though he is retired, he somehow always manages to answer any question I post on the emmeans package's GitHub page within a few hours, and almost always fixes the problem right away. He is like the "man behind the curtain" in the Wizard of Oz -- whenever I appear to be helping ARS scientists with their stats, I am actually going to him to get the answer!
 
-(insert goofy pictures here)
+![](../public/images/russlenth.jpg){: height="200px" }![](../public/images/wizardofoz.jpg){: height="200px" }
+
+*mild-mannered professor or wizard?*
 
 Today we're only going to have time for a brief introduction to the capabilities of **emmeans**. The [**emmeans** package page](https://cran.r-project.org/package=emmeans) has a long list of vignettes that you might find helpful if you want to get deeper into it. For example, **emmeans** also works with some of the Bayesian modeling packages in R, so you can use similar code to get the estimated means regardless of what method you used to fit the model.
 
@@ -52,7 +54,7 @@ Let's revisit the fake biomass versus fertilization dataset that we worked with 
 
 ```{r}
 library(tidyverse)
-library(lmerTest)
+library(lme4)
 library(emmeans)
 library(multcomp)
 
@@ -247,7 +249,7 @@ jansen.apple <- jansen.apple %>%
   mutate(inoculum = factor(inoculum))
 fit_apples <- glmer(cbind(y, n - y) ~ gen + inoculum + gen:inoculum + (1|block), data = jansen.apple, family = binomial(link = 'logit'))
 ```
-## Exercise 1
+### Exercise 1
 
 A) Find the estimated marginal means of number of infected apple trees by inoculum. Produce the means on the response scale, not the logit scale.
   + *Hint*: [You will need the formula `~ inoculum` and `type = 'response'`.]{.spoiler}
@@ -257,18 +259,18 @@ C) Take the pairwise contrasts between them, using the Sidak adjustment for mult
 D) Output the compact letter display with the same multiple comparison adjustment.
   + *Hint*: [You can use `Letters = letters` to get lowercase letters instead of numbers for the groups.]{.spoiler}
   
-## Exercise 2
+### Exercise 2
 
 Do the same as in Exercise 1, but for genotype.
 
-## Exercise 3
+### Exercise 3
 
 Find the estimated marginal means by inoculum within each genotype and output the compact letter display, again using the Sidak adjustment. 
   + *Hint*: [Use the formula `~ inoculum | genotype`.]{.spoiler}
 
 # Answers
 
-## Exercise 1
+### Exercise 1
 
 <p class="spoiler">
 ```{r, eval = FALSE}
@@ -279,7 +281,7 @@ cld(emm_inoculum, adjust = 'sidak', Letters = letters)
 ```
 </p>
 
-## Exercise 2
+### Exercise 2
 
 <p class="spoiler">
 ```{r, eval = FALSE}
@@ -290,7 +292,7 @@ cld(emm_genotype, adjust = 'sidak', Letters = letters)
 ```
 </p>
 
-## Exercise 3
+### Exercise 3
 
 <p class="spoiler">
 ```{r, eval = FALSE}

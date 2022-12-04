@@ -12,7 +12,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE, message = TRUE, warning = TRUE)
 ```
 
-# Learning objectives
+# Lesson 4 learning objectives
 
 At the end of this lesson, students will ...
 
@@ -26,6 +26,7 @@ For this next example, we are finally going to use some real data! We're going t
 ```{r}
 library(tidyverse)
 library(easystats)
+library(lme4)
 library(lmerTest)
 
 maize <- read_csv('datasets/pzm_maize.csv')
@@ -150,14 +151,14 @@ data(fisher.barley, package = 'agridat')
 
 > NOTE: If you are running R locally and were unable to install the **agridat** package, I have provided the dataset as a CSV file: `fisher.barley <- read_csv('datasets/fisher.barley.csv')`
 
-## Exercise 1
+### Exercise 1
 
 Examine the dataset. We have five genotypes of barley (`gen`) being grown across six environments in Minnesota (`env`) in two different years (`year`): 1931 and 1932.
 
 Convert year to a factor varaible in the data frame. Why is it important to do this?
   + *Hint*: [Use `mutate()` and `factor()`.]{.spoiler}
 
-## Exercise 2
+### Exercise 2
 
 A) Fit a linear mixed model with `yield` as a response variable, genotype `gen` as a fixed effect, and environment `env` and `year` as crossed random intercepts.
   + *Hint*: [`(1|env)` and `(1|year)`]{.spoiler}
@@ -166,7 +167,7 @@ B) Fit a linear mixed model with the same response variable and fixed effect, bu
 C) What is the difference, if any, between the models' results?
   + *Hint*: [Try `summary()`, `fixef()`, `ranef()`, and `anova()`.]{.spoiler}
 
-## Exercise 3
+### Exercise 3
 
 For exercises 3 and 4, we will use data collected by ARS scientists (with details removed and random noise added). The data come from a bioassay where bacterial biomass was measured in an experimental treatment with the goal of reducing biomass, and compared with two different negative controls. The scientists did four runs of the growth assay, with variable numbers of replicates in each run. THe response variable is `biomass` which must be a positive value.
 
@@ -179,14 +180,14 @@ bioassay <- read_csv('datasets/bioassay.csv')
 A) Fit a linear mixed model with `biomass` as the response variable, `treatment` as a fixed effect, and `experiment` as a random intercept. What do you notice?
 B) Examine the model diagnostic plots. Do you notice any issues?
 
-## Exercise 4
+### Exercise 4
 
 Change the model to deal with the issue from the previous exercise. Examine the diagnostic plots again.
   + *Hint*: [Try transforming the response variable!]{.spoiler}
 
 # Answers
 
-## Exercise 1
+### Exercise 1
 
 <p class="spoiler">
 ```{r, eval = FALSE}
@@ -197,7 +198,7 @@ fisher.barley <- fisher.barley %>%
 We need to do this because we are treating year as a categorical variable, essentially as a component of the environment. With only two years, it is not possible to treat year as a continuous variable to estimate linear trends in the responses over time.
 </p>
 
-## Exercise 2
+### Exercise 2
 
 <p class="spoiler">
 ```{r, eval = FALSE}
@@ -208,7 +209,7 @@ fit_nested <- lmer(yield ~ gen + (1|env) + (1|year:env), data = fisher.barley)
 Look at the model output with `summary(fit_crossed)`, `fixef(fit_crossed)`, `ranef(fit_crossed)`, and `anova(fit_crossed)`, and do the same for the other model. The fixed effect estimates are the same but with different degrees of freedom due to the different grouping structures. The random effect estimates are different. The ANOVA has the same sums of squares but because of the different degrees of freedom, the F-statistics and *p*-values are different.
 </p>
 
-## Exercise 3
+### Exercise 3
 
 <p class="spoiler">
 ```{r, eval = FALSE}
@@ -224,7 +225,7 @@ check_model(fit)
 The residuals look good enough, but the posterior predictive check shows predictions of negative biomass.
 </p>
 
-## Exercise 4
+### Exercise 4
 
 <p class="spoiler">
 Here is the same model with the only difference being that we log-transform the response.

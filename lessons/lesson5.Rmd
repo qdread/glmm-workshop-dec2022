@@ -12,7 +12,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE, message = TRUE, warning = TRUE)
 ```
 
-# Learning objectives
+# Lesson 5 learning objectives
 
 At the end of this lesson, students will ...
 
@@ -20,15 +20,19 @@ At the end of this lesson, students will ...
 - Fit a generalized linear mixed model to binary outcome data.
 - Fit a generalized linear mixed model to count outcome data.
 
-# Generalized linear mixed models
+# GLMM with binary response variable
 
 Taking the log transformation of the response variable before fitting the model is a good solution for many types of data. However it won't always work. For many classes of data, we can't just do a transformation to "shoehorn" the data into a form that will work with a general linear mixed model. So that means we need to take the next step and enter the world of general*ized* linear mixed models, or GLMM as they are affectionately known. (It's a terrible name because general linear mixed model and generalized linear mixed model begin with the same letters, so it's a little bit confusing, but we are stuck with that.)
-
-# GLMM with binary response variable
 
 Let's say we have response data that is binary. For example, what if we are testing the ability of a vaccine to prevent some disease in animals? We would have a control group that was not inoculated and a treatment group that was inoculated. The response variable is whether or not the disease is present. The animals are raised in different pens of 10 animals each in a complete block design so we need to account for the effect of pen on disease as well, using a random intercept.
 
 Here is an example of what data from that study might look like. 
+
+```{r, message = FALSE}
+library(tidyverse)
+library(lme4)
+library(easystats)
+```
 
 ```{r}
 disease <- read_csv('datasets/disease.csv')
@@ -250,12 +254,12 @@ jansen.apple <- jansen.apple %>%
 ```
 
 
-## Exercise 1
+### Exercise 1
 
 What is the average number of trees that got apple canker by inoculum level? By genotype? By combination of inoculum level and genotype?
   + *Hint*: [Use `group_by()`, `summarize()`, and `mean()`.]{.spoiler}
 
-## Exercise 2
+### Exercise 2
 
 A) Fit a generalized linear mixed model with infection status as the response variable, genotype, inoculum level, and their interaction as fixed effects, and block as a random intercept. 
 
@@ -266,7 +270,7 @@ A) Fit a generalized linear mixed model with infection status as the response va
 B) What do the diagnostic plots tell us?
 C) What does the model summary tell us?
 
-## Exercise 3
+### Exercise 3
 
 For the next two exercises we will use another **agridat** dataset, the Beall webworms dataset from 1940. This dataset has counts of webworms in a beet field arranged into experimental blocks (`block`) with two different insecticide treatments, spray insecticide (`spray`) and lead arsenate insecticide (`lead`). The `y` column is the number of webworms counted in the experimental plot. 
 
@@ -276,14 +280,14 @@ A) Fit a generalized linear mixed model with webworm count as the response varia
 B) What do the diagnostic plots tell us?
 C) What does the model summary tell us?
 
-## Exercise 4
+### Exercise 4
 
 This is a bonus exercise because we did not address count data with excessive zeros yet. One way to deal with count data with too many zeros to get a good fit with the Poisson distribution is to fit a negative binomial GLMM instead. This can be done with the `glmer.nb()` function. Try it out and see if you can get a better fit.
   + *Hint*: [Get help by calling `?glmer.nb`.]{.spoiler}
 
 # Answers
 
-## Exercise 1
+### Exercise 1
 
 <p class="spoiler">
 ```{r, eval = FALSE}
@@ -296,7 +300,7 @@ jansen.apple %>% group_by(inoculum, gen) %>% summarize(infected = mean(y))
 ```
 </p>
 
-## Exercise 2
+### Exercise 2
 
 <p class="spoiler">
 ```{r, eval = FALSE}
@@ -308,7 +312,7 @@ summary(fit)
 The diagnostics look reasonably good but we get a singular fit. The random effect estimates for block are all zero. The effect of block is very small and probably negligible. The model summary shows us that as inoculum increases, the probability of infection increases. The interaction term between Jonathan and inoculum level 5000 indicates that the increase in infection probability as inoculum increases is much weaker for the Jonathan variety.
 </p>
 
-## Exercise 3
+### Exercise 3
 
 <p class="spoiler">
 ```{r, eval = FALSE}
@@ -320,7 +324,7 @@ summary(fit)
 Some of the model diagnostics are problematic, particularly the overdispersion diagnostic. This indicates there are too many counts of 0 in the dataset for the Poisson distribution to be a good fit. We see large differences between the different treatments in the model summary, but it is unclear whether this is a good model.
 </p>
 
-## Exercise 4
+### Exercise 4
 
 <p class="spoiler">
 ```{r, eval = FALSE}

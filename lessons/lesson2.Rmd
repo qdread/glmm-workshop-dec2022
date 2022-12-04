@@ -13,7 +13,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE, message = TRUE, warning = TRUE)
 ```
 
-# Learning objectives
+# Lesson 2 learning objectives
 
 At the end of this lesson, students will ...
 
@@ -28,19 +28,11 @@ We will not go into every possible R data type for this lesson. The one you real
 
 A data frame corresponds to a table or spreadsheet of data. Each column has its own data type. You might have numeric, character, and factor columns all in the same data frame. Ideally, each row will correspond to an individual observation.
 
-What are some things you can do with a data frame? 
+Data frames in R are the workhorses for data manipulation and analysis. There are a lot of things you can do with data frames; we will go over some of the basics in this lesson.
 
-- dim()
-- nrow(), ncol()
-- names()
-- str()
-- summary()
-- head()
-- tail()
+# Note about tidyverse
 
-# Loading packages
-
-Note we are going to use tidyverse packages.
+In this lesson, I am going to teach you functions from the **tidyverse** group of packages. These are a set of packages, designed to work together, that make it easy to wrangle and manipulate data in R. All of the stuff I am going to teach can be done with base R code without any packages. There are also alternatives such as **data.table**. Personally I use a combination of all three. However for this lesson I chose to teach tidyverse for a couple of reasons. For one thing, it's the easiest for beginners to grasp. Also, it has become really popular and widespread in the last few years. So a lot of the other R resources you will find are now done with the tidyverse. So why swim against the tide? There are pros and cons to the tidyverse, but it is great for starting out with R. If you become a big time R programmer I would recommend learning all the base R code and other packages like **data.table** in the future.
 
 # Reading in data
 
@@ -58,9 +50,7 @@ The data we are reading in here is a set of body measurements of small mammals f
 
 # Examining contents of a data frame
 
-- dimensions
-- names of rows and columns
-- index by row number, column number, row name, and column name
+There are a lot of R functions and operators for looking at your data frame. We can get summary information on a data frame or pull out individual bits of data from it. We'll go through a few ways of doing that.
 
 ## Summary information about a data frame
 
@@ -159,7 +149,7 @@ select(dat, taxonID, weight)
 
 We can calculate summary statistics on the entire data frame.
 
-# Dealing with missing data
+## Dealing with missing data
 
 Summary methods for data frames tell you how many missing values there are.
 
@@ -191,7 +181,7 @@ max(x, na.rm = TRUE)
 
 Note `na.rm` serves a useful purpose and I think it's a good idea to have `FALSE` be the default.
 
-# The pipe operator
+## The pipe operator
 
 Before we start to do more complex operations on data frames, here's a little trick to make your code more readable: the pipe operator, or `%>%`. If you look at any example code using tidyverse packages that you find online, you will see this operator everywhere. It is used to compose complex expressions that include "chains" of multiple functions. The pipe is used to "pipe" the output of one function into the input of the next function.
 
@@ -213,7 +203,7 @@ x %>%
 > PROTIP: It's really "future you" who is going to be the one reading the code 99% of the time, so any time you spend a little time and effort
 making your code more legible, you are actually saving yourself time in the long run ... even if you're the only one who ever looks at the code!
 
-# Summary statistics on an entire data frame
+## Summary statistics on an entire data frame
 
 Let's calculate summary statistics for entire columns of a data frame. We're going to put the `%>%` pipe operator into practice now, to pass the output of one line of code to the next line.
 
@@ -243,7 +233,7 @@ dat %>%
 ```
 
 
-# Calculating summary statistics by group
+## Calculating summary statistics by group
 
 You often want to calculate summary statistics for each group. We will use the `group_by()` function here to get the mean and standard deviation of body weight for each taxon ID.
 
@@ -268,7 +258,7 @@ dat %>%
 
 Notice there are some `NA` values in the grouping columns. The `group_by()` function considers those to be separate groups. The `sd_weight` column also returns a `NA` value if you try to compute the sample standard deviation of a single value, which is undefined.
 
-# More pipe!
+### More pipe!
 
 We can use the pipe `%>%` operator to chain an arbitrarily long sequence of operations together. This makes for more readable code. 
 
@@ -316,7 +306,7 @@ table3
 
 Table 1 is the only "tidy" data frame out of the three. Each row includes all the variables from one observation: a count of disease cases and total population in a country in one specific year constitutes an observation here.
 
-# Reshaping data
+## Reshaping data
 
 There are two main functions for reshaping data. One is `pivot_wider()` and the other is `pivot_longer()`. If we have data that looks like `table2`, and we want to make it into tidy form like `table1`, we will need to use `pivot_wider()`. We need to identify three components: 
 
@@ -336,7 +326,7 @@ all.equal(table2_tidied, table1)
 
 It's also possible to reshape `table3` to `table1` but this requires more complex operations that we will not cover today. 
 
-# Wide to long reshape
+### Wide to long reshape
 
 A common situation is that we will get data in a wide form from an Excel spreadsheet. When entering data into a spreadsheet manually, it's much easier to use a wide format because a long skinny table of data is very annoying to scroll through. Wide-form data is often how paper data sheets are formatted. So we often will need to reshape the data to a "longer" format to get an analysis-ready tidy dataset.
 
@@ -376,33 +366,33 @@ The dataset used for these exercises comes from an experimental study measuring 
 
 You may combine the results from steps 3-6 into a single "piped" statement using the `%>%` operator.
 
-## Exercise 1
+### Exercise 1
 
 Read the `barnyard_ghg.csv` file, which is in the `datasets` directory, into R as a data frame. 
 
-## Exercise 2
+### Exercise 2
 
 Examine the data frame. What are the data types of the different columns? How many different values are there in the `Surface` column?
 
 *Hint*: [Use `str()`, `summary()`, and/or `glimpse()` to examine the data frame. Use `table()` or `unique()` for the `Surface` column.]{.spoiler}
 
-## Exercise 3
+### Exercise 3
 
 Create a subset of the data frame containing only the observations where the temperature (`Temp` column) is greater than 10. *Remember R is case-sensitive!*
 
-## Exercise 4
+### Exercise 4
 
 Group the data frame by surface type.
 
-## Exercise 5
+### Exercise 5
 
 Calculate the mean of the `CO2_mgC`, `CH4_mgC`, `NH3_ugN`, and `N2O_ugN` columns.
 
-## Exercise 6
+### Exercise 6
 
 Sort the result in increasing order of the mean value of `CO2_mgC`.
 
-## Exercise 7
+### Exercise 7
 
 Load the `relig_income` example dataset which has survey data on the number of individuals of different religions by reported yearly income. (Use `data(relig_income)` to load the dataset.) Convert this dataset into "tidy" form so that each row has a religion, income level, and number of individuals.
 - *Hint 1*: [Use `pivot_longer()`.]{.spoiler}
@@ -410,15 +400,15 @@ Load the `relig_income` example dataset which has survey data on the number of i
 
 # Answers
 
-## Exercise 1
+### Exercise 1
 
 [`barnyard_ghg <- read.csv('datasets/barnyard_ghg.csv')`]{.spoiler}
 
-## Exercise 2
+### Exercise 2
 
 [One way would be `glimpse(barnyard_ghg)` and `table(barnyard_ghg$Surface)`]{.spoiler}
 
-## Exercises 3-6
+### Exercises 3-6
 
 [`barnyard_ghg %>%`  
 `filter(Temp > 10) %>%`  
@@ -426,6 +416,6 @@ Load the `relig_income` example dataset which has survey data on the number of i
 `summarize(mean_CO2 = mean(CO2_mgC), mean_CH4 = mean(CH4_mgC), mean_NH3 = mean(NH3_ugN), mean_N2O = mean(N2O_ugN)) %>%`
 `arrange(mean_CO2)`]{.spoiler}
 
-## Exercise 7
+### Exercise 7
 
 [`pivot_longer(relig_income, cols = -religion)`, or if you want to give your own names to the newly created columns, `pivot_longer(relig_income, cols = -religion, names_to = 'income', values_to = 'individuals')`]{.spoiler}
