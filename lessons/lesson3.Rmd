@@ -157,7 +157,7 @@ It might seem like we have dealt with the issue that the different fields might 
 
 How can we solve that problem? You probably already guessed it ... a mixed model! I'm calling these mixed models but they go by a lot of other names.
 
-![Mixed models meme courtesy of Chelsea Parlett-Pelleriti on Twitter](../public/images/mixedmodelsmeme.jpg){: width="500px" }
+![Mixed models meme courtesy of Chelsea Parlett-Pelleriti on Twitter]({{ 'public/images/mixedmodelsmeme.jpg' | relative_url }}){: width="500px" }
 
 Mixed models do what is called "partial pooling." This means they don't lump all observations together into a single group ("Complete pooling" as we did in the simple linear regression above). Instead, they "partially" group them: some of the parameters, the fixed effects, are shared by all the groups, but other parameters, the random effects, are unique to each group. They're called *mixed* models because they have a *mix* of fixed and random effects.
 
