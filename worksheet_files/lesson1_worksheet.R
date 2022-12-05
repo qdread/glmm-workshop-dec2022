@@ -6,6 +6,8 @@
 ############################################################################################
 ############################################################################################
 
+# Using the R console
+
 2 + 3
 
 x <- 2 + 3
@@ -25,15 +27,11 @@ log(1000)
 
 sin(pi)
 
-# This is a comment.
+my_name <- ...
 
-my_name <- "Quentin"
+paste('Hello,', ...)
 
-paste('Hello,', my_name)
-
-## ?paste
-
-## ??sequence
+# Types of output, errors, warnings, and notes
 
 plot(mpg ~ hp, data = mtcars)
 
@@ -43,7 +41,9 @@ log(-5)
 
 rep(0, 100000)
 
-seq(from = 1, to = 100, by = 1)
+# Function arguments
+
+...(from = 1, ...)
 
 1:100
 
@@ -103,31 +103,6 @@ range(random_numbers)
 
 quantile(random_numbers, probs = c(0.025, 0.5, 0.975))
 
-library(ggplot2)
-windowsFonts(`consolas` = windowsFont("Consolas"))
-
-ggplot() +
-  stat_function(fun = dnorm, xlim = c(-4, 4)) +
-  scale_x_continuous(breaks = -3:3) +
-  scale_y_continuous(name = 'y', expand = expansion(mult = c(0, 0.1))) +
-  coord_cartesian(xlim = c(-3, 3)) +
-  geom_point(aes(x = 0, y = dnorm(0)), color = 'indianred', size = 3) +
-  geom_segment(aes(x = 0, xend = 0, y = 0, yend = dnorm(0)), color = 'indianred', linetype = 'dashed') +
-  geom_segment(aes(x = -Inf, xend = 0, y = dnorm(0), yend = dnorm(0)), color = 'indianred', linetype = 'dashed') +
-  geom_text(aes(x = 0, y = 0.4), label = 'dnorm(0) = 0.399', family = 'consolas', vjust = -1, size = 6) +
-  theme_classic()
-  
-
-ggplot() +
-  stat_function(fun = dnorm, xlim = c(-4, 4)) +
-  scale_x_continuous(breaks = -3:3) +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.1))) +
-  coord_cartesian(xlim = c(-3, 3)) +
-  stat_function(geom = 'area', xlim = c(-4, 0), fun = dnorm, fill = 'slateblue') +
-  geom_text(aes(x = 0, y = 0.4), label = 'pnorm(0) = 0.5', family = 'consolas', vjust = -1, size = 6) +
-  geom_text(aes(x = 0.1, y = 0.05), label = 'qnorm(0.5) = 0', family = 'consolas', hjust = 0, size = 6) +
-  theme_classic()
-
 (5+3))/2 # Nope
 
 (5+3)/2 # Yep
@@ -147,9 +122,9 @@ some_numbers <- 1:5
 sum(1:10)
 Sum(1:10)
 
-## install.packages('cowsay')
+...('cowsay')
 
-library(cowsay)
-say('USDA statisticians are the best!', by = 'cow')
+...(cowsay)
+say(..., by = 'cow')
 
-cowsay::say("Don't forget to close your parentheses", by = 'chicken')
+...::say(..., by = 'chicken')

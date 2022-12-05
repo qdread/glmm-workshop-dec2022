@@ -13,21 +13,18 @@ library(easystats)
 
 soilN_biomass <- read_csv('datasets/soilN_biomass.csv')
 
-## soilN_biomass
-## 
-## summary(soilN_biomass)
-## 
-## glimpse(soilN_biomass)
+summary(...)
+glimpse(...)
 
 ggplot(soilN_biomass, aes(x = soilN, y = biomass, color = field)) +
   geom_point(size = 1.5) +
   theme_bw()
 
-lm_fit <- lm(biomass ~ soilN, data = soilN_biomass)
+lm_fit <- ...(... ~ ..., data = ...)
 
-summary(lm_fit)
+...(lm_fit)
 
-lm_coefs <- coef(lm_fit)
+lm_coefs <- ...(lm_fit)
 
 lm_coefs
 

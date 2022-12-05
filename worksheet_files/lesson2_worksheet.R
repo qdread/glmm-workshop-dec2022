@@ -6,35 +6,27 @@
 ############################################################################################
 ############################################################################################
 
-library(tidyverse)
+...(tidyverse)
 
-dat <- read_csv('datasets/small_mammals.csv')
+dat <- ...('datasets/small_mammals.csv')
 
 dat
 
-print(dat, n = 50)
+...length(dat, n = 50)
 
-dat[2, 3]
+dat[...]
 
-dat[5, ]
+dat[..., c(..., 'sex')]
 
-dat[, 2]
+dat$...
 
-dat[6:10, ]
+...(dat$siteName)
 
-dat[1:5, 1:2]
+...(dat$...)
 
-dat[20, c('taxonID', 'sex')]
+filter(...)
 
-dat$siteName
-
-unique(dat$siteName)
-
-table(dat$sex)
-
-filter(dat, weight < 10)
-
-select(dat, taxonID, weight)
+select(...)
 
 x <- c(5.3, 12.2, -8.6)
 
@@ -83,16 +75,12 @@ dat %>%
   summarize(mean_weight = mean(weight_mg)) %>%
   arrange(mean_weight)
 
-table1
-table2
-table3
-
-table2_tidied <- pivot_wider(table2, id_cols = c(country, year), names_from = type, values_from = count)
+table2_tidied <- ...(table2, ... = c(country, year), names_from = ..., values_from = ...)
 
 all.equal(table2_tidied, table1)
 
 billboard
 
-pivot_longer(billboard, cols = c(wk1:wk76), names_to = 'week', values_to = 'ranking')
+...(billboard, cols = ..., ... = 'week', ... = 'ranking')
 
-pivot_longer(billboard, cols = -c(artist, track, date.entered), names_to = 'week', values_to = 'ranking')
+pivot_longer(billboard, cols = ..., names_to = 'week', values_to = 'ranking')
