@@ -54,7 +54,7 @@ A brief and accessible introduction.
 
 This is a lot more technical in terms of the statistics compared with other resources I've posted here, but it is very relevant to agricultural data analysis.
 
-[Towards Data Science blog post on mixed models](https://towardsdatascience.com/when-mixed-effects-hierarchical-models-fail-pooling-and-uncertainty-77e667823ae8){: . biglink }
+[Towards Data Science blog post on mixed models](https://towardsdatascience.com/when-mixed-effects-hierarchical-models-fail-pooling-and-uncertainty-77e667823ae8){: .biglink }
 
 This tutorial by a statistician has some nice demonstrations of the "partial pooling" aspect of mixed models, and goes on to advocate a Bayesian approach to fitting mixed models.
 
