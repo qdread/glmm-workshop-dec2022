@@ -420,6 +420,8 @@ If you want to use a function without calling `library()`, or there are function
 cowsay::say("Don't forget to close your parentheses", by = 'chicken')
 ```
 
+To access all the help documentation for a package, use `help(package = 'packagename')`. 
+
 # Learning R best practices
 
 ### How do I get help?
@@ -459,23 +461,13 @@ Use R to "flip a coin" with 0.5 probability of getting heads 1000 times. You can
 - *Hint 1*: [Use `set.seed()` to set the random seed.]{.spoiler }
 - *Hint 2*: [There are a few ways to do this, but one way is to use `rbinom()`. The arguments `n`, `size`, and `prob` are given in the question above in the correct order! Type `?rbinom` into the console if you need help.]{.spoiler}
 
-# Answers
+### Exercise 4
 
-### Exercise 1
+Install the `dadjokeapi` package, load the package, and use the package to produce a dad joke. You may need to use the help documentation to figure out how to get R to tell you a dad joke.
 
-```{r, eval = FALSE}
-asin(sqrt(0.5))
-```
+- *Hint*: [`install.packages` with the package name in quotes to install, `library` to load, and `help(package = ...)` to get help.]
 
-### Exercise 2
+[Click here for answers](../lesson1_answers)
 
-```{r, eval = FALSE}
-sum(1:12345)
-```
 
-### Exercise 3
 
-```{r, eval = FALSE}
-set.seed(1)
-rbinom(n = 1, size = 1000, prob = 0.5)
-```

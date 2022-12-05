@@ -1,0 +1,7 @@
+---
+title: "Lesson 2 Exercise Answers"
+author: "Quentin D. Read"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: html_document
+---
+
