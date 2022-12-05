@@ -184,7 +184,7 @@ lmm_borers <- lmer(count2 ~ trt + (1|block), data = stirret.borers)
 Then fit the generalized linear model. Here we use `family = poisson(link = 'log')` as the link function that works best with the Poisson distribution is just `log()`.
 
 ```{r}
-glmm_borers <- glmer(count2 ~ trt + (1|block), data = stirret.borers, family = poisson)
+glmm_borers <- glmer(count2 ~ trt + (1|block), data = stirret.borers, family = poisson(link = 'log'))
 ```
 
 Compare the diagnostic plots from each model, first from the linear mixed model:
@@ -243,7 +243,7 @@ We have one more lesson coming up today, where we are going to look at comparing
 
 These are more open-ended exercises to give you more practice with GLMMs.
 
-The first example will use the Jansen apple dataset from the **agridat** package. Load it with `data('jansen.apple', package = 'agridat')` or if you are running R locally and don't have access to the **agridat** package, use `jansen.apple <- read_csv('datasets/jansen.apple.csv')`.
+The first example (Exercises 1 and 2) will use the Jansen apple dataset from the **agridat** package. Load it with `data('jansen.apple', package = 'agridat')` or if you are running R locally and don't have access to the **agridat** package, use `jansen.apple <- read_csv('datasets/jansen.apple.csv')`.
 
 The dataset has five columns: `inoculum`, the amount of fungus apple tree shoots were infected with, `gen`, the variety of apple, `block`, the experimental block ID, `y`, the number of trees that developed apple canker, and `n`, the total number of shoots (there were 5 in all blocks).
 
