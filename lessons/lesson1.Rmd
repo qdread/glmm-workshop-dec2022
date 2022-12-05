@@ -177,7 +177,7 @@ log(-5)
 
 A note is just that, a note. Everything is still fine! For example if we try to print an extremely long sequence of 0s to the console, it will only print a limited number and then give us a message of how many were omitted.
 
-```{r}
+```{r, eval = FALSE}
 rep(0, 100000)
 ```
 
@@ -479,6 +479,6 @@ Use R to "flip a coin" with 0.5 probability of getting heads 1000 times. You can
 
 Install the `dadjokeapi` package, load the package, and use the package to produce a dad joke. You may need to use the help documentation to figure out how to get R to tell you a dad joke.
 
-- *Hint*: [`install.packages` with the package name in quotes to install, `library` to load, and `help(package = ...)` to get help.]
+- *Hint*: [`install.packages` with the package name in quotes to install, `library` to load, and `help(package = ...)` to get help.]{.spoiler}
 
 <b><font size="6">[Click here for answers](lesson1_answers)</font></b>
