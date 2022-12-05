@@ -82,7 +82,7 @@ In addition, you will need to download the example datasets and code worksheets.
 
 You will need to download R from [The Comprehensive R Archive Network](https://cran.r-project.org/), or CRAN. 
 
-![CRAN R download screenshot](../public/images/cran_screenshot.png){: align="left" style="padding-right: 25px" width="400px" }
+![CRAN R download screenshot]({{ 'public/images/cran_screenshot.png' | relative_url }}){: align="left" style="padding-right: 25px" width="400px" }
 
 Go to the [CRAN website](https://cran.r-project.org/) and select the link to download the most recent version of R for your operating system. Follow the installation instructions. You will need admin rights to do this so you may need to get help from your IT staff.
 
