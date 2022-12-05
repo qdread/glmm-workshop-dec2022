@@ -2,8 +2,8 @@
 title:               A practical toolkit for mixed models in R
 tagline:             'USDA ARS stats workshop'
 description:         'A practical toolkit for mixed models in R: USDA ARS stats workshop: December 8-9, 2022.'
-url:                 https://qdread.github.io
-baseurl:             /glmm-workshop-dec2022
+url:                 https://qdread.github.io/glmm-workshop-dec2022
+baseurl:             ''
 #paginate:            5
 permalink:           pretty
 
