@@ -367,7 +367,6 @@ effects</a></li>
 <li><a href="#data-transformations" id="toc-data-transformations">Data
 transformations</a></li>
 <li><a href="#exercises" id="toc-exercises">Exercises</a></li>
-<li><a href="#answers" id="toc-answers">Answers</a></li>
 </ul>
 </div>
 
@@ -663,49 +662,8 @@ Examine the diagnostic plots again.</p>
 <li><em>Hint</em>: <span class="spoiler">Try transforming the response
 variable!</span></li>
 </ul>
-</div>
-</div>
-<div id="answers" class="section level1">
-<h1>Answers</h1>
-<div id="exercise-1-1" class="section level3">
-<h3>Exercise 1</h3>
-<pre class="r"><code>fisher.barley &lt;- fisher.barley %&gt;%
-  mutate(year = factor(year))</code></pre>
-<p>We need to do this because we are treating year as a categorical
-variable, essentially as a component of the environment. With only two
-years, it is not possible to treat year as a continuous variable to
-estimate linear trends in the responses over time.</p>
-</div>
-<div id="exercise-2-1" class="section level3">
-<h3>Exercise 2</h3>
-<pre class="r"><code>fit_crossed &lt;- lmer(yield ~ gen + (1|env) + (1|year), data = fisher.barley)
-fit_nested &lt;- lmer(yield ~ gen + (1|env) + (1|year:env), data = fisher.barley)</code></pre>
-<p>Look at the model output with <code>summary(fit_crossed)</code>,
-<code>fixef(fit_crossed)</code>, <code>ranef(fit_crossed)</code>, and
-<code>anova(fit_crossed)</code>, and do the same for the other model.
-The fixed effect estimates are the same but with different degrees of
-freedom due to the different grouping structures. The random effect
-estimates are different. The ANOVA has the same sums of squares but
-because of the different degrees of freedom, the F-statistics and
-<em>p</em>-values are different.</p>
-</div>
-<div id="exercise-3-1" class="section level3">
-<h3>Exercise 3</h3>
-<pre class="r"><code>fit &lt;- lmer(biomass ~ treatment + (1|experiment), data = bioassay)</code></pre>
-<p>We get a warning that the model may not have converged. This
-indicates something might be wrong.</p>
-<pre class="r"><code>check_model(fit)</code></pre>
-<p>The residuals look good enough, but the posterior predictive check
-shows predictions of negative biomass.</p>
-</div>
-<div id="exercise-4-1" class="section level3">
-<h3>Exercise 4</h3>
-<p>Here is the same model with the only difference being that we
-log-transform the response.</p>
-<pre class="r"><code>fit_log &lt;- lmer(log(biomass) ~ treatment + (1|experiment), data = bioassay)
-check_model(fit_log)</code></pre>
-<p>Not only do we resolve the model convergence issue, but we also now
-have model predictions that are all positive.</p>
+<p><b><font size="6"><a href="lesson4_answers">Click here for
+answers</a></font></b></p>
 </div>
 </div>
 

@@ -1,7 +1,31 @@
 ---
-title: "Lesson 2 Exercise Answers"
+title: "Lesson 6 Exercise Answers"
 author: "Quentin D. Read"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: html_document
 ---
 
+### Exercise 1
+
+```{r, eval = FALSE}
+emm_inoculum <- emmeans(fit_apples, ~ inoculum, type = 'response')
+plot(emm_inoculum)
+contrast(emm_inoculum, method = 'pairwise', adjust = 'sidak')
+cld(emm_inoculum, adjust = 'sidak', Letters = letters)
+```
+
+### Exercise 2
+
+```{r, eval = FALSE}
+emm_genotype <- emmeans(fit_apples, ~ gen, type = 'response')
+plot(emm_genotype)
+contrast(emm_genotype, method = 'pairwise', adjust = 'sidak')
+cld(emm_genotype, adjust = 'sidak', Letters = letters)
+```
+
+### Exercise 3
+
+```{r, eval = FALSE}
+emm_inoc_within_genotype <- emmeans(fit_apples, ~ inoculum | gen, type = 'response')
+cld(emm_inoc_within_genotype, adjust = 'sidak', Letters = letters)
+```

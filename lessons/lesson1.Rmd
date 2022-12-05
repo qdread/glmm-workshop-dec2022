@@ -467,7 +467,4 @@ Install the `dadjokeapi` package, load the package, and use the package to produ
 
 - *Hint*: [`install.packages` with the package name in quotes to install, `library` to load, and `help(package = ...)` to get help.]
 
-[Click here for answers](../lesson1_answers)
-
-
-
+<b><font size="6">[Click here for answers](lesson1_answers)</font></b>

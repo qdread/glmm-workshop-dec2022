@@ -401,38 +401,5 @@ Load the `relig_income` example dataset which has survey data on the number of i
 - *Hint 1*: [Use `pivot_longer()`.]{.spoiler}
 - *Hint 2*: [You may specify either the columns to pivot, or the columns not to pivot. There is only one column not to pivot, `religion`.]{.spoiler}
 
-# Answers
+<b><font size="6">[Click here for answers](lesson2_answers)</font></b>
 
-### Exercise 1
-
-```{r, eval = FALSE}
-barnyard_ghg <- read.csv('datasets/barnyard_ghg.csv')
-```
-
-### Exercise 2
-
-One way to do this would be `glimpse(barnyard_ghg)` and `table(barnyard_ghg$Surface)`.
-
-### Exercises 3-6
-
-```{r, eval = FALSE}
-barnyard_ghg %>%  
-  filter(Temp > 10) %>%
-  group_by(Surface) %>%
-  summarize(mean_CO2 = mean(CO2_mgC), mean_CH4 = mean(CH4_mgC), mean_NH3 = mean(NH3_ugN), mean_N2O = mean(N2O_ugN)) %>%
-  arrange(mean_CO2)
-```
-
-### Exercise 7
-
-One way is:
-
-```{r, eval = FALSE}
-pivot_longer(relig_income, cols = -religion)
-```
-
-or if you want to give your own names to the newly created columns, 
-
-```{r, eval = FALSE}
-pivot_longer(relig_income, cols = -religion, names_to = 'income', values_to = 'individuals')
-```
