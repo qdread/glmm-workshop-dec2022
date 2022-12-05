@@ -45,9 +45,7 @@ R and RStudio are software tools to help you work with and analyze your data.
 
 ### What is R?
 
-- A statistical programming language
-- Users contribute packages
-- Free and open-source
+R is a statistical programming language, created by two statisticians from New Zealand in 1993. It is free and open-source. Users contribute code in the form of packages that anyone can download from the central R package repository, CRAN (Comprehensive R Archive Network). Thanks to the broad and diverse base of users there are R packages for all kinds of applications: stats, data visualization, GIS, text analysis, machine learning, phylogenetics, the list goes on! In this workshop, we are going to learn a few basics of data manipulation and explore some of the simpler statistical models you can fit with R.
 
 ### What is RStudio?
 
@@ -62,8 +60,6 @@ There are four panes that you see when you open RStudio:
 
 ### The basic moving parts of R
 
-R is both a language and an interpreter.
-
 The two main types of objects you need to know about in R (which is true for many other programming languages as well) are variables and functions.
 
 - **variable**: a structure that holds data. Examples:
@@ -72,8 +68,8 @@ The two main types of objects you need to know about in R (which is true for man
   + a data frame with 1000 rows and 10 columns... all these things are variables
   
 - **function**: something that takes arguments as input, does something, and returns output. Examples:
-  + `log(10)`: The function `log()` takes `10` as input and returns output.
-  + `c(1, 5, 6)`: The function `c()` takes three numbers as input and returns a vector as output.
+  + `log(10)`: The function `log()` takes a numeric value as input and returns a numeric value as output.
+  + `c(1, 5, 6)`: The function `c()` takes multiple values as input and returns a vector as output.
   + `read.csv('myfile.csv')`: The function `read.csv()` takes a character string with a the file name of a CSV file as input, reads that CSV file, and returns a data frame as output.
 
 # How to R
@@ -86,53 +82,64 @@ We are going to start by entering commands into the R console (the terminal wher
 
 Here are some simple things you can do with R.
 
-Things to note here: 
-
 - You can use R as a calculator using operators like `+` and `-`.
-- The assignment operator `<-` is used to create a new variable and give it a value. The syntax is `variable <- <value>`.
-- Variable names can contain `.` or `_` but can't contain spaces or start with a number.
-- You can also use `=` as an assignment operator but we will use `<-` in this workshop. Consistent code is readable code!
-- Entering the name of a variable prints that variable's value to the console.
-- If you assign a value to a new variable, nothing will print to the console. But you can use the variable again later, as we do with `x` and `y` below.
-- A function followed by an argument in parentheses `()`, like `function(<value>)`, will input a value to a function and return some output.
-- Any line preceded by `#` is a comment and will not be evaluated.
-- Functions can take multiple arguments separated by commas `,`.
-- When you put text inside quotes, you can use either `'single quotes'` or `"double quotes"`. Which one you choose is up to your personal style preferences, but again remember to be consistent!
 
 ```{r}
 2 + 3
+```
 
+- The assignment operator `<-` is used to create a new variable and give it a value. The syntax is `variable <- <value>`.
+- Variable names can contain `.` or `_` but can't contain spaces or start with a number.
+- You can also use `=` as an assignment operator but we will use `<-` in this workshop. Consistent code is readable code!
+
+```{r}
 x <- 2 + 3
 y = 3.5
+```
 
+- Entering the name of a variable prints that variable's value to the console.
+- If you assign a value to a new variable, nothing will print to the console. But the variable is now defined in your environment and can be used later.
+
+```{r}
 x
-y
-
 x + y
 x * 4
 
 x <- x + 1
 z <- x * 4
 z
+```
 
+- A function followed by an argument in parentheses `()`, like `function(<value>)`, will input a value to a function and return some output.
+
+```{r}
 log(1000)
 
 sin(pi)
+```
 
-# This is a comment.
+- Any line preceded by `#` is a comment and will not be evaluated.
 
+```{r}
+# This is a comment
+```
+
+- Functions can take multiple arguments separated by commas `,`.
+- When you put text inside quotes, you can use either `'single quotes'` or `"double quotes"`. Which one you choose is up to your personal style preferences, but again remember to be consistent!
+
+```{r}
 my_name <- "Quentin"
 
 paste('Hello,', my_name)
 ```
 
-Use `?` to get help about a function.
+- Use `?` to get help about a function.
 
 ```{r, eval = FALSE}
 ?paste
 ```
 
-If you don't even know the name of the function you're searching for, use `??` to search all help documentation for a term.
+- If you don't even know the name of the function you're searching for, use `??` to search all help documentation for a term.
 
 ```{r, eval = FALSE}
 ??sequence
@@ -177,9 +184,9 @@ rep(0, 100000)
 
 # Data types in R
 
-You might have noticed the `[1]` before some of the output we made. Why is that `[1]` there? It means that the variable is a vector of length 1. We can make longer vectors as well.
+You might have noticed the `[1]` before some of the output we made. Why is that `[1]` there? It means that the variable is a **vector** of length 1. We can make longer vectors as well. A vector is one or more elements of the same data type.
 
-This code also demonstrates how to use named arguments to a function.
+For example, here are two ways to create a **numeric** vector with the sequence of integers from 1 to 100. This code also demonstrates how to use named arguments to a function. The way with `seq()` is the "longhand" way, but you can also use a special shorthand notation with `:` to produce a sequence of integers.
 
 ```{r}
 seq(from = 1, to = 100, by = 1)
@@ -189,11 +196,11 @@ seq(from = 1, to = 100, by = 1)
 
 You can see that the output provides a few indexes along the left side.
 
-Those are integer vectors. There are other data types, including character. We put character data in quotes.
+Those are integer vectors. Numeric data can be integer or double (floating point numbers with a decimal point). There are other data types, including **character** or text data. We put character data in quotes (single or double).
 
-This code also demonstrates how to index vectors, and the use of the `c()` function.
+For example, here are a few ways to make vectors of character values. This code also demonstrates how to index vectors, using square brackets `[]` to extract one or more values from a vector. R has a "built in" character vector called `letters` which includes all the lowercase letters. You can supply one or more integer values to the index to extract individual letters from this vector and create a new one. 
 
-Single and double quotes are usually interchangeable.
+This code also demonstrates the use of the `c()` function. `c()`, or "combine", takes one or more arguments separated with commas (`,`) and puts them together into a vector of the same data type.
 
 ```{r}
 c('a', 'b', 'c', 'd', 'e', 'f', 'g')
@@ -201,6 +208,8 @@ c('a', 'b', 'c', 'd', 'e', 'f', 'g')
 letters[1:7]
 
 letters[c(1, 18, 19)]
+
+c('USDA', 'ARS', 'SEA')
 ```
 
 If you pass the wrong data type to a function, you usually get an error.
@@ -215,8 +224,7 @@ If you try to combine numeric and character data in one vector, R will usually i
 c(100, 5.323, 'missing value', 12)
 ```
 
-
-Factor is another important data type. It appears like a character but it can only contain predefined values. These values, called "levels," can be sorted in any order. This is useful for model fitting if you have a categorical predictor or response variable. If you specify the order of the levels, the first one is usually treated as the control or reference level in models. Factors are a little bit confusing but they are important to be aware of.
+**Factor** is another important data type. It appears like a character but it can only contain predefined values. These values, called "levels," can be sorted in any order. This is useful for model fitting if you have a categorical predictor or response variable. If you specify the order of the levels, the first one is usually treated as the control or reference level in models. Factors are a little bit confusing but they are important to be aware of.
 
 Here is an example factor.
 
@@ -234,7 +242,7 @@ treatment <- factor(treatment, levels = c('low', 'medium', 'high'))
 treatment
 ```
 
-Logical is another important data type. It can take two values, `TRUE` and `FALSE`. We usually get a logical vector when we do a comparison. The following examples illustrate how the logical operators work:
+**Logical** is another important data type. It can take two values, `TRUE` and `FALSE`. We usually get a logical vector when we do a comparison. The following examples illustrate how the logical operators work:
 
 - `x == y`: is `x` equal to `y`?
 - `x != y`: is `x` not equal to `y`?
@@ -279,9 +287,7 @@ x %in% c(1, 5, 6, 7)
 
 The `%in%` operator is often used to subset data frames. We will see an example of this in the next lesson.
 
-Some functions work on vectors and return one value for each element in the vector. Others return only one or a few values. Here are some examples. The function `exp()` takes a vector as input and returns a vector of the same length, the exponential of each element in the vector. Notice I use `head()` to avoid printing all 1000 values. The functions `length()`, `mean()`, `median()`, and `sd()` take a vector as input and return a single value. The function `range()` returns a vector of two values, the minimum and maximum of the vector. The function `quantile()` is a little bit more complicated. It takes two vectors as input. The second vector, `probs`, contains the probabilities we want to calculate the quantiles for. The function returns a vector with the same length as `probs` containing the percentiles.
-
-> PROTIP: We use `set.seed()` to ensure the code produces the same result each time we generate random numbers.
+Some functions work on vectors and return one value for each element in the vector. Here are some examples. The function `exp()` takes a vector as input and returns a vector of the same length, the exponential of each element in the vector. Here we create a vector of 1000 draws from a standard normal distribution with the `rnorm()` function.
 
 ```{r}
 set.seed(123)
@@ -289,7 +295,15 @@ set.seed(123)
 random_numbers <- rnorm(n = 1000, mean = 0, sd = 1)
 
 head(exp(random_numbers))
+```
 
+> PROTIP: We use `set.seed()` to ensure the code produces the same result each time we generate random numbers.
+
+> PROTIP 2: Using `head()` only prints the first few values of a vector, preventing us having to scroll through 1000 values.
+
+Other functions with vector inputs return only one or a few values regardless of the length of the vector input to them. The functions `length()`, `mean()`, `median()`, and `sd()` take a vector as input and return a single value. The function `range()` returns a vector of two values, the minimum and maximum of the vector. The function `quantile()` is a little bit more complicated. It takes two vectors as input. The second vector, `probs`, contains the probabilities we want to calculate the quantiles for. The function returns a vector with the same length as `probs` containing the percentiles.
+
+```{r}
 length(random_numbers)
 
 mean(random_numbers)
