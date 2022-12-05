@@ -43,7 +43,7 @@ Time                      | Activity
 10:15-10:45 AM            | *break*
 10:45-11:30 AM            | [**Lesson 2**: R Boot Camp: working with data frames](lessons/lesson2)
 11:30-11:45 AM            | *break*
-11:45 AM-12:45 PM         | [**Lesson 3**: What are LMMs? Fit our first LMM!](lessons/lesson3)
+11:45 AM-12:45 PM         | [**Lesson 3**: From linear model to linear mixed model](lessons/lesson3)
 12:45-2:00 PM             | *lunch break*
 2:00 PM-4:00 PM           | **Office Hours**: Students will work on data and code. Quentin will answer questions and troubleshoot.
 

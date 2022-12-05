@@ -11,7 +11,7 @@ Time                             | Lesson
 -------------------------------- | ----------------------------------------------------------
 Day 1, 9:15-10:15 AM             | [**Lesson 1**: R Boot Camp: the very basics]({{ 'lessons/lesson1' | relative_url }})
 Day 2, 10:45-11:30 AM            | [**Lesson 2**: R Boot Camp: working with data frames]({{ 'lessons/lesson2' | relative_url }})
-Day 3, 11:45 AM-12:45 PM         | [**Lesson 3**: What are LMMs? Fit our first LMM!]({{ 'lessons/lesson3' | relative_url }})
+Day 3, 11:45 AM-12:45 PM         | [**Lesson 3**: From linear model to linear mixed model]({{ 'lessons/lesson3' | relative_url }})
 Day 2, 9:15-10:15 AM             | [**Lesson 4**: Going further with mixed models]({{ 'lessons/lesson4' | relative_url }})
 Day 2, 10:45-11:30 AM            | [**Lesson 5**: Generalized linear mixed models]({{ 'lessons/lesson5' | relative_url }})
 Day 2, 11:45 AM-12:45 PM         | [**Lesson 6**: Estimating and comparing treatment means]({{ 'lessons/lesson6' | relative_url }})

@@ -1,4 +1,5 @@
 ############################################################################################
+############################################################################################
 #### LESSON 2: WORKING WITH DATA FRAMES                                                 ####
 #### ==================================                                                 ####
 #### This worksheet contains an incomplete version of the code presented in the lesson. ####
@@ -6,13 +7,11 @@
 ############################################################################################
 ############################################################################################
 
-library(tidyverse)
+...(tidyverse)
 
-dat <- read_csv('datasets/small_mammals.csv')
+dat <- ...('datasets/small_mammals.csv')
 
-dat
-
-print(dat, n = 50)
+...(dat, n = 50)
 
 dat[2, 3]
 
@@ -78,9 +77,8 @@ dat %>%
 
 dat %>%
   filter(!is.na(weight), taxonID == 'PELE') %>%
-  mutate(weight_mg = weight * 1000) %>%
   group_by(siteName) %>%
-  summarize(mean_weight = mean(weight_mg)) %>%
+  summarize(mean_weight = mean(weight)) %>%
   arrange(mean_weight)
 
 table1
