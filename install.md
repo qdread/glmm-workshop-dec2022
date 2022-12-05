@@ -16,7 +16,7 @@ You may also want to run all the R code locally on your own machine during the c
 
 #### Step 1. Create account
 
-![email signup](../public/images/rstudio_cloud_signup.png){: align="left" style="padding-right: 25px; float: left" height="300px" }
+![email signup]({{ '/public/images/rstudio_cloud_signup.png' | relative_url }}){: align="left" style="padding-right: 25px; float: left" height="300px" }
 
 You will receive a signup link by email. Please let your instructor know if you need the link to be resent.
 
@@ -25,7 +25,7 @@ Open the link in your browser. You'll be prompted to either log in or sign up. C
 
 #### Step 2. Verify email
 
-![email verification](../public/images/rstudio_cloud_verify_email.png){: align="left" style="padding-right: 25px; float: left; clear: left" height="300px" }
+![email verification]({{ '/public/images/rstudio_cloud_verify_email.png' | relative_url }}){: align="left" style="padding-right: 25px; float: left; clear: left" height="300px" }
 
 Verify the email address that you used to create the account.
 {:style="clear: right"}
@@ -33,7 +33,7 @@ Verify the email address that you used to create the account.
 
 #### Step 3. Join workspace
 
-![join space prompt](../public/images/rstudio_cloud_join_prompt.png){: align="left" style="padding-right: 25px; float: left; clear: left" width="300px" }
+![join space prompt]({{ '/public/images/rstudio_cloud_join_prompt.png' | relative_url }}){: align="left" style="padding-right: 25px; float: left; clear: left" width="300px" }
 
 When you log in, you will be asked whether you want to join the "December 2022 Stats Workshop" workspace. Click "Yes"!
 {:style="clear: right"}
@@ -41,7 +41,7 @@ When you log in, you will be asked whether you want to join the "December 2022 S
 
 #### Step 4. Open workspace
 
-![navigation bar](../public/images/rstudio_cloud_left_bar.png){: align="left" style="padding-right: 25px; float: left; clear: left" height="300px" }
+![navigation bar]({{ '/public/images/rstudio_cloud_left_bar.png' | relative_url }}){: align="left" style="padding-right: 25px; float: left; clear: left" height="300px" }
 
 Select the December 2022 Stats Workshop space in the left-hand navigation bar.
 {:style="clear: right"}
@@ -49,7 +49,7 @@ Select the December 2022 Stats Workshop space in the left-hand navigation bar.
 
 #### Step 5. Open project
 
-![content pane](../public/images/rstudio_cloud_content.png){: align="left" style="padding-right: 25px; float:left; clear: left" width="400px" }
+![content pane]({{ '/public/images/rstudio_cloud_content.png' | relative_url }}){: align="left" style="padding-right: 25px; float:left; clear: left" width="400px" }
 
 In the central pane you will be able to see the projects associated with this workspace. Currently there is only one, called "Lessons." Click on it to enter the "Lessons" project space. 
 {:style="clear: right"}
@@ -122,7 +122,7 @@ tidyverse, lme4, lmerTest, emmeans, multcomp, easystats, agridat
 
 It should look like this:
 
-![installation dialog](../public/images/install_dialog.png)
+![installation dialog]({{ '/public/images/install_dialog.png' | relative_url }})
 
 - Ensure that the library you are installing to is somewhere in a folder you can write to without admin rights. (See above.) 
 - Ensure that "install dependencies" is selected.

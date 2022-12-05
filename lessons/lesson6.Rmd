@@ -42,7 +42,7 @@ This is even more important to keep in mind when we are averaging the estimated 
 
 The [**emmeans** package](https://cran.r-project.org/package=emmeans) is the workhorse of this section. It was developed by Russ Lenth, an emeritus statistics professor from the University of Iowa. I am very indebted to Russ for all his help -- even though he is retired, he somehow always manages to answer any question I post on the emmeans package's GitHub page within a few hours, and almost always fixes the problem right away. He is like the "man behind the curtain" in the Wizard of Oz -- whenever I appear to be helping ARS scientists with their stats, I am actually going to him to get the answer!
 
-![]({{ 'public/images/russlenth.jpg' | relative_url }})
+![]({{ '/public/images/russlenth.jpg' | relative_url }})
 
 *mild-mannered professor or wizard?*
 
