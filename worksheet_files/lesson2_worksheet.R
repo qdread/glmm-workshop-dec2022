@@ -30,52 +30,48 @@ select(...)
 
 x <- c(5.3, 12.2, -8.6)
 
-x
+max(x)
+
+x[2] <- ...
 
 max(x)
 
-x[2] <- NA
+max(x, ... = TRUE)
 
-x
-
-max(x)
-
-max(x, na.rm = TRUE)
+...
+  ...(mean_weight = mean(weight), 
+            sd_weight = sd(weight))
 
 dat %>%
+  ...(!...(weight)) %>%
   summarize(mean_weight = mean(weight), 
             sd_weight = sd(weight))
 
 dat %>%
-  filter(!is.na(weight)) %>%
+  summarize(mean_weight = mean(weight, ...), 
+            sd_weight = sd(weight, ...))
+
+dat %>%
+  filter(...) %>%
+  ...(taxonID) %>%
   summarize(mean_weight = mean(weight), 
             sd_weight = sd(weight))
 
 dat %>%
-  summarize(mean_weight = mean(weight, na.rm = TRUE), 
-            sd_weight = sd(weight, na.rm = TRUE))
-
-dat %>%
-  filter(!is.na(weight)) %>%
-  group_by(taxonID) %>%
-  summarize(mean_weight = mean(weight), 
-            sd_weight = sd(weight))
-
-dat %>%
-  filter(!is.na(weight), taxonID == 'PELE') %>%
-  group_by(sex, lifeStage) %>%
-  summarize(n_individuals = n(),
+  filter(...(weight), ... 'PELE') %>%
+  group_by(...) %>%
+  ...(n_individuals = ...,
             mean_weight = mean(weight), 
             sd_weight = sd(weight))
 
 dat %>%
   filter(!is.na(weight), taxonID == 'PELE') %>%
-  mutate(weight_mg = weight * 1000) %>%
-  group_by(siteName) %>%
+  ...(weight_mg = ...) %>%
+  ...(siteName) %>%
   summarize(mean_weight = mean(weight_mg)) %>%
-  arrange(mean_weight)
+  ...(mean_weight)
 
-table2_tidied <- ...(table2, ... = c(country, year), names_from = ..., values_from = ...)
+table2_tidied <- ...(table2, ... = c(..., year), names_from = ..., values_from = ...)
 
 all.equal(table2_tidied, table1)
 

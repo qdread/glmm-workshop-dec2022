@@ -10,22 +10,18 @@
 
 2 + 3
 
-x <- 2 + 3
-y = 3.5
-
-x
-y
+x ... 2 + 3
+... 3.5
 
 x + y
 x * 4
 
 x <- x + 1
 z <- x * 4
-z
 
-log(1000)
+...(1000)
 
-sin(pi)
+sin(...)
 
 my_name <- ...
 
@@ -47,80 +43,58 @@ rep(0, 100000)
 
 1:100
 
-c('a', 'b', 'c', 'd', 'e', 'f', 'g')
+...('a', 'b', 'c', 'd', 'e', 'f', 'g')
 
-letters[1:7]
+letters[...]
 
-letters[c(1, 18, 19)]
+letters[c(...)]
 
 log('hello')
 
 c(100, 5.323, 'missing value', 12)
 
-treatment <- factor(c('low', 'low', 'medium', 'medium', 'high', 'high'))
+treatment <- ...(...('low', 'low', 'medium', 'medium', 'high', 'high'))
 
-treatment
+treatment <- ...(treatment, ... = c('low', 'medium', 'high'))
 
-treatment <- factor(treatment, levels = c('low', 'medium', 'high'))
+x ... 1:5
 
-treatment
+x ... 4
 
-x <- 1:5
+x ... 2
 
-x > 4
+x ... 3
 
-x <= 2
+x ... 2
 
-x == 3
+x > 1 ... x < 5
 
-x != 2
+x <= 1 ... x >= 5
 
-x > 1 & x < 5
+!(...)
 
-x <= 1 | x >= 5
+c(1, 5, 6, 7) ... x
 
-!(x == 3)
+x %in% c(...)
 
-c(1, 5, 6, 7) %in% x
+...(123)
 
-x %in% c(1, 5, 6, 7)
+random_numbers <- ...(... = 1000, ... = 0, ... = 1)
 
-set.seed(123)
+head(...(random_numbers))
 
-random_numbers <- rnorm(n = 1000, mean = 0, sd = 1)
+length(...)
 
-head(exp(random_numbers))
+...(random_numbers)
 
-length(random_numbers)
+...(random_numbers)
 
-mean(random_numbers)
+...(random_numbers)
 
-median(random_numbers)
+...(random_numbers)
 
-sd(random_numbers)
+...(random_numbers, ... = c(0.025, 0.5, 0.975))
 
-range(random_numbers)
-
-quantile(random_numbers, probs = c(0.025, 0.5, 0.975))
-
-(5+3))/2 # Nope
-
-(5+3)/2 # Yep
-
-my_variable <- 100000
-
-myvariable
-
-some_numbers <- 1:5
-
-( some_numbers + 3 ) ^ 2
-
-(some_numbers+3)^2
-
-(some numbers + 3)^2
-
-sum(1:10)
-Sum(1:10)
 
 ...('cowsay')
 

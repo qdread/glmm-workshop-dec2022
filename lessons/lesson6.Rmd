@@ -99,20 +99,20 @@ contrast(fert_emm, method = 'pairwise')
 We can choose other methods of *p*-value adjustment using the `adjust` argument. I usually prefer the Sidak adjustment. In this case it makes very little difference.
 
 ```{r}
-contr_bonferroni <- contrast(fert_emm, method = 'pairwise', adjust = 'sidak')
+contr_sidak <- contrast(fert_emm, method = 'pairwise', adjust = 'sidak')
 
-contr_bonferroni
+contr_sidak
 ```
 The `contrast` objects also have a built-in plotting method using the `plot()` function. 
 
 ```{r}
-plot(contr_bonferroni)
+plot(contr_sidak)
 ```
 
 I like to add a dashed line at zero which helps identify the contrasts for which the 95% confidence interval does not contain zero.
 
 ```{r}
-plot(contr_bonferroni) + geom_vline(xintercept = 0, linetype = 'dashed', linewidth = 1)
+plot(contr_sidak) + geom_vline(xintercept = 0, linetype = 'dashed', linewidth = 1)
 ```
 
 In this case, all of them are very far from 0.
@@ -150,7 +150,7 @@ stirret.borers <- stirret.borers %>%
 glmm_borers <- glmer(count2 ~ trt + (1|block), data = stirret.borers, family = poisson)
 ```
 
-Here are the estmated marginal means on the log scale.
+Here are the estimated marginal means on the log scale.
 
 ```{r}
 emmeans(glmm_borers, ~ trt)
