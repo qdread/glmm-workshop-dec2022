@@ -5,16 +5,16 @@ title: Course Syllabus
 
 ## Lessons
 
-See the [main course page](index) for more details on the schedule. All times are in Eastern Standard Time.
+See the [main course page]({{ site.baseurl }}/index) for more details on the schedule. All times are in Eastern Standard Time.
 
 Time                             | Lesson
 -------------------------------- | ----------------------------------------------------------
-Day 1, 9:15-10:15 AM             | [**Lesson 1**: R Boot Camp: the very basics](lessons/lesson1)
-Day 2, 10:45-11:30 AM            | [**Lesson 2**: R Boot Camp: working with data frames](lessons/lesson2)
-Day 3, 11:45 AM-12:45 PM         | [**Lesson 3**: What are LMMs? Fit our first LMM!](lessons/lesson3)
-Day 2, 9:15-10:15 AM             | [**Lesson 4**: Going further with mixed models](lessons/lesson4)
-Day 2, 10:45-11:30 AM            | [**Lesson 5**: Generalized linear mixed models](lessons/lesson5)
-Day 2, 11:45 AM-12:45 PM         | [**Lesson 6**: Estimating and comparing treatment means](lessons/lesson6)
+Day 1, 9:15-10:15 AM             | [**Lesson 1**: R Boot Camp: the very basics]({{ site.baseurl }}/lessons/lesson1)
+Day 2, 10:45-11:30 AM            | [**Lesson 2**: R Boot Camp: working with data frames]({{ site.baseurl }}/lessons/lesson2)
+Day 3, 11:45 AM-12:45 PM         | [**Lesson 3**: What are LMMs? Fit our first LMM!]({{ site.baseurl }}/lessons/lesson3)
+Day 2, 9:15-10:15 AM             | [**Lesson 4**: Going further with mixed models]({{ site.baseurl }}/lessons/lesson4)
+Day 2, 10:45-11:30 AM            | [**Lesson 5**: Generalized linear mixed models]({{ site.baseurl }}/lessons/lesson5)
+Day 2, 11:45 AM-12:45 PM         | [**Lesson 6**: Estimating and comparing treatment means]({{ site.baseurl }}/lessons/lesson6)
 
 ## Conceptual learning objectives
 
