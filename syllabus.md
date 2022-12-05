@@ -3,6 +3,19 @@ layout: page
 title: Course Syllabus
 ---
 
+## Lessons
+
+See the [main course page](index) for more details on the schedule. All times are in Eastern Standard Time.
+
+Time                             | Lesson
+-------------------------------- | ----------------------------------------------------------
+Day 1, 9:15-10:15 AM             | [**Lesson 1**: R Boot Camp: the very basics](lessons/lesson1)
+Day 2, 10:45-11:30 AM            | [**Lesson 2**: R Boot Camp: working with data frames](lessons/lesson2)
+Day 3, 11:45 AM-12:45 PM         | [**Lesson 3**: What are LMMs? Fit our first LMM!](lessons/lesson3)
+Day 2, 9:15-10:15 AM             | [**Lesson 4**: Going further with mixed models](lessons/lesson4)
+Day 2, 10:45-11:30 AM            | [**Lesson 5**: Generalized linear mixed models](lessons/lesson5)
+Day 2, 11:45 AM-12:45 PM         | [**Lesson 6**: Estimating and comparing treatment means](lessons/lesson6)
+
 ## Conceptual learning objectives
 
 At the end of the workshop, students will be able to . . . 
@@ -32,8 +45,4 @@ At the end of the workshop, students will be able to . . .
 - **easystats** (make diagnostic plots to test model assumptions)
 -	**emmeans** (estimate treatment effects and test hypotheses)
 -	**ggplot2** (make publication-quality graphics)
-
-## Note on general versus generalized models, and Bayesian versus classical statistics
-
-Based on the poll results, it seems that most students taking this course will need to spend some time learning the basics of R before we get into the statistics. Therefore I think it will not be feasible to cover generalized linear models or Bayesian statistics in this workshop. We will focus on R basics and start with simpler LMM models. I will plan a future workshop or series of workshops on generalized linear mixed models, and on Bayesian statistics.
 
