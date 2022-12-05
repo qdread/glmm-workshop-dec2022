@@ -5,7 +5,7 @@ title: Course Syllabus
 
 ## Lessons
 
-See the [main course page]({{ site.baseurl }}/index) for more details on the schedule. All times are in Eastern Standard Time.
+See the [main course page]({{ site.baseurl }}/index) for more details on the schedule, and the [worksheets and datasets page]({{ site.baseurl }}/worksheets) for information on accessing or downloading the worksheets and example datasets. All times are in Eastern Standard Time.
 
 Time                             | Lesson
 -------------------------------- | ----------------------------------------------------------

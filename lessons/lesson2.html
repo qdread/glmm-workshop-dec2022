@@ -11,7 +11,7 @@
 
 <meta name="author" content="Quentin D. Read" />
 
-<meta name="date" content="2022-12-03" />
+<meta name="date" content="2022-12-05" />
 
 <title>Lesson 2: Working with data frames</title>
 
@@ -353,7 +353,7 @@ display: none;
 
 <h1 class="title toc-ignore">Lesson 2: Working with data frames</h1>
 <h4 class="author">Quentin D. Read</h4>
-<h4 class="date">December 03, 2022</h4>
+<h4 class="date">December 05, 2022</h4>
 
 </div>
 
@@ -457,14 +457,6 @@ and reads large files more quickly. Also, <code>read_csv</code> returns
 a special kind of data frame called a “tibble” that works better with
 the other tidyverse functions.</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-## ✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
-## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
-## ✔ tidyr   1.2.1      ✔ stringr 1.4.1 
-## ✔ readr   2.1.3      ✔ forcats 0.5.2 
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>dat &lt;- read_csv(&#39;datasets/small_mammals.csv&#39;)</code></pre>
 <pre><code>## Rows: 1629 Columns: 7
 ## ── Column specification ────────────────────────────────────────────────────────
@@ -2768,10 +2760,12 @@ statement using the <code>%&gt;%</code> operator.</p>
 <p>Examine the data frame. What are the data types of the different
 columns? How many different values are there in the <code>Surface</code>
 column?</p>
-<p><em>Hint</em>: <span class="spoiler">Use <code>str()</code>,
+<ul>
+<li><em>Hint</em>: <span class="spoiler">Use <code>str()</code>,
 <code>summary()</code>, and/or <code>glimpse()</code> to examine the
 data frame. Use <code>table()</code> or <code>unique()</code> for the
-<code>Surface</code> column.</span></p>
+<code>Surface</code> column.</span></li>
+</ul>
 </div>
 <div id="exercise-3" class="section level3">
 <h3>Exercise 3</h3>
@@ -2799,38 +2793,42 @@ where the temperature (<code>Temp</code> column) is greater than 10.
 data on the number of individuals of different religions by reported
 yearly income. (Use <code>data(relig_income)</code> to load the
 dataset.) Convert this dataset into “tidy” form so that each row has a
-religion, income level, and number of individuals. - <em>Hint 1</em>:
-<span class="spoiler">Use <code>pivot_longer()</code>.</span> - <em>Hint
-2</em>: <span class="spoiler">You may specify either the columns to
-pivot, or the columns not to pivot. There is only one column not to
-pivot, <code>religion</code>.</span></p>
+religion, income level, and number of individuals.</p>
+<ul>
+<li><em>Hint 1</em>: <span class="spoiler">Use
+<code>pivot_longer()</code>.</span></li>
+<li><em>Hint 2</em>: <span class="spoiler">You may specify either the
+columns to pivot, or the columns not to pivot. There is only one column
+not to pivot, <code>religion</code>.</span></li>
+</ul>
 </div>
 </div>
 <div id="answers" class="section level1">
 <h1>Answers</h1>
 <div id="exercise-1-1" class="section level3">
 <h3>Exercise 1</h3>
-<p><span class="spoiler"><code>barnyard_ghg &lt;- read.csv(&#39;datasets/barnyard_ghg.csv&#39;)</code></span></p>
+<pre class="r"><code>barnyard_ghg &lt;- read.csv(&#39;datasets/barnyard_ghg.csv&#39;)</code></pre>
 </div>
 <div id="exercise-2-1" class="section level3">
 <h3>Exercise 2</h3>
-<p><span class="spoiler">One way would be
-<code>glimpse(barnyard_ghg)</code> and
-<code>table(barnyard_ghg$Surface)</code></span></p>
+<p>One way to do this would be <code>glimpse(barnyard_ghg)</code> and
+<code>table(barnyard_ghg$Surface)</code>.</p>
 </div>
 <div id="exercises-3-6" class="section level3">
 <h3>Exercises 3-6</h3>
-<p><span class="spoiler"><code>barnyard_ghg %&gt;%</code><br />
-<code>filter(Temp &gt; 10) %&gt;%</code><br />
-<code>group_by(Surface) %&gt;%</code><br />
-<code>summarize(mean_CO2 = mean(CO2_mgC), mean_CH4 = mean(CH4_mgC), mean_NH3 = mean(NH3_ugN), mean_N2O = mean(N2O_ugN)) %&gt;%</code>
-<code>arrange(mean_CO2)</code></span></p>
+<pre class="r"><code>barnyard_ghg %&gt;%  
+  filter(Temp &gt; 10) %&gt;%
+  group_by(Surface) %&gt;%
+  summarize(mean_CO2 = mean(CO2_mgC), mean_CH4 = mean(CH4_mgC), mean_NH3 = mean(NH3_ugN), mean_N2O = mean(N2O_ugN)) %&gt;%
+  arrange(mean_CO2)</code></pre>
 </div>
 <div id="exercise-7-1" class="section level3">
 <h3>Exercise 7</h3>
-<p><span class="spoiler"><code>pivot_longer(relig_income, cols = -religion)</code>,
-or if you want to give your own names to the newly created columns,
-<code>pivot_longer(relig_income, cols = -religion, names_to = &#39;income&#39;, values_to = &#39;individuals&#39;)</code></span></p>
+<p>One way is:</p>
+<pre class="r"><code>pivot_longer(relig_income, cols = -religion)</code></pre>
+<p>or if you want to give your own names to the newly created
+columns,</p>
+<pre class="r"><code>pivot_longer(relig_income, cols = -religion, names_to = &#39;income&#39;, values_to = &#39;individuals&#39;)</code></pre>
 </div>
 </div>
 

@@ -11,7 +11,7 @@
 
 <meta name="author" content="Quentin D. Read" />
 
-<meta name="date" content="2022-12-03" />
+<meta name="date" content="2022-12-05" />
 
 <title>Lesson 4: Going further with mixed models</title>
 
@@ -254,6 +254,7 @@ if (window.hljs) {
 
 
 
+<style type="text/css">.spoiler {visibility: hidden;}.spoiler::before {visibility: visible;content: "Spoiler alert! Hover over me to reveal.";font-weight: bold;background-color: coral;}.spoiler:hover {visibility: visible;}.spoiler:hover::before {display: none;}</style>
 
 
 
@@ -353,13 +354,13 @@ display: none;
 <h1 class="title toc-ignore">Lesson 4: Going further with mixed
 models</h1>
 <h4 class="author">Quentin D. Read</h4>
-<h4 class="date">December 03, 2022</h4>
+<h4 class="date">December 05, 2022</h4>
 
 </div>
 
 <div id="TOC">
 <ul>
-<li><a href="#learning-objectives" id="toc-learning-objectives">Learning
+<li><a href="#lesson-4-learning-objectives" id="toc-lesson-4-learning-objectives">Lesson 4 learning
 objectives</a></li>
 <li><a href="#crossed-and-nested-random-effects" id="toc-crossed-and-nested-random-effects">Crossed and nested random
 effects</a></li>
@@ -370,8 +371,8 @@ transformations</a></li>
 </ul>
 </div>
 
-<div id="learning-objectives" class="section level1">
-<h1>Learning objectives</h1>
+<div id="lesson-4-learning-objectives" class="section level1">
+<h1>Lesson 4 learning objectives</h1>
 <p>At the end of this lesson, students will …</p>
 <ul>
 <li>Fit a linear mixed model with crossed and nested random
@@ -389,41 +390,10 @@ Data Commons</a>). In this study, the experimental treatments were two
 different tillage systems crossed with presence or absence of rye cover
 crop. The original dataset contains results for both maize and soybean
 yields but I am giving you only the maize yield data for simplicity.</p>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-## ✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
-## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
-## ✔ tidyr   1.2.1      ✔ stringr 1.4.1 
-## ✔ readr   2.1.3      ✔ forcats 0.5.2 
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>library(easystats)</code></pre>
-<pre><code>## # Attaching packages: easystats 0.5.2
-## ✔ insight     0.18.8   ✔ datawizard  0.6.4 
-## ✔ bayestestR  0.13.0   ✔ performance 0.10.1
-## ✔ parameters  0.20.0   ✔ effectsize  0.8.2 
-## ✔ modelbased  0.8.5    ✔ correlation 0.8.3 
-## ✔ see         0.7.4    ✔ report      0.5.5</code></pre>
-<pre class="r"><code>library(lme4)</code></pre>
-<pre><code>## Loading required package: Matrix
-## 
-## Attaching package: &#39;Matrix&#39;
-## 
-## The following objects are masked from &#39;package:tidyr&#39;:
-## 
-##     expand, pack, unpack</code></pre>
-<pre class="r"><code>library(lmerTest)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;lmerTest&#39;
-## 
-## The following object is masked from &#39;package:lme4&#39;:
-## 
-##     lmer
-## 
-## The following object is masked from &#39;package:stats&#39;:
-## 
-##     step</code></pre>
+<pre class="r"><code>library(tidyverse)
+library(easystats)
+library(lme4)
+library(lmerTest)</code></pre>
 <pre class="r"><code>maize &lt;- read_csv(&#39;datasets/pzm_maize.csv&#39;)</code></pre>
 <pre><code>## Rows: 288 Columns: 8
 ## ── Column specification ────────────────────────────────────────────────────────
@@ -631,8 +601,11 @@ file:
 (<code>env</code>) in two different years (<code>year</code>): 1931 and
 1932.</p>
 <p>Convert year to a factor varaible in the data frame. Why is it
-important to do this? + <em>Hint</em>: <span class="spoiler">Use
-<code>mutate()</code> and <code>factor()</code>.</span></p>
+important to do this?</p>
+<ul>
+<li><em>Hint</em>: <span class="spoiler">Use <code>mutate()</code> and
+<code>factor()</code>.</span></li>
+</ul>
 </div>
 <div id="exercise-2" class="section level3">
 <h3>Exercise 2</h3>
@@ -685,58 +658,54 @@ variable, <code>treatment</code> as a fixed effect, and
 <div id="exercise-4" class="section level3">
 <h3>Exercise 4</h3>
 <p>Change the model to deal with the issue from the previous exercise.
-Examine the diagnostic plots again. + <em>Hint</em>: <span class="spoiler">Try transforming the response variable!</span></p>
+Examine the diagnostic plots again.</p>
+<ul>
+<li><em>Hint</em>: <span class="spoiler">Try transforming the response
+variable!</span></li>
+</ul>
 </div>
 </div>
 <div id="answers" class="section level1">
 <h1>Answers</h1>
 <div id="exercise-1-1" class="section level3">
 <h3>Exercise 1</h3>
-<p class="spoiler">
 <pre class="r"><code>fisher.barley &lt;- fisher.barley %&gt;%
   mutate(year = factor(year))</code></pre>
-We need to do this because we are treating year as a categorical
+<p>We need to do this because we are treating year as a categorical
 variable, essentially as a component of the environment. With only two
 years, it is not possible to treat year as a continuous variable to
-estimate linear trends in the responses over time.
-</p>
+estimate linear trends in the responses over time.</p>
 </div>
 <div id="exercise-2-1" class="section level3">
 <h3>Exercise 2</h3>
-<p class="spoiler">
 <pre class="r"><code>fit_crossed &lt;- lmer(yield ~ gen + (1|env) + (1|year), data = fisher.barley)
 fit_nested &lt;- lmer(yield ~ gen + (1|env) + (1|year:env), data = fisher.barley)</code></pre>
-Look at the model output with <code>summary(fit_crossed)</code>,
+<p>Look at the model output with <code>summary(fit_crossed)</code>,
 <code>fixef(fit_crossed)</code>, <code>ranef(fit_crossed)</code>, and
 <code>anova(fit_crossed)</code>, and do the same for the other model.
 The fixed effect estimates are the same but with different degrees of
 freedom due to the different grouping structures. The random effect
 estimates are different. The ANOVA has the same sums of squares but
 because of the different degrees of freedom, the F-statistics and
-<em>p</em>-values are different.
-</p>
+<em>p</em>-values are different.</p>
 </div>
 <div id="exercise-3-1" class="section level3">
 <h3>Exercise 3</h3>
-<p class="spoiler">
 <pre class="r"><code>fit &lt;- lmer(biomass ~ treatment + (1|experiment), data = bioassay)</code></pre>
 <p>We get a warning that the model may not have converged. This
 indicates something might be wrong.</p>
 <pre class="r"><code>check_model(fit)</code></pre>
-The residuals look good enough, but the posterior predictive check shows
-predictions of negative biomass.
-</p>
+<p>The residuals look good enough, but the posterior predictive check
+shows predictions of negative biomass.</p>
 </div>
 <div id="exercise-4-1" class="section level3">
 <h3>Exercise 4</h3>
-<p class="spoiler">
 <p>Here is the same model with the only difference being that we
 log-transform the response.</p>
 <pre class="r"><code>fit_log &lt;- lmer(log(biomass) ~ treatment + (1|experiment), data = bioassay)
 check_model(fit_log)</code></pre>
-Not only do we resolve the model convergence issue, but we also now have
-model predictions that are all positive.
-</p>
+<p>Not only do we resolve the model convergence issue, but we also now
+have model predictions that are all positive.</p>
 </div>
 </div>
 

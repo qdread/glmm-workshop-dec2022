@@ -28,12 +28,14 @@ At the end of this lesson, students will ...
 
 For this lesson, we will keep it simple and use simulated data. First load the packages we will need for this lesson. Then read the `soilN_biomass.csv` file, creating a data frame called `soilN_biomass`. This dataset might have come from a study where there are five different fields, each of which has 20 plots. In each plot, soil nitrogen and plant biomass is measured.
 
-```{r}
+```{r, message = FALSE}
 library(tidyverse)
 library(lme4)
 library(lmerTest)
 library(easystats)
+```
 
+```{r}
 soilN_biomass <- read_csv('datasets/soilN_biomass.csv')
 ```
 
@@ -356,17 +358,23 @@ What is the `lmer()` model formula for a random intercepts mixed model where the
 For exercises 2-5, you will need to load a new example dataset. This is data modified from an ARS study (simplified and with some random noise added). It is a set of measurements taken on fish fillets. The thickness and hardness of each fillet were measured in eight different locations on the fillet. There were two different species of catfish (Channel and Hybrid) and three methods of preparation (raw, fresh, and frozen). Read the data into a data frame with `fish_fillets <- read_csv('datasets/fish_fillets.csv')`. **These exercises are in increasing order of difficulty.**
 
 Examine the data. Which species has highest average hardness and thickness (averaged ignoring preparation method, fish ID, and position)?
-  + *Hint 1*: [Use `group_by()` and `summarize()` to calculate means grouped by species.]{.spoiler}
-  + *Hint 2*: [You will need to use `mean(..., na.rm = TRUE)` because there are missing values.]{.spoiler}
+
+- *Hint 1*: [Use `group_by()` and `summarize()` to calculate means grouped by species.]{.spoiler}
+- *Hint 2*: [You will need to use `mean(..., na.rm = TRUE)` because there are missing values.]{.spoiler}
 
 ### Exercise 3
 
 A) Fit a linear mixed model to answer the question of whether fillet thickness differs by species, with random intercepts fit to each individual fish ID.
-  + *Hint*: [`species` is the fixed effect, and `(1|fishID)` indicates random intercepts grouped by fish ID.]{.spoiler}
+
+- *Hint*: [`species` is the fixed effect, and `(1|fishID)` indicates random intercepts grouped by fish ID.]{.spoiler}
+
 B) What do the model diagnostic plots tell us?
-  + *Hint*: [Use `check_model()`!]{.spoiler}
+
+- *Hint*: [Use `check_model()`!]{.spoiler}
+
 C) What does the model summary and ANOVA tell us?
-  + *Hint*: [Use `summary()` and `anova()`!]{.spoiler}
+
+- *Hint*: [Use `summary()` and `anova()`!]{.spoiler}
 
 ### Exercise 4
 
@@ -377,7 +385,9 @@ C) What does the model summary and ANOVA tell us?
 ### Exercise 5
 
 A) Fit a linear mixed model to answer the question of whether preparation method, species, and the interaction between them are associated with differences in average thickness of the fillets.
-  + *Hint*: [There will be multiple fixed effect terms, `species`, `prep`, and `species:prep`.]{.spoiler}
+
+- *Hint*: [There will be multiple fixed effect terms, `species`, `prep`, and `species:prep`.]{.spoiler}
+
 B) What do the model diagnostic plots tell us?
 C) What does the model summary and ANOVA tell us?
 
@@ -385,11 +395,10 @@ C) What does the model summary and ANOVA tell us?
 
 ### Exercise 1
 
-[`yield ~ temperature + rainfall + temperature:rainfall + (1 | block)`]{.spoiler}
+`yield ~ temperature + rainfall + temperature:rainfall + (1 | block)`
 
 ### Exercise 2
 
-<p class="spoiler">
 ```{r, eval = FALSE}
 fish_fillets %>% 
   group_by(species) %>% 
@@ -398,11 +407,9 @@ fish_fillets %>%
 ```
 
 Channel has higher mean hardness and thickness.
-</p>
 
 ### Exercise 3
 
-<p class="spoiler">
 ```{r, eval = FALSE}
 fit <- lmer(thickness ~ species + (1|fishID), data = fish_fillets)
 check_model(fit)
@@ -411,11 +418,9 @@ anova(fit)
 ```
 
 The diagnostic plots show that the residuals and the distribution of random effects conform to the assumptions of the linear mixed model. The model summary shows us that the hybrid species has a somewhat lower predicted mean thickness than the channel species, with a p-value of 0.02 associated with the t-value of the species coefficient. Incidentally, the ANOVA table you get by calling `anova(fit)` gives the same p-value because with only two discrete groups the F-test is equivalent to the t-test.
-</p>
 
 ### Exercise 4
 
-<p class="spoiler">
 ```{r, eval = FALSE}
 fit <- lmer(thickness ~ hardness + (1|fishID), data = fish_fillets)
 check_model(fit)
@@ -424,11 +429,9 @@ anova(fit)
 ```
 
 As in the previous exercise, the diagnostic plots show that the residuals and the distribution of random effects conform to the assumptions of the linear mixed model. The model summary shows us that there is a positive relationship between hardness and thickness: for every increase of 1 unit of hardness, there is on average an increase of 0.0036 units of thickness. Also as in the previous exercise, the default t-test gives us the same p-value ($5.75 \times 10^{-7}$) as the F-test we see if we call `anova(fit)`.
-</p>
 
 ### Exercise 5
 
-<p class="spoiler">
 ```{r, eval = FALSE}
 fit <- lmer(thickness ~ species + prep + species:prep + (1|fishID), data = fish_fillets)
 check_model(fit)
@@ -437,4 +440,3 @@ anova(fit)
 ```
 
 Once again the diagnostic plots show everything conforms to model assumptions. The model summary has a lot more coefficients, it shows that there are overall differences between preparation methods. The interaction coefficients between species and preparation method indicate that the negative effect of the frozen and raw preparation methods on thickness is not as big in the hybrid species.
-</p>

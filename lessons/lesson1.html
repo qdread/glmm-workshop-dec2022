@@ -11,7 +11,7 @@
 
 <meta name="author" content="Quentin D. Read" />
 
-<meta name="date" content="2022-12-03" />
+<meta name="date" content="2022-12-05" />
 
 <title>Lesson 1: R basics</title>
 
@@ -353,50 +353,32 @@ display: none;
 
 <h1 class="title toc-ignore">Lesson 1: R basics</h1>
 <h4 class="author">Quentin D. Read</h4>
-<h4 class="date">December 03, 2022</h4>
+<h4 class="date">December 05, 2022</h4>
 
 </div>
 
 <div id="TOC">
 <ul>
-<li><a href="#learning-objectives" id="toc-learning-objectives">Learning
+<li><a href="#lesson-1-learning-objectives" id="toc-lesson-1-learning-objectives">Lesson 1 learning
 objectives</a></li>
-<li><a href="#introduction-to-this-course" id="toc-introduction-to-this-course">Introduction to this course</a>
-<ul>
-<li><a href="#a-practical-toolkit" id="toc-a-practical-toolkit">A
-practical toolkit</a></li>
-</ul></li>
-<li><a href="#introduction-to-r-and-rstudio" id="toc-introduction-to-r-and-rstudio">Introduction to R and RStudio</a>
-<ul>
-<li><a href="#what-is-r" id="toc-what-is-r">What is R?</a></li>
-<li><a href="#what-is-rstudio" id="toc-what-is-rstudio">What is
-RStudio?</a></li>
-<li><a href="#the-basic-moving-parts-of-r" id="toc-the-basic-moving-parts-of-r">The basic moving parts of
-R</a></li>
-</ul></li>
+<li><a href="#introduction-to-this-course" id="toc-introduction-to-this-course">Introduction to this
+course</a></li>
+<li><a href="#introduction-to-r-and-rstudio" id="toc-introduction-to-r-and-rstudio">Introduction to R and
+RStudio</a></li>
 <li><a href="#how-to-r" id="toc-how-to-r">How to R</a>
 <ul>
 <li><a href="#using-the-r-console" id="toc-using-the-r-console">Using
 the R console</a></li>
 <li><a href="#types-of-output" id="toc-types-of-output">Types of
 output</a></li>
-<li><a href="#errors" id="toc-errors">Errors</a></li>
-<li><a href="#warnings" id="toc-warnings">Warnings</a></li>
-<li><a href="#notes" id="toc-notes">Notes</a></li>
 </ul></li>
 <li><a href="#data-types-in-r" id="toc-data-types-in-r">Data types in
 R</a></li>
 <li><a href="#statistical-distributions" id="toc-statistical-distributions">Statistical distributions</a></li>
 <li><a href="#common-pitfalls" id="toc-common-pitfalls">Common
 pitfalls</a></li>
-<li><a href="#learning-r-best-practices" id="toc-learning-r-best-practices">Learning R best practices</a>
-<ul>
-<li><a href="#how-do-i-get-help" id="toc-how-do-i-get-help">How do I get
-help?</a></li>
-<li><a href="#console-versus-script-editor" id="toc-console-versus-script-editor">Console versus script
-editor</a></li>
 <li><a href="#r-packages" id="toc-r-packages">R packages</a></li>
-</ul></li>
+<li><a href="#learning-r-best-practices" id="toc-learning-r-best-practices">Learning R best practices</a></li>
 <li><a href="#hey-what-about" id="toc-hey-what-about">Hey! What about …
 ?</a></li>
 <li><a href="#exercises" id="toc-exercises">Exercises</a></li>
@@ -404,8 +386,8 @@ editor</a></li>
 </ul>
 </div>
 
-<div id="learning-objectives" class="section level1">
-<h1>Learning objectives</h1>
+<div id="lesson-1-learning-objectives" class="section level1">
+<h1>Lesson 1 learning objectives</h1>
 <p>At the end of this lesson, students will …</p>
 <ul>
 <li>Know what R is and what it can do.</li>
@@ -417,50 +399,45 @@ editor</a></li>
 </div>
 <div id="introduction-to-this-course" class="section level1">
 <h1>Introduction to this course</h1>
-<ul>
-<li>We’re going to learn about mixed models in R.</li>
-<li>The course is divided up into lessons. For each lesson, I’m going to
+<p>In this course, we’re going to learn about mixed models in R.</p>
+<p>The course is divided up into lessons. For each lesson, I’m going to
 give you a worksheet. The worksheet will have a bunch of code in it, but
-parts of the code will be missing and replaced with a
-<code>...</code>.</li>
-<li>Your job will be to fill in the <code>...</code> with the code.
-Don’t worry, you will have access to the full code on the lesson webpage
-as well as being able to see it when I present it on the screen.</li>
-<li>I strongly recommend TYPING IN THE CODE yourself instead of
+parts of the code will be missing and replaced with a <code>...</code>.
+Your job will be to fill in the <code>...</code> with the code. Don’t
+worry, you will have access to the full code on the lesson webpage as
+well as being able to see it when I present it on the screen. I strongly
+recommend <strong>TYPING IN THE CODE</strong> yourself instead of
 copy+pasting it. Research shows that this helps you learn it better.
 Also, if you make a mistake and get an error or different output than
 you expected, you might learn something about how the code works (or
-doesn’t work).</li>
-<li>Each lesson has some exercises at the end. They are an optional way
+doesn’t work).</p>
+<p>Each lesson has some exercises at the end. They are an optional way
 to get more practice, but don’t feel any pressure to do them. We will
 have “office hours” with open Q and A time for two hours each afternoon,
-which would be a good time to go over the exercises.</li>
-</ul>
-<div id="a-practical-toolkit" class="section level2">
-<h2>A practical toolkit</h2>
-<ul>
-<li>This course is intended to teach some practical skills.</li>
-<li>It is NOT intended to teach elementary principles of statistics.
-There’s no way to do that in two days!</li>
-<li>We may gloss over some technical details of the models. I’m happy to
-answer questions about them later.</li>
-</ul>
+which would be a good time to go over the exercises.</p>
+<div id="a-practical-toolkit" class="section level3">
+<h3>A practical toolkit</h3>
+<p>This course is intended to teach some practical skills. It is
+<strong>NOT</strong> intended to teach elementary principles of
+statistics. There’s no way to do that in two days! We may gloss over
+some technical details of the models. I’m happy to answer questions
+about them later.</p>
 </div>
 </div>
 <div id="introduction-to-r-and-rstudio" class="section level1">
 <h1>Introduction to R and RStudio</h1>
 <p>R and RStudio are software tools to help you work with and analyze
 your data.</p>
-<div id="what-is-r" class="section level2">
-<h2>What is R?</h2>
+<div id="what-is-r" class="section level3">
+<h3>What is R?</h3>
 <ul>
 <li>A statistical programming language</li>
 <li>Users contribute packages</li>
 <li>Free and open-source</li>
 </ul>
 </div>
-<div id="what-is-rstudio" class="section level2">
-<h2>What is RStudio?</h2>
+<div id="what-is-rstudio" class="section level3">
+<h3>What is RStudio?</h3>
 <p>RStudio is a tool to help you write and run code in R.</p>
 <p>There are four panes that you see when you open RStudio:</p>
 <ul>
@@ -480,8 +457,8 @@ packages are installed and lets you install other ones, and the Help tab
 shows documentation for functions and packages.</li>
 </ul>
 </div>
-<div id="the-basic-moving-parts-of-r" class="section level2">
-<h2>The basic moving parts of R</h2>
+<div id="the-basic-moving-parts-of-r" class="section level3">
+<h3>The basic moving parts of R</h3>
 <p>R is both a language and an interpreter.</p>
 <p>The two main types of objects you need to know about in R (which is
 true for many other programming languages as well) are variables and
@@ -594,9 +571,8 @@ as a function of horsepower <code>hp</code>.</p>
 <p>There are also three types of messages that code can produce in
 addition to its output: <em>errors</em>, <em>warnings</em>, and
 <em>notes</em>.</p>
-</div>
-<div id="errors" class="section level2">
-<h2>Errors</h2>
+<div id="errors" class="section level3">
+<h3>Errors</h3>
 <p>An error indicates that something is wrong with the code so that it
 cannot produce any output. For instance if we use an uneven number of
 parentheses:</p>
@@ -605,8 +581,8 @@ parentheses:</p>
 ## 1: sin(pi))
 ##            ^</code></pre>
 </div>
-<div id="warnings" class="section level2">
-<h2>Warnings</h2>
+<div id="warnings" class="section level3">
+<h3>Warnings</h3>
 <p>Both warnings and notes mean that the code ran and produced output,
 but they are R trying to tell you something potentially important. For
 instance if we try to take the logarithm of a negative number, the
@@ -616,8 +592,8 @@ issue a warning.</p>
 <pre><code>## Warning in log(-5): NaNs produced</code></pre>
 <pre><code>## [1] NaN</code></pre>
 </div>
-<div id="notes" class="section level2">
-<h2>Notes</h2>
+<div id="notes" class="section level3">
+<h3>Notes</h3>
 <p>A note is just that, a note. Everything is still fine! For example if
 we try to print an extremely long sequence of 0s to the console, it will
 only print a limited number and then give us a message of how many were
@@ -3403,6 +3379,7 @@ omitted.</p>
 ##  [99973] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</code></pre>
 </div>
 </div>
+</div>
 <div id="data-types-in-r" class="section level1">
 <h1>Data types in R</h1>
 <p>You might have noticed the <code>[1]</code> before some of the output
@@ -3647,32 +3624,8 @@ otherwise you will get an error.</li>
 <pre class="r"><code>Sum(1:10)</code></pre>
 <pre><code>## Error in Sum(1:10): could not find function &quot;Sum&quot;</code></pre>
 </div>
-<div id="learning-r-best-practices" class="section level1">
-<h1>Learning R best practices</h1>
-<div id="how-do-i-get-help" class="section level2">
-<h2>How do I get help?</h2>
-<p>Google is your friend. Especially try to copy and paste your error
-message.</p>
-<p>StackOverflow is your friend too (and stats.stackexchange.com if you
-have a question about stats that isn’t specific to R programming). As a
-beginner, it is almost a certainty that you will find your question
-already answered on there. If you can’t, read their guidelines on how to
-create a great reproducible example in R and post your question
-there!</p>
-</div>
-<div id="console-versus-script-editor" class="section level2">
-<h2>Console versus script editor</h2>
-<p>We can simply type individual lines of code and run them one by one
-in the console, but that is not a good practice when you are doing
-complex data wrangling and analysis that you may want to save and run
-again later. For that we use scripts, or text files containing code.</p>
-<p>We can run individual lines or selected blocks of code from the
-script editor by pressing <code>Ctrl+Enter</code> or
-<code>Cmd+Enter</code> while the cursor is on the line or some code is
-selected.</p>
-</div>
-<div id="r-packages" class="section level2">
-<h2>R packages</h2>
+<div id="r-packages" class="section level1">
+<h1>R packages</h1>
 <p>So far, we haven’t had to load any packages. We have only used code
 from “base R.” But almost any R script requires loading one or more
 packages. Packages are sets of functions contributed by R users that are
@@ -3725,6 +3678,30 @@ package name followed by <code>::</code> like this:</p>
 ##             /` /` [nosig]
 ## </code></pre>
 </div>
+<div id="learning-r-best-practices" class="section level1">
+<h1>Learning R best practices</h1>
+<div id="how-do-i-get-help" class="section level3">
+<h3>How do I get help?</h3>
+<p>Google is your friend. Especially try to copy and paste your error
+message.</p>
+<p>StackOverflow is your friend too (and stats.stackexchange.com if you
+have a question about stats that isn’t specific to R programming). As a
+beginner, it is almost a certainty that you will find your question
+already answered on there. If you can’t, read their guidelines on how to
+create a great reproducible example in R and post your question
+there!</p>
+</div>
+<div id="console-versus-script-editor" class="section level3">
+<h3>Console versus script editor</h3>
+<p>We can simply type individual lines of code and run them one by one
+in the console, but that is not a good practice when you are doing
+complex data wrangling and analysis that you may want to save and run
+again later. For that we use scripts, or text files containing code.</p>
+<p>We can run individual lines or selected blocks of code from the
+script editor by pressing <code>Ctrl+Enter</code> or
+<code>Cmd+Enter</code> while the cursor is on the line or some code is
+selected.</p>
+</div>
 </div>
 <div id="hey-what-about" class="section level1">
 <h1>Hey! What about … ?</h1>
@@ -3776,16 +3753,16 @@ the console if you need help.</span></li>
 <h1>Answers</h1>
 <div id="exercise-1-1" class="section level3">
 <h3>Exercise 1</h3>
-<p><span class="spoiler"><code>asin(sqrt(0.5))</code></span></p>
+<pre class="r"><code>asin(sqrt(0.5))</code></pre>
 </div>
 <div id="exercise-2-1" class="section level3">
 <h3>Exercise 2</h3>
-<p><span class="spoiler"><code>sum(1:12345)</code></span></p>
+<pre class="r"><code>sum(1:12345)</code></pre>
 </div>
 <div id="exercise-3-1" class="section level3">
 <h3>Exercise 3</h3>
-<p><span class="spoiler"><code>set.seed(1)</code><br />
-<code>rbinom(n = 1, size = 1000, prob = 0.5)</code></span></p>
+<pre class="r"><code>set.seed(1)
+rbinom(n = 1, size = 1000, prob = 0.5)</code></pre>
 </div>
 </div>
 

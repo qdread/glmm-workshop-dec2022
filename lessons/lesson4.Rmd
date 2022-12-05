@@ -24,12 +24,14 @@ At the end of this lesson, students will ...
 
 For this next example, we are finally going to use some real data! We're going to use a dataset with results from a study of Precision Zonal Management (PZM) conservation agriculture practices (data hosted on [Ag Data Commons](https://data.nal.usda.gov/dataset/regionally-adapted-implementation-conservation-agriculture-delivers-rapid-improvements-soil-properties-associated-crop-yield-stability)). In this study, the experimental treatments were two different tillage systems crossed with presence or absence of rye cover crop. The original dataset contains results for both maize and soybean yields but I am giving you only the maize yield data for simplicity.
 
-```{r}
+```{r, message = FALSE}
 library(tidyverse)
 library(easystats)
 library(lme4)
 library(lmerTest)
+```
 
+```{r}
 maize <- read_csv('datasets/pzm_maize.csv')
 ```
 
@@ -157,16 +159,22 @@ data(fisher.barley, package = 'agridat')
 Examine the dataset. We have five genotypes of barley (`gen`) being grown across six environments in Minnesota (`env`) in two different years (`year`): 1931 and 1932.
 
 Convert year to a factor varaible in the data frame. Why is it important to do this?
-  + *Hint*: [Use `mutate()` and `factor()`.]{.spoiler}
+
+- *Hint*: [Use `mutate()` and `factor()`.]{.spoiler}
 
 ### Exercise 2
 
 A) Fit a linear mixed model with `yield` as a response variable, genotype `gen` as a fixed effect, and environment `env` and `year` as crossed random intercepts.
-  + *Hint*: [`(1|env)` and `(1|year)`]{.spoiler}
+
+- *Hint*: [`(1|env)` and `(1|year)`]{.spoiler}
+
 B) Fit a linear mixed model with the same response variable and fixed effect, but include environment and year nested within environment as random intercepts.
-  + *Hint*: [You will need to incorporate `year:env` into the new formula.]{.spoiler}
+
+- *Hint*: [You will need to incorporate `year:env` into the new formula.]{.spoiler}
+
 C) What is the difference, if any, between the models' results?
-  + *Hint*: [Try `summary()`, `fixef()`, `ranef()`, and `anova()`.]{.spoiler}
+
+- *Hint*: [Try `summary()`, `fixef()`, `ranef()`, and `anova()`.]{.spoiler}
 
 ### Exercise 3
 
@@ -184,35 +192,31 @@ B) Examine the model diagnostic plots. Do you notice any issues?
 ### Exercise 4
 
 Change the model to deal with the issue from the previous exercise. Examine the diagnostic plots again.
-  + *Hint*: [Try transforming the response variable!]{.spoiler}
+
+- *Hint*: [Try transforming the response variable!]{.spoiler}
 
 # Answers
 
 ### Exercise 1
 
-<p class="spoiler">
 ```{r, eval = FALSE}
 fisher.barley <- fisher.barley %>%
   mutate(year = factor(year))
 ```
 
 We need to do this because we are treating year as a categorical variable, essentially as a component of the environment. With only two years, it is not possible to treat year as a continuous variable to estimate linear trends in the responses over time.
-</p>
 
 ### Exercise 2
 
-<p class="spoiler">
 ```{r, eval = FALSE}
 fit_crossed <- lmer(yield ~ gen + (1|env) + (1|year), data = fisher.barley)
 fit_nested <- lmer(yield ~ gen + (1|env) + (1|year:env), data = fisher.barley)
 ```
 
 Look at the model output with `summary(fit_crossed)`, `fixef(fit_crossed)`, `ranef(fit_crossed)`, and `anova(fit_crossed)`, and do the same for the other model. The fixed effect estimates are the same but with different degrees of freedom due to the different grouping structures. The random effect estimates are different. The ANOVA has the same sums of squares but because of the different degrees of freedom, the F-statistics and *p*-values are different.
-</p>
 
 ### Exercise 3
 
-<p class="spoiler">
 ```{r, eval = FALSE}
 fit <- lmer(biomass ~ treatment + (1|experiment), data = bioassay)
 ```
@@ -224,11 +228,9 @@ check_model(fit)
 ```
 
 The residuals look good enough, but the posterior predictive check shows predictions of negative biomass.
-</p>
 
 ### Exercise 4
 
-<p class="spoiler">
 Here is the same model with the only difference being that we log-transform the response.
 
 ```{r, eval = FALSE}
@@ -237,4 +239,3 @@ check_model(fit_log)
 ```
 
 Not only do we resolve the model convergence issue, but we also now have model predictions that are all positive.
-</p>
