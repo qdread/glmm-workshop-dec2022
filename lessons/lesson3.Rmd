@@ -116,6 +116,7 @@ lm_coefs <- coef(lm_fit)
 
 lm_coefs
 ```
+
 But what does the fitted trend look like? We will recreate the plot we made previously but now include a fitted line with the intercept and slope coefficients from the model.
 
 ```{r}
@@ -127,7 +128,7 @@ ggplot(soilN_biomass, aes(x = soilN, y = biomass, color = field)) +
 
 The fit is relatively poor because the linear regression assumes that a single relationship, with the same intercept and slope, holds across all fields. However, this might not be a good assumption. Fields might have different unmeasured environmental conditions that cause them to have different relationships between soil nitrogen and biomass. For instance, some fields might have higher soil phosphorus, or better soil moisture conditions -- or the variation might even be completely random.
 
-Also, there are five fields, each with 20 measurements. The measurements that come from the same field are not independent because they have a common cause: whatever properties the soil in field A has that influence biomass are affecting all the biomass measurements from field A in the same way. Our call of `summary(lm_fit)` above showed that the model had 100 degrees of freedom (100 data points - 2 parameters, the intercept and slope = 98). 100 degrees of freedom is probably too many. But if we just average all the measurements from each field into a single measurement, we will only have 3 degrees of freedom in the model. A more appropriate value would be somewhere in between -- the measurements from the same barnyard are *partially*, but not completely, dependent on one another.
+Also, there are five fields, each with 20 measurements. The measurements that come from the same field are not independent because they have a common cause: whatever properties the soil in field A has that influence biomass are affecting all the biomass measurements from field A in the same way. Our call of `summary(lm_fit)` above showed that the model had 98 degrees of freedom (100 data points - 2 parameters, the intercept and slope = 98). 98 degrees of freedom is probably too many. But if we just average all the measurements from each field into a single measurement, we will only have 3 degrees of freedom in the model. A more appropriate value would be somewhere in between -- the measurements from the same barnyard are *partially*, but not completely, dependent on one another.
 
 # Separate linear regressions
 
@@ -156,7 +157,7 @@ That is an improvement because we now have a separate relationship for each fiel
 
 # Our first linear mixed model
 
-It might seem like we have dealt with the issue that the different fields might have different relationships between soil nitrogen and plant biomass. But we went a little bit too far. We really want to know how soil nitrogen affects plant biomass in general, not in one particular barnyard ... the goal of our scientific inference is usually to generalize what we find in a particular study to a larger population of fields (only a few of which we actually visited to get soil N and plant biomass measurements in our study). Doing separate regressions for each field doesn't quite get us there because it doesn't give us an estimate of the overall relationship between soil nitrogen and plant biomass in fields, while at the same time accounting for variation due to the unknown factors that may be different from field to field. 
+It might seem like we have dealt with the issue that the different fields might have different relationships between soil nitrogen and plant biomass. But we went a little bit too far. We really want to know how soil nitrogen affects plant biomass in general, not in one particular field ... the goal of our scientific inference is usually to generalize what we find in a particular study to a larger population of fields (only a few of which we actually visited to get soil N and plant biomass measurements in our study). Doing separate regressions for each field doesn't quite get us there because it doesn't give us an estimate of the overall relationship between soil nitrogen and plant biomass in fields, while at the same time accounting for variation due to the unknown factors that may be different from field to field. 
 
 How can we solve that problem? You probably already guessed it ... a mixed model! I'm calling these mixed models but they go by a lot of other names.
 
@@ -270,7 +271,7 @@ The degrees of freedom for the F-test are estimated with an approximation -- bec
 
 We just saw how to fit a mixed model with a continuous predictor variable. If the predictor variable is categorical, such as a treatment variable with a control and one or more treatment levels, it isn't too much different to fit a mixed model.
 
-We'll need some different data for this part. We are still going to stick with fake data I made, but this time let's say we have different fields, each of which has ten plots that received a nitrogen fertilization treatment and ten plots that are unfertilized controls. As before, we measured biomass in each plot.
+We'll need some different data for this part. We are still going to stick with fake data I made, but this time let's say we have different fields, each of which has ten plots that are unfertilized controls, ten plots assigned to low fertilizer treatment, and ten with high fertilizer treatment. As before, we measured biomass in each plot.
 
 Read the data, then sort the fertilizer levels so that the order makes sense.
 
@@ -334,7 +335,7 @@ The correlations between the random intercepts and the random slopes are exactly
 
 ### What have we done so far?
 
-You've learned the basics of R. You've learned how to work with data frames in R. You've fit a linear model, a linear mixed model, and a generalized linear mixed model in R. Impressive!
+You've learned the basics of R. You've learned how to work with data frames in R. You've fit a linear model and several different linear mixed models. Impressive!
 
 ### What will we do tomorrow?
 

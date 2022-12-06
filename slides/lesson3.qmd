@@ -13,6 +13,9 @@ At the end of this lesson, students will ...
 - Understand the difference between a linear model and a linear mixed model.
 - Understand the difference between random intercepts and random slopes.
 - Be able to fit a mixed model with fixed effects, both continuous and categorical, and interactions.
+
+---
+
 - Be able to fit a mixed model with random effects, both random intercepts and random slopes.
 - Examine diagnostic plots to ensure that model assumptions are met.
 - Examine summary information from mixed model output, including ANOVA tables.
@@ -141,18 +144,29 @@ ggplot(soilN_biomass, aes(x = soilN, y = biomass, color = field)) +
   geom_abline(intercept = lm_coefs[1], slope = lm_coefs[2], size = 1)
 ```
 
-- Relatively poor fit
-- 
+- Relatively poor fit -- Why?
 
-The fit is relatively poor because the linear regression assumes that a single relationship, with the same intercept and slope, holds across all fields. However, this might not be a good assumption. Fields might have different unmeasured environmental conditions that cause them to have different relationships between soil nitrogen and biomass. For instance, some fields might have higher soil phosphorus, or better soil moisture conditions -- or the variation might even be completely random.
+---
 
-Also, there are five fields, each with 20 measurements. The measurements that come from the same field are not independent because they have a common cause: whatever properties the soil in field A has that influence biomass are affecting all the biomass measurements from field A in the same way. Our call of `summary(lm_fit)` above showed that the model had 100 degrees of freedom (100 data points - 2 parameters, the intercept and slope = 98). 100 degrees of freedom is probably too many. But if we just average all the measurements from each field into a single measurement, we will only have 3 degrees of freedom in the model. A more appropriate value would be somewhere in between -- the measurements from the same barnyard are *partially*, but not completely, dependent on one another.
+- Linear regression assumes a single intercept and slope holds across all fields
+- But fields might have different unmeasured environmental conditions causing different relationships
+- Some fields might have higher soil phosphorus or better soil moisture conditions
+- Or just environmental "noise" with no discernible cause
 
-# Separate linear regressions
+---
 
-OK, so we are missing something if we lump all the fields together, because the relationship between soil N and plant biomass may be different in each field. Well then, you might say, why not fit separate models for each field?
+- There is a bigger problem with the simple linear regression
+- The 20 measurements that come from the same field are not independent because they have a common cause
+- The regression model has 98 degrees of freedom 
+  + 100 data points - 2 parameters, the intercept and slope = 98
+- But if we use one average value from each field we will only have 3 degrees of freedom
+- Ideally we want something in between
+- Measurements from the same field are *partially* but not completely dependent on one another
 
-I will demonstrate how you might do this -- note this code is a little bit more complex than what we'll be covering in this workshop so take this more as a demonstration. It is not something you would typically want to do. We're fitting five separate linear regression models, estimating an intercept and slope for each field, and then pulls out the coefficients and makes a plot of the fitted lines. 
+## Separate linear regressions
+
+- So why not fit separate models for each field?
+- This code is just for demonstration: fit five separate regressions, get intercept and slope for each field, then plot the lines
 
 ```{r}
 separate_lm_fits <- soilN_biomass %>%
@@ -163,41 +177,64 @@ separate_lm_coefs <- data.frame(field = c('a', 'b', 'c', 'd', 'e'),
                                 intercept = map_dbl(separate_lm_fits, ~ coef(.)[1]),
                                 slope = map_dbl(separate_lm_fits, ~ coef(.)[2]))
 
-separate_lm_coefs
-
 ggplot(soilN_biomass, aes(x = soilN, y = biomass, color = field)) +
   geom_point(size = 1.5) +
   theme_bw() +
   geom_abline(aes(intercept = intercept, slope = slope, color = field), size = 1, data = separate_lm_coefs)
 ```
 
-That is an improvement because we now have a separate relationship for each field. But we are still missing something: we believe that there is some overall tendency of soil N to affect plant biomass, a process that is occurring in every field but has different outcomes because of the different environments in each field. How do we account for this?
+---
 
-# Our first linear mixed model
+- We now have a separate relationship for each field
+- But we might hypothesize that there is some overall tendency of soil N to affect plant biomass
+- This process occurs in every field but has different outcomes because of the different environments in each field
+- How do we account for this?
 
-It might seem like we have dealt with the issue that the different fields might have different relationships between soil nitrogen and plant biomass. But we went a little bit too far. We really want to know how soil nitrogen affects plant biomass in general, not in one particular barnyard ... the goal of our scientific inference is usually to generalize what we find in a particular study to a larger population of fields (only a few of which we actually visited to get soil N and plant biomass measurements in our study). Doing separate regressions for each field doesn't quite get us there because it doesn't give us an estimate of the overall relationship between soil nitrogen and plant biomass in fields, while at the same time accounting for variation due to the unknown factors that may be different from field to field. 
+## Our first linear mixed model
 
-How can we solve that problem? You probably already guessed it ... a mixed model! I'm calling these mixed models but they go by a lot of other names.
+- Goal of our scientific inference is to generalize what we find in a particular study to a larger population 
+- Separate regressions for each field doesn't generalize because we aren't estimating the overall relationship
+- **Linear mixed models** (LMM) estimate the overall relationship and account for unknown variation between fields at the same time
+
+---
+
+### What do you call this model?
 
 ![Mixed models meme courtesy of Chelsea Parlett-Pelleriti on Twitter](https://qdread.github.io/glmm-workshop-dec2022/public/images/mixedmodelsmeme.jpg)
 
-Mixed models do what is called "partial pooling." This means they don't lump all observations together into a single group ("Complete pooling" as we did in the simple linear regression above). Instead, they "partially" group them: some of the parameters, the fixed effects, are shared by all the groups, but other parameters, the random effects, are unique to each group. They're called *mixed* models because they have a *mix* of fixed and random effects.
+## Partial pooling
+
+- *complete pooling* in simple linear regression (all observations share intercept and slope parameters)
+- *no pooling* when we did separate regressions for each field (separate intercept and separate slope for each field)
+- Mixed models do *partial pooling*
+  + some parameters shared by all groups (the fixed effects)
+  + some parameters are unique to each group (the random effects)
+  + called "mixed" model because there's a "mix" of fixed and random effects
 
 ## Random intercept model
 
-Here's our first mixed model. We are now using the `lmer()` function from the **lme4** package instead of `lm()` from base R.
+- We will use **lme4** package to fit mixed models
+- `lmer()` instead of `lm()`
 
 ```{r}
 mm_fit <- lmer(biomass ~ soilN + (1 | field), data = soilN_biomass)
 ```
 
-This looks just like the `lm()` call except for the `+ (1 | field)` part. What is that? It indicates that a separate *random intercept* will be fit to each field. The random effect term is contained within parentheses `()` and has a vertical bar `|` in the middle of it. To the left of the `|` is the design component, where the `1` indicates an intercept. To the right are the grouping factors; here it is only `field`. We will see more complicated random-effects specifications later.
+- `+ (1 | field)` -- what's that new thing?
+- A separate *random intercept* will be fit to each field 
 
-There are a lot of other mixed model fitting packages in R besides **lme4** but it is a very good one for basic models like the ones we will be covering in this workshop.
+## Syntax of random effect term
+
+`(1 | field)`
+
+- Contained within parentheses `()` 
+- Has a vertical bar `|` in the middle of it.
+- Left of `|` is the *design* component (`1` indicates an intercept)
+- Right of `|` are the *grouping factors* (here it is only `field`)
 
 ## Visualizing model fit of random intercept model
 
-What result do we get? First let's look at a plot of the results. Again, this code is for demonstration purposes only for now. This plot includes a thin line for each of the group-level predictions (separate for each field) as well as a thick black line for the population-level prediction (average expected value across all fields).
+Plot model fit with **ggplot2** (again don't worry about code)
 
 ```{r}
 pred_grid <- expand.grid(soilN = c(0, 10), field = letters[1:5])
@@ -211,19 +248,25 @@ ggplot(soilN_biomass, aes(x = soilN, y = biomass, color = field)) +
   geom_line(data = mm_pred_population, color = 'black', size = 1)
 ```
 
-This model has accounted for different overall biomass levels in each field: the intercepts of each of the five lines are different. The thick black line shows the population-level expectation for the "average" field. The mixed model fits the intercepts of each field as if they were drawn from a normal distribution, and the population-level prediction's intercept is the mean of that distribution. But this model still does not allow for there to be a different trend in biomass as soil nitrogen increases within each field: the lines are all parallel with the same slope.
+---
+
+- Model now accounts for different "baseline" biomass levels in each field with different intercepts
+- Thick black line is population-level expectation for the "average" field
+- Mixed model treats intercepts as if they were drawn from a normal distribution
+- Population-level intercept is the mean of that distribution
+- But lines are all parallel (slope is the same for each field)
 
 ## Random slope model
 
-We can allow not only the intercepts, but also the slopes, to vary by field. The syntax for that model differs from the random intercept model because the `1`, indicating intercept only, in the design part of the random effects term is replaced with `soilN`, meaning the slope with respect to `soilN` will be different for each grouping factor `field`.
+- Slopes can also vary by field
+- Change the design (left-hand side of random effects term) to `(soilN | field)`
+- Slope with respect to `soilN` (and intercept) will be different for each field
 
 ```{r}
 mm_fit_randomslopes <- lmer(biomass ~ soilN + (soilN | field), data = soilN_biomass)
 ```
 
 ## Visualizing model fit of random slope model
-
-Now what does the model fit look like?
 
 ```{r}
 mm_pred_group_randomslopes <- cbind(pred_grid, biomass = predict(mm_fit_randomslopes, newdata = pred_grid))
@@ -236,130 +279,199 @@ ggplot(soilN_biomass, aes(x = soilN, y = biomass, color = field)) +
   geom_line(data = mm_pred_population_randomslopes, color = 'black', size = 1)
 ```
 
-Now, we have group-level predictions that capture the different trends within each field, as well as a population-level prediction for the "average" field.
+- Group-level predictions for each field now have different slopes and intercepts
 
-# Delving into mixed model output
+## Delving into mixed model output
 
-Let's look at some of the ways we can extract output from a fitted mixed model object.
+- Diagnostic plots
+- Model summaries
 
 ## Diagnostic plots
 
-First let's take a step back and make sure our statistical model meets all assumptions. For a linear mixed model, this means not only do the residuals need to be roughly normally distributed and have no trend with respect to the fitted values, but also the random effects need to be normally distributed.
-
-I like using the `check_model()` function which is in the **performance** package that loads automatically when you load the **easystats** package. It produces a lot of diagnostic plots that you can use to make sure your model meets all the assumptions.
+- Does the statistical model meet all assumptions?
+- Residuals need to be roughly normally distributed and have no trend with respect to the fitted values
+- Random effects need to be normally distributed
+- `check_model()` from **easystats** package produces all the diagnostic plots you need
 
 ```{r}
 check_model(mm_fit_randomslopes)
 ```
 
-These diagnostic plots look great (obviously so, because I simulated this dataset using normal distributions for everything)! The linearity and homogeneity of variance plots show no trend. The normal Q-Q plots for the overall residuals (bottom left) and for the random effects (bottom right) all fall on a straight line so we can be satisfied with that. 
+## Residual diagnostics
 
-I personally do not recommend running any formal tests on residuals such as the Shapiro-Wilk test. Whenever scientists ask me about them, I try to dissuade them. This is because assumptions like the normality of residuals assumption are only approximations. A true perfect normal distribution does not exist in nature. Just like a perfect circle, it is a human construct. There will always be small deviations. For your model to be valid, it just has to be "close enough." Minor differences between the residuals and the normal distribution are not a problem; we will explore how to use generalized linear mixed models to deal with situations when there are really big discrepancies.
+- The plots look great! (because this is fake data)
+- Linearity and homogeneity of variance plots show no trend
+- Normal Q-Q plots for the overall residuals (bottom left) and the random effects (bottom right) both straight lines
 
-But the most important assumption of any linear model is not one you can test with any of these graphs. People get hung up on these assumptions because you can easily run tests and make plots to check them. But by far the most important assumption for a statistical model of this kind is that individual data points are *independent samples*. Or if there is any dependence between them, it has to be accounted for. That's why mixed models are so crucial -- they allow us to account for the *partial* dependency of data points. 
+---
+
+- I recommend against formal tests on residuals, e.g. Shapiro-Wilk test
+- Assumptions like "normal residuals" are only approximations
+- A perfect normal distribution does not exist in nature, just like a perfect circle does not exist
+- Just has to be "close enough" for the model to be valid
+
+## The most important assumption of a linear model
+
+- Are individual data points *independent samples*? 
+- Or if not, did you account for any dependence between them in your model?
+- Mixed models allow us to account for the *partial* dependency of data points
 
 ## Model summaries
 
-Here are some ways we can look at the quantitative results of the model fit. (Tomorrow we will go over more sophisticated ways of presenting this output.)
-
-We can use `summary()` to get a lot of output. What's in here? We have information about the distribution of residuals and random effects, and the fixed effect coefficients with t-tests.
+- `summary()` of the fitted model object gives us a lot of output
+  + Distributions of residuals and random effects
+  + Fixed effect coefficients with t-tests
 
 ```{r}
 summary(mm_fit_randomslopes)
 ```
 
-The three functions `ranef()`, `fixef()`, and `coef()` give us the random effects, the fixed effects (population-level intercept and slope), and the coefficients (sum of random and fixed effects, resulting in the group-level intercepts and slopes).
+## Getting parameters from the fit object
+
+- `ranef()`: random effects
+- `fixef()`: fixed effects
+- `coef()`: coefficients
+  + Add the random effect for each group to the fixed effect
+  + Result is the group-level intercepts and slopes
 
 ```{r}
 ranef(mm_fit_randomslopes)
 fixef(mm_fit_randomslopes)
 coef(mm_fit_randomslopes)
 ```
+
 ## ANOVA
 
-We can get an ANOVA table for the linear mixed model using the function `anova()`.
+- Use the function `anova()`
+- We need the **lmerTest** package for this
 
 ```{r}
 anova(mm_fit_randomslopes)
 ```
 
-The degrees of freedom for the F-test are estimated with an approximation -- because linear mixed models' degrees of freedom are "somewhere in between" fully independent and fully dependent, we have to use an approximate method to estimate them.
+- Degrees of freedom for the F-test are estimated with an approximation
+- Because linear mixed models' degrees of freedom are "somewhere in between" 
 
-# Mixed models with categorical predictor
+## Mixed models with categorical predictor
 
-We just saw how to fit a mixed model with a continuous predictor variable. If the predictor variable is categorical, such as a treatment variable with a control and one or more treatment levels, it isn't too much different to fit a mixed model.
-
-We'll need some different data for this part. We are still going to stick with fake data I made, but this time let's say we have different fields, each of which has ten plots that received a nitrogen fertilization treatment and ten plots that are unfertilized controls. As before, we measured biomass in each plot.
-
-Read the data, then sort the fertilizer levels so that the order makes sense.
+- Categorical predictor such as treatment variable with a control and one or more treatment levels
+- New example data: still simulated but now each field has ten unfertilized control plots, ten low fertilizer plots, and ten high fertilizer plots
+- Read data and then sort `treatment` factor levels to a logical order
 
 ```{r}
 fert_biomass <- read_csv('datasets/fertilizer_biomass.csv') %>%
   mutate(treatment = factor(treatment, levels = c('control', 'low', 'high')))
 ```
 
-What do the data look like? Let's make a box plot for each treatment within each field.
+## Look at the data
+
+- Box plot for each treatment within each field using **ggplot2**
 
 ```{r}
 ggplot(fert_biomass, aes(x = field, fill = treatment, y = biomass)) +
   geom_boxplot() + theme_bw()
 ```
 
-There is a lot of variation among fields, but we see that the means tend to increase from control to low to high.
+- A lot of variation among fields
+- Biomass means tend to increase from control to low to high.
 
-Let's fit a model. We will try the random intercept model first.
+## Fit a model
+
+- Try the random intercept model first
 
 ```{r}
 fert_mm <- lmer(biomass ~ treatment + (1 | field), data = fert_biomass)
 ```
 
-What does the model summary show us?
+- What does the model summary show us?
 
 ```{r}
 summary(fert_mm)
 ```
 
-You can see that there are three coefficients in the model: the intercept, `treatmentlow`, and `treatmenthigh`. Even though there are three treatments (control, low, and high), only two of them have their own coefficient. This is because we have an intercept already, and the mean value of one of the three treatments is set as the intercept. Then we only need two additional coefficients to define the means for the other two levels. 
+---
 
-What the summary tells us is that the expected mean value of biomass in unfertilized control plots is about 18.1. The coefficients on low and high are positive, so the biomass is greater than the control in both cases. For example, the expected value of biomass in the low fertilizer treatment is about 18.1 + 2.5 = 20.6. We will look at ways to compare these means later.
+- Three coefficients in the model: the intercept, `treatmentlow`, and `treatmenthigh`
+- Three treatments (control, low, and high) but only two have their own coefficient
+- This is because the mean value of one of the three treatments is set as the intercept
+- We only need $n-1$ treatment coefficients for $n$ levels if we have an intercept
 
-We also see that there are built-in t-tests for each coefficient. The t-test for the intercept is not really meaningful because it is comparing the intercept against a value of zero. Of course all the biomass values are well above zero so it's not surprising to get a high t-statistic and low p-value here. However the other two t-tests are testing whether the difference between each other treatment and the control is not zero. So those are meaningful. They show that both the other two treatments are different from the control. However these don't account for multiple comparisons or anything, and there is no t-test showing whether low and high differ from one another, so these default tests aren't the best statistical tests to report. We'll revisit that tomorrow!
+---
 
-# Random slopes model with categorical predictor
+- Expected mean value of biomass in unfertilized control plots = ~18.1
+- Coefficients on low and high are positive, so the expected biomass is greater than the control
+- Expected value of biomass in the low fertilizer treatment = 18.1 + 2.5 = ~20.6
 
-Let's try the random-slopes version of the biomass versus fertilizer model.
+---
+
+- There are built-in t-tests for each coefficient, comparing them to 0
+- The t-test for the intercept is not really meaningful 
+- The other two t-tests are testing the null hypothesis that the difference between each other treatment and the control is zero 
+- But they don't account for multiple comparisons
+- And there is no t-test showing whether low and high differ from one another
+- Typically do not report these default t-tests
+
+## Random slopes model with categorical predictor
 
 ```{r, message = TRUE, warning =  TRUE}
 fert_mm_slopes <- lmer(biomass ~ treatment + (treatment | field), data = fert_biomass)
 ```
 
-We get a message that the fit is singular. What does this mean? Some components of the variance-covariance matrix of the random effects are either exactly zero or exactly one. OK what about in English? Basically it means that the algorithm that fits the model parameters doesn't have enough data to get a good estimate. This often happens when we are trying to fit a model that is too complex for the amount of data we have, or when the random effects are very small and can't be distinguished from zero. We still get some output but this message should make us take a close look at the random effects and their variances.
+- We get a message that the fit is singular -- what?!?
+
+## Singular fit
+
+- *"Some components of the variance-covariance matrix of the random effects, or possibly one or more linear combinations of them, are either exactly zero or exactly one."*
+- Still ... what?!? 
+- The algorithm that fits the model parameters doesn't have enough data to get a good estimate
+- Often occurs when fitting (overly) complex models
+- Or random effects are very small and cannot be distinguished from zero 
+
+---
+
+- We still get output (it's a note, not an error or warning)
+- But we need to take a close look at the random effects and their variances
+
+---
+
+- Random slopes look fine
 
 ```{r}
 ranef(fert_mm_slopes)
 ```
 
-The random slopes look OK. We can look at the variance-covariance matrix of the random effects using the `VarCorr()` function:
+- Look at the variance-covariance matrix of the random effects using `VarCorr()`
 
 ```{r}
 VarCorr(fert_mm_slopes)
 ```
 
-The correlations between the random intercepts and the random slopes are exactly 1 or exactly -1. This means no additional information is being provided by the random slopes, so we can just stick with the random intercepts model in this case. However the random slopes model is still statistically valid, it's just a little overly complex for the data we have here.
+---
 
-> NOTE: It isn't surprising that the random slopes model doesn't work well with this dataset. That's because I purposefully simulated data with almost zero variation in the treatment effect between fields so that the slope estimates would be near zero. But this is something you see a lot in real datasets.
+- Correlations between the random intercepts and the random slopes are exactly 1 or exactly -1
+- This means no additional information is being provided by the random slopes
+- We should just stick with the random intercepts model in this case
+- The random slopes model is probably still statistically valid, just a little too complex for the data
+- This is not surprising here because I simulated the data to have no difference in slopes between fields
 
-# Day 1 recap
+## Day 1 recap
+
+---
 
 ### What have we done so far?
 
-You've learned the basics of R. You've learned how to work with data frames in R. You've fit a linear model, a linear mixed model, and a generalized linear mixed model in R. Impressive!
+- Learned the basics of R
+- Learned how to work with data frames in R
+- Fit a linear model
+- Fit linear mixed models with random intercepts and random slopes
+
+Impressive!
+
+---
 
 ### What will we do tomorrow?
 
-Tomorrow, we will do a lot more fun stuff with mixed models. We will cover ...
-
-- Data transformations
+- Data transformations in linear mixed models
 - Crossed and nested random effects
 - Generalized linear mixed models
 - How to compare means and test specific hypotheses with contrasts
