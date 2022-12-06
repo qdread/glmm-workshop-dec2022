@@ -37,8 +37,9 @@ library(tidyverse)
 ## Reading in data
 
 - If you are using RStudio on the cloud, the file `small_mammals.csv` is included in the `datasets` folder
-- If running locally, replace `datasets` with the file path on your system
-- For example `C:/Users/yourname/Documents/r_workshop_datasets/small_mammals.csv`
+- If running locally, replace `datasets` with the file path 
+- For example `C:/Users/yourname/Documents/`
+ `r_workshop_datasets/small_mammals.csv`
 - Notice that `/` (forward slash) is used, even on Windows!
 - Use `read_csv()` from the tidyverse package **readr**
 - This returns a "tibble," tidyverse's name for a special class of data frame
@@ -51,7 +52,7 @@ dat <- read_csv('datasets/small_mammals.csv')
 
 - Body measurements of small mammals from the NEON ecological observatory network 
 
-![Myodes gapperi](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Myodes_gapperi_91047357.jpg/640px-Myodes_gapperi_91047357.jpg)
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Myodes_gapperi_91047357.jpg/640px-Myodes_gapperi_91047357.jpg)
 
 ## Summary information about a data frame
 
@@ -130,6 +131,8 @@ dat[1:5, 1:2]
 dat[20, c('taxonID', 'sex')]
 ```
 
+---
+
 - To extract a single column from a data frame as a vector, you can use the `$` operator. 
 
 ```{r}
@@ -154,7 +157,7 @@ table(dat$sex)
 ```
 
 
-## Subsetting with tidyverse functions: filter
+## Subsetting with tidyverse functions: filter()
 
 - The tidyverse function `filter()` gives you subsets of rows
 -  A common use of `filter()` is to subset rows by a condition
@@ -164,7 +167,7 @@ table(dat$sex)
 filter(dat, weight < 10)
 ```
 
-## Subsetting with tidyverse functions: select
+## Subsetting with tidyverse functions: select()
 
 - `select()` gives you subsets of columns
 - We do not need to use quotes on column names within `select()`
@@ -207,18 +210,18 @@ max(x, na.rm = TRUE)
 
 ## The pipe operator
 
-FIXME ALL BELOW HERE ISN'T DONE
-
 - The pipe operator, or `%>%`, "pipes" the output of one function into the input of the next function
 - Useful for composing expressions with many functions that are complicated but still readable
 
-For instance take this nested function call
+## Nested versus piped
+
+Nested function call:
 
 ```
 sqrt(log(abs(x)))
 ```
 
-We start with a variable called `x`, take the absolute value with `abs()`, take the natural log with `log()`, then take the square root with `sqrt()`. But the order in which we do those operations is actually the opposite of what it appears in the code. We can use the `%>%` operator to make this code more readable. Not only are the operations printed in a logical order, but we can also easily split the code into multiple lines which is often easier for anyone who is reading your code to decipher. 
+Piped version of the same function call:
 
 ```
 x %>%
@@ -227,11 +230,14 @@ x %>%
   sqrt()
 ```
 
-> PROTIP: It's really "future you" who is going to be the one reading the code 99% of the time, so any time you spend a little time and effort
-making your code more legible, you are actually saving yourself time in the long run ... even if you're the only one who ever looks at the code!
+- Can be split across multiple lines
+- Order of operations read from top to bottom instead of inside to outside
+- A lot easier for people, especially "future you," to read
 
+## Using pipe to calculate summary statistics
 
-Let's calculate summary statistics for entire columns of a data frame. We're going to put the `%>%` pipe operator into practice now, to pass the output of one line of code to the next line.
+- Summary statistics for entire column of data frame
+- The pipe `%>%` passes `dat` to the next line of code
 
 ```{r}
 dat %>%
@@ -239,9 +245,16 @@ dat %>%
             sd_weight = sd(weight))
 ```
 
-As you can see this output is not helpful. All it tells us is that there is at least one missing (`NA`) value in the `weight` column. There are two ways we can deal with this.
+- We get only `NA` because there is at least one missing value in the `weight` column
 
-One alternative is to subset the data frame using `filter()`, keeping only rows where weight is not missing. The function `is.na(x)` returns a vector of logical values, `TRUE` if `x` is missing and `FALSE` if it is not. We negate this with the `!` operator to get a vector that is `TRUE` if `weight` is not missing. Then we can calculate the summary statistics. This shows you how to use the `%>%` pipe to do two operations on a data frame at once.
+---
+
+### Remove missing values with filter()
+
+- We can use `filter()` to keep only rows where weight is not missing
+- `is.na(x)` returns a vector of logical values, `TRUE` if `x` is missing and `FALSE` if it is not
+- We negate this with the `!` operator to get a vector that is `TRUE` if `weight` is not missing
+- Use the `%>%` pipe to do two operations on a data frame sequentially.
 
 ```{r}
 dat %>%
@@ -250,7 +263,12 @@ dat %>%
             sd_weight = sd(weight))
 ```
 
-Or we can use `na.rm` as we demonstrated above. The result should be identical.
+---
+
+### Remove missing values with na.rm
+
+- `na.rm` argument will also remove missing values
+- Result will be identical to the previous
 
 ```{r}
 dat %>%
@@ -258,10 +276,10 @@ dat %>%
             sd_weight = sd(weight, na.rm = TRUE))
 ```
 
-
 ## Calculating summary statistics by group
 
-You often want to calculate summary statistics for each group. We will use the `group_by()` function here to get the mean and standard deviation of body weight for each taxon ID.
+- Use `group_by()` before `summarize()`
+- Here we remove missing values, group by the `taxonID` column, and get mean and SD of body weight for each taxon
 
 ```{r}
 dat %>%
@@ -271,7 +289,12 @@ dat %>%
             sd_weight = sd(weight))
 ```
 
-We can `filter()` by more than one condition, and `group_by()` more than one column. We can also put as many summary statistics in the call to `summarize()` as we want. For example we could get the number of values (using the `n()` function), the mean, and the standard deviation of all non-missing values of body weight for each combination of sex and life stage, for one particular species. (`PELE` = *Peromyscus leucopus*, the white-footed mouse).
+## More complex operations
+
+- `filter()` by more than one condition and `group_by()` more than one column
+- Put many summary statistics in `summarize()` 
+- `n()` function means number of values
+- Example: all non-missing weight values for `PELE` (*Peromyscus leucopus*, the white-footed mouse), grouped by sex and life stage.
 
 ```{r}
 dat %>%
@@ -282,11 +305,18 @@ dat %>%
             sd_weight = sd(weight))
 ```
 
-Notice there are some `NA` values in the grouping columns. The `group_by()` function considers those to be separate groups. The `sd_weight` column also returns a `NA` value if you try to compute the sample standard deviation of a single value, which is undefined.
+---
+
+- Notice `NA` values in the grouping columns (missing value treated as group)
+- `sd_weight` is `NA` if you try to calculate SD of a single value (undefined)
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Rhus_typhina-Peromyscus_leucopus-female.jpg/640px-Rhus_typhina-Peromyscus_leucopus-female.jpg)
+
+---
 
 ### More pipe!
 
-We can use the pipe `%>%` operator to chain an arbitrarily long sequence of operations together. This makes for more readable code. 
+Pipe `%>%` can chain arbitrarily many functions together
 
 ```{r}
 dat %>%
@@ -297,32 +327,40 @@ dat %>%
   arrange(mean_weight)
 ```
 
-> This is equivalent to `arrange(summarize(group_by(mutate(filter(dat)))))` but in my opinion much more readable.
+This is equivalent to `arrange(summarize(group_by(mutate(filter(dat)))))` but much more readable
 
-I introduced two new functions here. One is the `mutate()` function, which can be used to change the value of a column or create a new column. For instance we can use it to convert the units of weight from g to mg, making a new column, `weight_mg`.
+---
 
-Here I'm also introducing the `arrange()` function, which sorts the data frame in ascending order by a given column or columns. `arrange(-mean_weight)` could be used to sort in descending order instead.
+- `mutate()` changes the value of a column or creates a new column. 
+  + Here we convert the units of weight, making a new column, `weight_mg`
+  + `mutate(weight_mg = weight * 1000)`
+- `arrange()` sorts the data frame in ascending order by a given column or columns
+  + `arrange(mean_weight)` for ascending order
+  + `arrange(-mean_weight)` for descending order
 
-# Tidy data and reshaping data frames
+## Tidy data and reshaping data frames
 
-We are almost done with this crash course in working with R data frames. We have two more functions to learn.
+Two more functions to learn:
 
 - `pivot_longer()`
 - `pivot_wider()`
 
-This set of examples is borrowed from Hadley Wickham's book *R for Data Science* ([Chapter 12: Tidy data](https://r4ds.had.co.nz/tidy-data.html)).
+- Next example borrowed from Hadley Wickham's book *R for Data Science* (Chapter 12: Tidy data)
 
-Tidy data is a dataset that is organized so that the following are true:
+## What is tidy data?
 
-- Each observation has its own row.
-- Each variable has its own column.
-- Each value has its own cell.
+- If a dataset is tidy,
+  + Each observation has its own row
+  + Each variable has its own column
+  + Each value has its own cell
+- Most model fitting functions in R require the data to be in this format (and many SAS procedures)
 
-Most of the model fitting functions in R require the data to be in this format (as well as many statistical procedures in SAS and other software).
+---
 
-All of the following data frames contain the same data: number of cases of a disease and total population, for three different countries (Afghanistan, Brazil, and China), in each of two years (1999 and 2000). Which of these data frames contain tidy data? 
+### Which of these data frames contain tidy data?
 
-> These are example datasets that come packaged with the **tidyr** package in R, part of the tidyverse.
+- Example datasets from the **tidyr** package (part of tidyverse)
+- All contain the same data: number of cases of a disease and total population, for three different countries (Afghanistan, Brazil, and China), in each of two years (1999 and 2000)
 
 ```{r}
 table1
@@ -330,59 +368,88 @@ table2
 table3
 ```
 
-Table 1 is the only "tidy" data frame out of the three. Each row includes all the variables from one observation: a count of disease cases and total population in a country in one specific year constitutes an observation here.
+---
 
-## Reshaping data
+### Answer
 
-There are two main functions for reshaping data. One is `pivot_wider()` and the other is `pivot_longer()`. If we have data that looks like `table2`, and we want to make it into tidy form like `table1`, we will need to use `pivot_wider()`. We need to identify three components: 
+- Table 1 is the only "tidy" data frame
+- Count of disease cases and total population in a country in one specific year is one observation
+- Each row of Table 1 includes both grouping columns and both variable columns from one observation
 
-- the `id_cols` column(s) which provide the identifying information for each observation, in this case the country and the year.
-- the `names_from` column(s) which are the column or columns that contains the labels that will become names of individual columns in the wider version of the data frame
-- the `values_from` column(s) which are the column or columns that contain the data that will be spread across multiple columns.
+## Reshaping data: pivot_wider()
+
+- `pivot_wider()` will turn `table2` into `table1`
+- Three arguments needed to reshape data from long to wide
+  + `id_cols` column(s): identifying information for each observation (country and year). Use `c()` and unquoted names.
+  + `names_from` column(s): the labels that will become column names in wide data (type)
+  + `values_from` column(s): the data that will be spread across multiple columns
 
 ```{r}
 table2_tidied <- pivot_wider(table2, id_cols = c(country, year), names_from = type, values_from = count)
 ```
 
-Use the function `all.equal()` to confirm that the two are the same.
+---
+
+- `all.equal()` confirms that we have recreated `table1`
 
 ```{r}
 all.equal(table2_tidied, table1)
 ```
 
-It's also possible to reshape `table3` to `table1` but this requires more complex operations that we will not cover today. 
+- Reshaping `table3` to `table1` requires more complex operations that we will not cover today
 
-### Wide to long reshape
+## Reshaping data: pivot_longer()
 
-A common situation is that we will get data in a wide form from an Excel spreadsheet. When entering data into a spreadsheet manually, it's much easier to use a wide format because a long skinny table of data is very annoying to scroll through. Wide-form data is often how paper data sheets are formatted. So we often will need to reshape the data to a "longer" format to get an analysis-ready tidy dataset.
+- Lots of data begins as wide form in a paper data sheet or Excel spreadsheet
+- Easier to enter, but needs to be reshaped to long form for analysis
 
-Here is an example: the billboard top 100 song rankings by week for the year 2000 (also an example dataset from the **tidyr** package). Use the data frame summary tools you now know to take a look at this dataset.
+---
+
+- Example: Billboard top 100 song rankings by week for the year 2000 (also an example dataset from the **tidyr** package)
+- Use the data frame summary tools you now know to explore this dataset
 
 ```{r}
 billboard
 ```
 
-We want tidy data where each row is an observation: a song identified by its artist name, track name, and the date it entered the top 100 ranking, the week at which the ranking was observed, and the ranking. We have to identify
+![](https://quentinread.com/glmm-workshop-dec2022/public/images/2000albumcovers.png)
 
-- `cols`: the columns that need to be pivoted to a longer format. In this example we can use a shorthand `wk1:wk76` to refer to all columns between `wk1` and `wk76` inclusive. You can also use the `-` sign to specify which columns will *not* be pivoted (the identifying columns for each observation).
-- `names_to`: the name of the column into which the column names will be put, as a quoted character string. (If you do not supply this, it will default to `name`.)
-- `values_to`: the name of the column into which the data values in the cells will be put, as a quoted character string. (If you do not supply this, it will default to `value`.)
+## Tidying the wide form data
+
+- We want tidy data where each row is an observation:
+  + observation = a song 
+  + identifying columns: artist name, track name, the date it entered the top 100 ranking, and the week at which the ranking was observed
+  + data value: the ranking between 1 and 100
+
+---
+
+## Arguments of pivot_longer()
+
+- `cols`: columns that need to be pivoted to a longer format
+  + Shorthand `wk1:wk76`: all columns from `wk1` to `wk76`
+  + Or use `-` sign to specify which columns will *not* be pivoted (the identifying columns for each observation)
+- `names_to`: the name of the column into which the column names will be put, as a quoted character string
+  + Defaults to `name` if not specified
+- `values_to`: the name of the column into which the data values in the cells will be put, as a quoted character string 
+  + Defaults to `value` if not specified
+
+---
+
+Putting it together, ...
 
 ```{r}
 pivot_longer(billboard, cols = c(wk1:wk76), names_to = 'week', values_to = 'ranking')
 ```
 
-This is identical to the code above, instead we are specifying the columns *not* to pivot.
+Alternative, specifying columns *not* to pivot
 
 ```{r}
 pivot_longer(billboard, cols = -c(artist, track, date.entered), names_to = 'week', values_to = 'ranking')
 ```
 
-
-# Hey! What about ...
+## Hey! What about ...
 
 - Joining two or more data frames together
 - Operations on lists of data frames or data frames containing lists
 
-Those are very important topics that you will definitely need to learn about if you want to do serious data analysis with R. We don't have time to cover them today but I would recommend using the R resources I posted on the workshop page to learn more about them. What we did just now only scratches the surface of how to wrangle data in R. 
-
+Check out the resources I posted on the workshop site, especially *R for Data Science*, to learn these essential parts of data wrangling.
