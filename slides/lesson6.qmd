@@ -1,0 +1,7 @@
+---
+title: "Lesson 6: Estimating and comparing treatment means"
+format: revealjs
+execute:
+  echo: true
+  eval: false
+---

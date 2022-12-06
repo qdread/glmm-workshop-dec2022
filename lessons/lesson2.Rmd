@@ -34,15 +34,18 @@ Data frames in R are the workhorses for data manipulation and analysis. There ar
 
 In this lesson, I am going to teach you functions from the **tidyverse** group of packages. These are a set of packages, designed to work together, that make it easy to wrangle and manipulate data in R. All of the stuff I am going to teach can be done with base R code without any packages. There are also alternatives such as **data.table**. Personally I use a combination of all three. However for this lesson I chose to teach tidyverse for a couple of reasons. For one thing, it's the easiest for beginners to grasp. Also, it has become really popular and widespread in the last few years. So a lot of the other R resources you will find are now done with the tidyverse. So why swim against the tide? There are pros and cons to the tidyverse, but it is great for starting out with R. If you become a big time R programmer I would recommend learning all the base R code and other packages like **data.table** in the future.
 
-# Reading in data
-
-If you are using RStudio on the cloud, the file `small_mammals.csv` is included in the `datasets` folder. Otherwise, you will need to download the file locally and replace `datasets` with the file path to the location on your system where the file is found. For example it might be `C:/Users/yourname/Documents/r_workshop_datasets/small_mammals.csv`. Notice that `/` (forward slash) is used, even on Windows!
-
-Load the packages we'll need for this library. Read in an external file using the `read_csv()` function from the tidyverse package **readr**. There is a base R function for this as well but the **readr** function has better default values and reads large files more quickly. Also, `read_csv` returns a special kind of data frame called a "tibble" that works better with the other tidyverse functions.
+Load the **tidyverse** package which is a shortcut to loading the multiple related tidyverse packages we will be using in this lesson.
 
 ```{r, message = FALSE}
 library(tidyverse)
 ```
+
+# Reading in data
+
+If you are using RStudio on the cloud, the file `small_mammals.csv` is included in the `datasets` folder. Otherwise, you will need to download the file locally and replace `datasets` with the file path to the location on your system where the file is found. For example it might be `C:/Users/yourname/Documents/r_workshop_datasets/small_mammals.csv`. Notice that `/` (forward slash) is used, even on Windows!
+
+Read in an external file using the `read_csv()` function from the tidyverse package **readr**. There is a base R function for this as well but the **readr** function has better default values and reads large files more quickly. Also, `read_csv` returns a special kind of data frame called a "tibble" that works better with the other tidyverse functions.
+
 
 ```{r}
 dat <- read_csv('datasets/small_mammals.csv')
@@ -50,14 +53,15 @@ dat <- read_csv('datasets/small_mammals.csv')
 
 The data we are reading in here is a set of body measurements of small mammals from the NEON ecological observatory network. We will go on to examine this dataset in detail.
 
+> PROTIP: I called it `dat` and not `data` or `df` because `data` and `df` are both the names of R functions already, and it is best to avoid conflicting the names of variables and functions.
+
 # Examining contents of a data frame
 
 There are a lot of R functions and operators for looking at your data frame. We can get summary information on a data frame or pull out individual bits of data from it. We'll go through a few ways of doing that.
 
 ## Summary information about a data frame
 
-Let's look at the object which is now loaded into our workspace that we are calling `dat`. (I don't like to use `data` or `df` because there are already base R functions with those names, and it can cause issues down the road.)
-
+Let's look at the object which is now loaded into our workspace that we called `dat`. 
 If we just type `dat` into our console we see the first few rows of data and some information about its dimensions.
 
 ```{r}
@@ -72,11 +76,11 @@ print(dat, n = 50)
 
 Some other useful functions to examine a data frame are `summary()` and `str()` from base R, and `glimpse()` from tidyverse. Try calling them and see what output you get.
 
-We can see from the output of those summary functions that we have 1629 rows and 7 columns. There is a mixture of character columns (`chr`) and numeric columns (`dbl` refers to double-precision, meaning a numeric value that has a decimal point). Calling `summary(dat)` also gives us some quick summary statistics for the mean and range of the numeric columns, as well as the number of missing values. Both numeric columns have several dozen missing values.
+We can see from the output of those summary functions that we have 1629 rows and 7 columns. There is a mixture of character columns (`chr`) and numeric columns (`dbl` refers to double-precision, meaning a numeric value that has a decimal point). Calling `summary(dat)` also gives us some quick summary statistics for the mean and range of the numeric columns, as well as the number of missing values (`NA` values). Both numeric columns have several dozen missing values.
 
 ## Subsetting values from a data frame
 
-If we want to print only specific subsets of the data, we can do that by indexing rows and columns. The square brackets `[]` are used for this. You can get individual elements of a data frame with brackets. The syntax is `dataframe[row, column]`. For example this will return the value in row 2, column 3 of the data frame. It actually returns a 1x1 tibble.
+If we want to extract only specific subsets of the data, we can do that by indexing rows and columns. The square brackets `[]` are used for this. You can get individual elements of a data frame with brackets. The syntax is `dataframe[row, column]`. For example this will return the value in row 2, column 3 of the data frame. It actually returns a 1x1 tibble.
 
 ```{r}
 dat[2, 3]
@@ -145,7 +149,7 @@ And we can use `select()` to get columns we want. We do not need to use quotes o
 select(dat, taxonID, weight)
 ```
 
-> NOTE: A common "gotcha" is that a function called `select()` also exists in the widely used statistics package **MASS** which is loaded by default when you load **lme4** and other common modeling packages. You can make sure you are using the correct version of the `select()` function by specifying `dplyr::select()`.
+> NOTE: A common "gotcha" is that a function called `select()` also exists in the widely used statistics package **MASS** which is loaded by default when you load many other common modeling packages. You can make sure you are using the correct version of the `select()` function by specifying `dplyr::select()`.
 
 # Calculating summary statistics
 

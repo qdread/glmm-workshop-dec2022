@@ -1,0 +1,7 @@
+---
+title: "Lesson 5: Generalized linear mixed models"
+format: revealjs
+execute:
+  echo: true
+  eval: false
+---

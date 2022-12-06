@@ -1,0 +1,7 @@
+---
+title: "Lesson 4: Going further with linear mixed models"
+format: revealjs
+execute:
+  echo: true
+  eval: false
+---
