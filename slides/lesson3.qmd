@@ -6,7 +6,7 @@ execute:
   eval: false
 ---
 
-# Lesson 3 learning objectives
+## Lesson 3 learning objectives
 
 At the end of this lesson, students will ...
 
@@ -17,9 +17,7 @@ At the end of this lesson, students will ...
 - Examine diagnostic plots to ensure that model assumptions are met.
 - Examine summary information from mixed model output, including ANOVA tables.
 
-# Load some sample data
-
-For this lesson, we will keep it simple and use simulated data. First load the packages we will need for this lesson. Then read the `soilN_biomass.csv` file, creating a data frame called `soilN_biomass`. This dataset might have come from a study where there are five different fields, each of which has 20 plots. In each plot, soil nitrogen and plant biomass is measured.
+## Load the packages we need
 
 ```{r, message = FALSE}
 library(tidyverse)
@@ -28,9 +26,18 @@ library(lmerTest)
 library(easystats)
 ```
 
+## Read in some example data
+
+- For this lesson, we will keep it simple and use simulated data
+- Read the `soilN_biomass.csv` file to a data frame called `soilN_biomass`
+- Simulates a study with five different fields with 20 plots each
+- In each plot, soil nitrogen and plant biomass is measured
+
 ```{r}
 soilN_biomass <- read_csv('datasets/soilN_biomass.csv')
 ```
+
+## Examine the data
 
 Let's look at the data. Use functions you learned in lesson 2.
 
@@ -41,6 +48,8 @@ summary(soilN_biomass)
 
 glimpse(soilN_biomass)
 ```
+
+- 
 
 There is a character column to identify which field the measurement comes from, a numeric column for the soil N value, and a numeric column for the plant biomass value.
 

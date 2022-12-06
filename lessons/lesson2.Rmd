@@ -345,7 +345,7 @@ billboard
 ```
 
 ![90s kids remember this](https://quentinread.com/glmm-workshop-dec2022/public/images/2000albumcovers.png)  
-*These CD covers may look familiar the thirty-somethings reading this*
+*These CD covers may look familiar to the thirty-somethings reading this*
 
 We want tidy data where each row is an observation: a song identified by its artist name, track name, and the date it entered the top 100 ranking, the week at which the ranking was observed, and the ranking. We have to identify
 
