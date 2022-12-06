@@ -87,8 +87,7 @@ theme_set(theme_bw())
 
 ## The emmeans() function
 
-- We could use `summary(fert_mm)` to get t-tests for each coefficient
-- But usually more important to ask whether the means of each treatment differ from one another
+- Estimates marginal means by fixed effect
 - `emmeans()` can take many arguments, but it needs at least two
 - The first argument is a fitted model object
 - Second argument is a one-sided formula beginning with `~`
@@ -119,6 +118,11 @@ plot(fert_emm)
 - The plot shows the 95% confidence intervals of the means overlap
 - This does not mean they are not significantly different from one another
 - We have to take the difference between each pair of means and test if it is different from zero
+
+---
+
+## The contrast() function
+
 - `contrast()` does comparisons between means
   + First argument is an `emmeans` object
   + Second argument, `method`, is the type of contrast
@@ -263,6 +267,8 @@ emm_prep <- emmeans(fit_fillets, ~ prep)
 
 - Notice the message that the `species` and `prep` variables are involved in an interaction
 
+---
+
 ### EMMs for combinations of fixed effects
 
 - Specify more than one variable, separating them with a `+`:
@@ -295,23 +301,38 @@ cld(emm_prep_within_species, adjust = 'sidak', Letters = letters)
 
 ## Note on comparing EMMs versus ANOVA
 
-FIXME need to finish below here
+- Some people use a "two-step" process to compare means
+  + The first step is to examine the ANOVA table
+  + If F-test has p < 0.05, proceed to post hoc comparison of means; otherwise, the means are not different
+- But if you properly account for multiple comparisons you do not need to worry about the F-test
+- F-test does not really give a useful inference in most cases
+- It only says there is *some* difference between the groups, not which groups or by how much
 
-Some people have learned a "two-step" process where the first step is to examine the ANOVA table. If the *p*-value associated with the F-test is less than 0.05, only then do you proceed to the step of means comparisons; otherwise, you declare that the means are not different, end of story. However, if you properly account for multiple comparisons you do not need to worry about the F-test. I typically recommend against considering the F-test because it does not really give you a useful inference in most cases. The best it can do is say that there is *some* difference between the groups, but it does not tell you which are different or by how much.  
+## Hey! What about ...
 
-# Hey! What about ...
+- Model comparison is another big part of hypothesis testing
+- Different models are different hypotheses about how the world works
+- We want to evaluate the relative amount of evidence for each one
+- Likelihood ratio tests and information criteria are used to compare mixed models
+- We will cover them in a future workshop!
 
-Another important component of hypothesis testing is model comparison. Different models that we can build represent different hypotheses about how the world works, and we might want to evaluate the relative amount of evidence for each one. You may have heard of likelihood ratio tests and information criteria. Those are probably the main ways of selecting or comparing mixed models, to decide whether particular fixed effect terms should be included. I would have loved to cover that in this workshop, but there is so much to learn and so little time. Baby steps ... I hope to cover that topic in a future workshop.
-
-# Course Recap
+## Course Recap
 
 This concludes the mixed models in R workshop. We have learned a lot in the past two days!
+
+---
 
 - The basics of R, including variables, functions, scripts, and packages.
 - How to work with data frames in R, including tidying, reshaping, and summarizing.
 - How to fit linear mixed models with random intercepts and random slopes.
 - How to fit mixed models with crossed and nested effects and transformed responses.
 - How to fit generalized linear mixed models.
-- How to compare estimated marginal means from linear mixed models.
+- How to compare estimated marginal means from linear mixed models
 
-This only scratches the surface of mixed models with R. Feel free to contact your friendly neighborhood area statistician (me) if you ever need help! I'm looking forward to seeing folks at the next workshop!
+---
+
+I will send around a post workshop feedback questionnaire next week. Or shoot me an email with your thoughts.
+
+Feel free to contact your friendly neighborhood area statistician if you ever need help! 
+
+I'm looking forward to seeing folks at the next workshop!
