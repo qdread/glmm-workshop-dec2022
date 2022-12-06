@@ -92,7 +92,9 @@ You can use the `plot()` function because `emmeans` objects have a built-in plot
 plot(fert_emm)
 ```
 
-We can see from the plot that the 95% confidence intervals of the means overlap; however this does not mean they are not significantly different from one another. The `contrast()` function allows us to do comparisons between means. The first argument is the `emmeans` object we created just now, and the second argument, `method`, is the type of contrast. Using `method = 'pairwise'` means compare all pairs of treatments. It takes the difference between each pair of means and calculates the associated *t*-statistic and *p*-value. It automatically adjusts the *p*-value for multiple comparisons using the Tukey adjustment.
+We can see from the plot that the 95% confidence intervals of the means overlap; however this does not mean they are not significantly different from one another. To test that, we would need to take the difference between each pair of means and test whether it is significantly different from zero. 
+
+The `contrast()` function allows us to do comparisons between means. The first argument is the `emmeans` object we created just now, and the second argument, `method`, is the type of contrast. Using `method = 'pairwise'` means compare all pairs of treatments. It takes the difference between each pair of means and calculates the associated *t*-statistic and *p*-value. It automatically adjusts the *p*-value for multiple comparisons using the Tukey adjustment.
 
 ```{r}
 contrast(fert_emm, method = 'pairwise')
