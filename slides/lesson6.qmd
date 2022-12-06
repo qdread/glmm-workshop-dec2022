@@ -5,3 +5,234 @@ execute:
   echo: true
   eval: false
 ---
+
+Welcome to the final lesson of the mixed models in R workshop! Pat yourselves on the back for making it this far.
+
+## Lesson 6 learning objectives
+
+At the end of this lesson, students will ...
+
+- Generate predictions from a mixed model.
+- Test specific hypotheses with contrasts.
+- Compare multiple group means and correct for multiple comparisons.
+
+## Estimated marginal means
+
+- You might know the term "least square means" or "lsmeans" if you are a SAS user
+- Estimated marginal means (EMM) are the same thing as lsmeans in most cases. 
+- Least squares method is not always used to calculate them, so we should call them EMM
+
+## Estimated marginal means are estimates
+
+- EMMs are predictions estimated from a model, **not data**
+- They are functions of model parameters
+- Sensitive to all assumptions made in constructing the model. 
+- (All models are wrong and only some of them are useful!)
+- "Marginal" because they're averaged across the margins of all other fixed and random effects in the model 
+
+# Note on estimated means
+
+These estimated means are population-level predictions. It's important to note that the confidence interval or uncertainty around an estimated marginal mean is not the range of values that any individual in the population might have. 
+
+For instance, a dataset gathered between 2015 and 2018 shows that [the population level mean of the height of an adult female in the United States](https://www.cdc.gov/nchs/data/series/sr_03/sr03-046-508.pdf) is 161.3 cm (5' 3.5") and the heights are roughly normally distributed. The 90% confidence interval around that estimate goes from 160.9 cm to 161.6 cm (5' 3.38" to 5' 3.63"). Because this mean was estimated from a large sample of 5,510 women, we are really sure we have that number pinned down to within a tiny range of uncertainty.
+
+But if we took a random adult female from the United States and measured her height, does that mean we are 90% confident it would be between 160.9 cm and 161.6 cm? No! In fact, the 5th and 95th percentile are 149.8 cm (4'11") and 172.5 cm (5'8") -- so 90% of the time if we selected a random female we would expect her height to be between those much more widely separated values. So estimated means tell us what the most likely expected value of a random individual from the population would be, but not about the variation in the population itself. 
+
+This is even more important to keep in mind when we are averaging the estimated means across random effects, where the subpopulations we are averaging across may be very different from each other. The estimated mean is a "construct" that may not correspond to any individual, like the proverbial household with 2.2 children.
+
+# The emmeans package
+
+The [**emmeans** package](https://cran.r-project.org/package=emmeans) is the workhorse of this section. It was developed by Russ Lenth, an emeritus statistics professor from the University of Iowa. I am very indebted to Russ for all his help -- even though he is retired, he somehow always manages to answer any question I post on the emmeans package's GitHub page within a few hours, and almost always fixes the problem right away. He is like the "man behind the curtain" in the Wizard of Oz -- whenever I appear to be helping ARS scientists with their stats, I am actually going to him to get the answer!
+
+Today we're only going to have time for a brief introduction to the capabilities of **emmeans**. The [**emmeans** package page](https://cran.r-project.org/package=emmeans) has a long list of vignettes that you might find helpful if you want to get deeper into it. For example, **emmeans** also works with some of the Bayesian modeling packages in R, so you can use similar code to get the estimated means regardless of what method you used to fit the model.
+
+# Use emmeans to estimate means
+
+Let's revisit the fake biomass versus fertilization dataset that we worked with earlier. Reload the data and refit the model. Load the **emmeans** and **multcomp** packages along with the other ones we need.
+
+```{r, message = FALSE}
+library(tidyverse)
+library(lme4)
+library(emmeans)
+library(multcomp)
+```
+
+```{r}
+fert_biomass <- read_csv('datasets/fertilizer_biomass.csv') %>%
+  mutate(treatment = factor(treatment, levels = c('control', 'low', 'high')))
+
+fert_mm <- lmer(biomass ~ treatment + (1 | field), data = fert_biomass)
+```
+
+By the way I am also going to set the global **ggplot2** theme to black on white because the default gray on white theme burns my eyeballs.
+
+```{r}
+theme_set(theme_bw())
+```
+
+
+If you recall, we could use `summary(fert_mm)` to show the coefficients for the intercept and the two non-control treatment levels, and t-tests associated with each one. But the inference that you're often interested in is whether the means of each treatment differ from one another.
+
+We can use the `emmeans()` function to make that comparison. The function can take many arguments, but it needs at least two. The first argument is a fitted model object. The second argument is a one-sided formula beginning with `~` that gives the variable or combination of variables for which we want to estimate the marginal means. In this model there is only one such variable, `treatment`. The result is an object which contains the estimated marginal means, which are averaged across all other fixed effects and all the random effects as well.
+
+```{r}
+fert_emm <- emmeans(fert_mm, ~ treatment)
+
+fert_emm
+```
+
+Note that we now have estimated marginal means and a confidence interval (default 95%) for each one. The degrees of freedom are approximated, as must be the case with mixed models. (There are different methods we can choose from to approximate the degrees of freedom but we will not get into that right now.)
+
+You can use the `plot()` function because `emmeans` objects have a built-in plotting method which will show the means and 95% confidence intervals.
+
+```{r}
+plot(fert_emm)
+```
+
+We can see from the plot that the 95% confidence intervals of the means overlap; however this does not mean they are not significantly different from one another. The `contrast()` function allows us to do comparisons between means. The first argument is the `emmeans` object we created just now, and the second argument, `method`, is the type of contrast. Using `method = 'pairwise'` means compare all pairs of treatments. It takes the difference between each pair of means and calculates the associated *t*-statistic and *p*-value. It automatically adjusts the *p*-value for multiple comparisons using the Tukey adjustment.
+
+```{r}
+contrast(fert_emm, method = 'pairwise')
+```
+
+We can choose other methods of *p*-value adjustment using the `adjust` argument. I usually prefer the Sidak adjustment. In this case it makes very little difference.
+
+```{r}
+contr_sidak <- contrast(fert_emm, method = 'pairwise', adjust = 'sidak')
+
+contr_sidak
+```
+The `contrast` objects also have a built-in plotting method using the `plot()` function. 
+
+```{r}
+plot(contr_sidak)
+```
+
+I like to add a dashed line at zero which helps identify the contrasts for which the 95% confidence interval does not contain zero.
+
+```{r}
+plot(contr_sidak) + geom_vline(xintercept = 0, linetype = 'dashed', linewidth = 1)
+```
+
+In this case, all of them are very far from 0.
+
+If you have many pairwise contrasts, it's pretty common to summarize them with "multiple comparison letters." You can get the letters for a comparison of `emmeans` using the `cld()` function from the **multcomp** package. (CLD stands for Compact Letter Display.)
+
+```{r}
+cld(fert_emm, adjust = 'sidak')
+```
+
+By default, you get labels `1`, `2`, `3` instead of `a`, `b`, `c`, but here is how to get the more familiar letters:
+
+```{r}
+cld(fert_emm, adjust = 'sidak', Letters = letters)
+```
+
+We can use other contrast methods. For instance we might only be concerned with the difference between the control and each other treatment. Specifying `method = 'trt.vs.ctrl'` means to only do contrasts between each other level and the reference level (the first level in the factor ordering). This will apply Dunnett's adjustment to the p-values which has higher power to detect differences from the control as we are ignoring differences between the non-control levels.
+
+```{r}
+contrast(fert_emm, method = 'trt.vs.ctrl')
+```
+
+# Back-transformation
+
+In the example above, we weren't dealing with a model with a transformed response, or a GLMM with a link function. However if either of those things is true, the estimated marginal means will be output on the transformed scale and not the original data scale by default. But this is easy to fix. You can add an extra argument, `type = 'response'`, to `emmeans()`. This will tell it to present the estimated marginal means transformed back to the original data scale (known as the response scale).
+
+Let's revisit one of the examples from lesson 5 to illustrate this, the Stirret corn borers dataset.
+
+```{r}
+data('stirret.borers', package = 'agridat')
+
+stirret.borers <- stirret.borers %>%
+  mutate(trt = factor(trt, levels = c('None', 'Early', 'Late', 'Both')))
+
+glmm_borers <- glmer(count2 ~ trt + (1|block), data = stirret.borers, family = poisson)
+```
+
+Here are the estimated marginal means on the log scale.
+
+```{r}
+emmeans(glmm_borers, ~ trt)
+```
+
+And here they are on the response scale.
+
+```{r}
+emm_borers <- emmeans(glmm_borers, ~ trt, type = 'response')
+
+emm_borers
+```
+
+Let's take the contrasts between each pair of treatments.
+
+```{r}
+contrast(emm_borers, method = 'pairwise', adjust = 'sidak')
+```
+
+Notice that the second column is now called `ratio`. This is because when you subtract two values on a log scale, that is equivalent to taking the ratio of those values when you back-transform to the original data scale. Because our count data model uses a log link function, any comparisons we make are on a ratio scale. For example, the ratio `None / Late` is 2.72, meaning that the model estimates about 2.72 times as many corn borers would be expected on a plot with no fungal spores applied, versus one that received the late fungal spore application treatment.
+
+# Estimated marginal means with multiple predictor variables
+
+So far we've only looked at estimated marginal means for a single predictor variable. Let's look at a model where we had multiple main effects and an interaction effect. Remember back to the fish fillets model from the Lesson 3 exercises. Let's load that dataset again and fit the interaction model. The main effects are species (channel catfish and hybrid catfish) and preparation method (fresh, frozen, and raw), and the random intercept is for individual fish where there are multiple thickness measurements per fish.
+
+```{r}
+fish_fillets <- read_csv('datasets/fish_fillets.csv')
+fit_fillets <- lmer(thickness ~ species + prep + species:prep + (1|fishID), data = fish_fillets)
+```
+
+We can estimate the marginal means for species, which will average across all the preparation method types, and do the same for preparation method averaged across species.
+
+```{r}
+emm_species <- emmeans(fit_fillets, ~ species)
+emm_prep <- emmeans(fit_fillets, ~ prep)
+
+emm_species
+emm_prep
+```
+
+Notice we get a message that the `species` and `prep` variables are involved in an interaction. So we need to be careful about how we interpret these estimates.
+
+What if we wanted to get the estimated marginal mean for combinations of species and preparation method? We can do that by separating terms with a `+`:
+
+```{r}
+emm_species_x_prep <- emmeans(fit_fillets, ~ species + prep)
+
+emm_species_x_prep
+```
+
+Then if we use the `cld()` function to get the multiple comparisons letters, the comparison will be done for all six estimates.
+
+```{r}
+cld(emm_species_x_prep, adjust = 'sidak', Letters = letters)
+```
+
+If we want to do multiple comparisons of one variable grouped by another variable, we use the `|` symbol. For example, this code will allow us to compare preparation methods and do a multiple comparisons test, separately by species. `prep | species` means get estimated marginal means for `prep` grouped by `species`. Then the `cld()` comparison will be done within each species separately (correcting for a fewer number of comparisons in each case).
+
+```{r}
+emm_prep_within_species <- emmeans(fit_fillets, ~ prep | species)
+
+cld(emm_prep_within_species, adjust = 'sidak', Letters = letters)
+```
+
+The relative ordering of the prep methods is the same for both species, so whatever interaction there may be is not too strong.
+
+# Comparison of estimated marginal means versus ANOVA
+
+Some people have learned a "two-step" process where the first step is to examine the ANOVA table. If the *p*-value associated with the F-test is less than 0.05, only then do you proceed to the step of means comparisons; otherwise, you declare that the means are not different, end of story. However, if you properly account for multiple comparisons you do not need to worry about the F-test. I typically recommend against considering the F-test because it does not really give you a useful inference in most cases. The best it can do is say that there is *some* difference between the groups, but it does not tell you which are different or by how much.  
+
+# Hey! What about ...
+
+Another important component of hypothesis testing is model comparison. Different models that we can build represent different hypotheses about how the world works, and we might want to evaluate the relative amount of evidence for each one. You may have heard of likelihood ratio tests and information criteria. Those are probably the main ways of selecting or comparing mixed models, to decide whether particular fixed effect terms should be included. I would have loved to cover that in this workshop, but there is so much to learn and so little time. Baby steps ... I hope to cover that topic in a future workshop.
+
+# Course Recap
+
+This concludes the mixed models in R workshop. We have learned a lot in the past two days!
+
+- The basics of R, including variables, functions, scripts, and packages.
+- How to work with data frames in R, including tidying, reshaping, and summarizing.
+- How to fit linear mixed models with random intercepts and random slopes.
+- How to fit mixed models with crossed and nested effects and transformed responses.
+- How to fit generalized linear mixed models.
+- How to compare estimated marginal means from linear mixed models.
+
+This only scratches the surface of mixed models with R. Feel free to contact your friendly neighborhood area statistician (me) if you ever need help! I'm looking forward to seeing folks at the next workshop!

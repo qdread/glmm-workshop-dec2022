@@ -5,3 +5,274 @@ execute:
   echo: true
   eval: false
 ---
+
+## Lesson 5 learning objectives
+
+At the end of this lesson, students will ...
+
+- Know what a generalized linear mixed model is and why you might want to use one.
+- Fit a generalized linear mixed model to binary outcome data.
+- Fit a generalized linear mixed model to count outcome data.
+
+## GLMMs
+
+- Taking the log transformation of the response variable won't always work 
+- The next step is to enter the world of general*ized* linear mixed models (GLMMs)
+- General linear mixed model and generalized linear mixed model begin with the same letters, so it's a little bit confusing!
+
+## GLMM with binary response variable
+
+- Let's say we have response data that is binary
+- For example, testing the ability of a vaccine to prevent some disease in animals
+- Control group was not inoculated and treatment group was inoculated
+- The response variable is whether or not the disease is present
+- The animals are raised in different pens of 10 animals each in a complete block design 
+- We need to account for the effect of pen on disease  using a random intercept
+
+---
+
+Load needed packages and dataset (simulated)
+
+```{r, message = FALSE}
+library(tidyverse)
+library(lme4)
+library(easystats)
+```
+
+```{r}
+disease <- read_csv('datasets/disease.csv')
+```
+
+---
+
+## Summarize the data
+
+- How many animals in each pen and treatment got the disease?
+- Use `group_by()` and `summarize()` to make a table
+
+```{r}
+disease %>%
+  group_by(inoc, pen) %>%
+  summarize(no_disease = sum(disease == 0), disease = sum(disease == 1))
+```
+
+---
+
+- What if we tried to just use a linear mixed model as we have done before? 
+- We code "disease absent" as 0 and "disease present" as 1 to make it numeric
+
+```{r}
+lmm_disease <- lmer(disease ~ inoc + (1|pen), data = disease)
+```
+
+- Seems reasonable at first glance
+- The intercept is 0.78, so the baseline rate is 78% disease
+- The coefficient on inoculation is -0.64, so inoculation treatment makes disease go down to 14%
+- What is wrong with that?
+
+---
+
+- What if we wanted to make predictions? 
+- Let's say we had a population where the baseline rate of disease was only 40%. 
+- Our model would predict -24% disease when inoculated 
+- That is logically impossible! 
+- It makes more sense to think about relative changes to odds. 
+- If the baseline rate is very low, it can't be reduced much more
+- If the baseline rate is high, it's easier to reduce
+
+---
+
+## Diagnostics of linear model
+
+- Residuals of this model do not really meet assumptions 
+- Not normally distributed with homogeneous variance
+
+```{r}
+check_model(lmm_disease)
+```
+
+- Also take a look at the posterior predictive check at top left
+- Predicted values of the model go well outside the 0 to 1 range
+- Very poor match between the data (green line) and predictions (blue lines)
+
+## Solving the problem
+
+- Model binary response with a generalized linear mode
+- Use a link function to convert the predicted response value into a scale that can be normally distributed 
+- Predict the probability that an individual from each pen with or without the inoculation treatment will get the disease
+- Probability ranges from 0 to 1, so it cannot really have normally distributed error 
+- Bell curves can take any value, positive or negative, not bounded at all
+
+FIXME ALL BELOW HERE ISN'T FIXED
+
+The formula for predicting the probability of disease for individual $i$ in pen $j$ is as follows:
+
+$$\text{logit}~\hat{y}_{i,j} = \beta_0 + \beta_1 inoc_i + u_j$$
+
+In this formula, $\hat{y}_{i,j}$ is the predicted probability of disease for individual $i$ in pen $j$. $\beta_0$ is the intercept, $\beta_1$ is the treatment coefficient, $inoc_i$ is a binary variable that is 0 for uninoculated control and 1 for inoculated treatment, and $u_j$ is the random effect, a separate intercept for each pen. 
+
+But what is that "logit" thing? That is the link function. It is used to transform the probability, which ranges from 0 to 1 and therefore can't really have normally distributed error, to a scale that can take any value, positive or negative. Logit is another word for the log-odds function, defined as
+
+$$\text{logit}~p = \log \frac {p}{1-p}$$
+
+Here is a graph of that function:
+
+```{r, echo = FALSE}
+ggplot(data.frame(p = 0:1), aes(x=p)) +
+  stat_function(fun = qlogis, color = 'slateblue', linewidth = 1) + 
+  labs(y = 'logit(p)') + ylim(-5, 5) +
+  theme_bw()
+```
+
+You can see that it maps the values ranging from 0 to 1 to values ranging from negative to positive infinity. It is more or less a straight line when the probability is between about 0.25 and 0.75, but starts to get really steep as you get close to the boundaries. This makes sense because if you have an event that has an extremely low (or high) chance of happening, a little increase (or decrease) to the probability will be a relatively bigger difference.
+
+So to use statistical jargon, what we are going to do here is fit a binomial GLMM (binomial meaning our response variable is a binary outcome) with a logit link function to transform the predicted probabilities onto the log odds scale.
+
+We use the `glmer()` function instead of `lmer()` in this case. (If this was SAS, we would be using **proc glimmix**.) We specify a formula in the same way as we have been doing with `lmer()`, and the data frame from which the variables come, but we now have a new argument, `family`. This refers to the "family" of response distributions that we are going to be using. Here we specify `binomial(link = 'logit')`. Other link functions are possible to use with binomial GLMMs, but we will not get into that today.
+
+```{r}
+glmm_disease <- glmer(disease ~ inoc + (1|pen), data = disease, family = binomial(link = 'logit'))
+```
+
+What do the diagnostic plots look like now?
+
+```{r}
+check_model(glmm_disease)
+```
+
+This looks much better especially the posterior predictive check. All model predictions are between 0 and 1 which makes logical sense because they are probabilities, and also is a very good match to the observations. The residuals look better as well.
+
+What does this model tell us?
+
+```{r}
+summary(glmm_disease)
+```
+
+Now we have an intercept of 1.39 and a coefficient on the inoculation treatment of -3.37. Great, but what does that exactly mean? When we are dealing with models that have link functions, the coefficients are hard to interpret at first glance because they are on the log odds scale. We have to back-transform them to the probability scale to make any sense of them.
+
+The intercept of 1.39 is the fitted log odds of getting the disease in the uninoculated control, averaged across the random effect of pen. To transform this log odds back to the probability scale ranging from 0 to 1, we use the inverse logit function, `plogis()`.
+
+```{r}
+plogis(1.39)
+```
+
+So the model population-level prediction is that a random individual who isn't inoculated has 80% probability of getting the disease. 
+
+What about the slope of -3.37? That is the change in the log odds between uninoculated and inoculated. To find out the model prediction for inoculated individuals, we need to subtract 3.37 from the intercept, then take the inverse logit of that value.
+
+```{r}
+plogis(1.39 - 3.37)
+```
+
+The probability of getting the disease, says the model, plummets from 80% down to 12% if the individual is inoculated. 
+
+In the next lesson, we will look at easier ways to extract model predictions from GLMM models -- you will not have to do it "by hand" as we just did.
+
+We can set up a generalized linear mixed model with all the same kinds of fixed and random effects as in plain vanilla linear mixed models. For example, we can have continuous and categorical predictors, interactions, crossed or nested random effects, random intercepts and/or random slopes. I will leave that for the exercises.
+
+# GLMM with count response variable
+
+If your response variable is a discrete count, you have a similar issue as with binary response data. Your response variable can only be a non-negative integer, 0 or greater. It's easier to imagine a "bell curve" looking distribution for count data. But we still have the issue that there are only discrete values, not continuous as we would have to have for a true normal distribution. Also, we can easily end up with a model that predicts negative counts, which is basically nonsense. 
+
+GLMMs come to the rescue again! In this case, we will use a Poisson distribution with a log link function. The Poisson distribution is bounded over non-negative integers, so it is ideal for count data (as long as there are not too many 0 values).
+
+Here we are going to use an example dataset from the **agridat** package, like we did for the exercises in the previous lesson. This dataset comes from an experiment conducted by George Stirret and colleagues in Canada in 1935 to determine whether fungal spores could be applied to corn plants to control the European corn borer. There were four levels of the fungal spore treatment (`trt` column in the dataset): an untreated control (`"None"`), early fungal treatment (`"Early"`), late fungal treatment (`"Late"`), and a treatment in which fungal spores were applied both early and late (`"Both"`). There were 15 experimental blocks (`block` column), each containing four plots. The number of borers per plot was counted on two different dates. For simplicity we will only consider the second count (`count2` column).
+
+Load the dataset:
+
+```{r}
+data('stirret.borers', package = 'agridat')
+```
+
+If you are running R locally and for some reason you do not have access to the **agridat** package, I have provided the data in a CSV file:
+
+```{r, eval = FALSE}
+stirret.borers <- read_csv('datasets/stirret.borers.csv')
+```
+
+Here is a histogram of the `count2` data for each treatment separately, set to have 10 bins using the `geom_histogram()` function from **ggplot2**, and the `facet_wrap()` function to make a separate panel for each treatment. I've also included a vertical line at the mean for each treatment.
+
+```{r}
+borer_means <- stirret.borers %>%
+  group_by(trt) %>%
+  summarize(count2_mean = mean(count2))
+
+ggplot(stirret.borers, aes(x = count2)) +
+  geom_histogram(bins = 10) +
+  geom_vline(aes(xintercept = count2_mean), data = borer_means, color = 'red') +
+  facet_wrap(~ trt) +
+  theme_bw()
+```
+
+You can see that we have quite a few counts of zero or close to it, and that the "Both" and "Late" treatments have the lowest mean counts, with "Early" higher and "None" the highest.
+
+As we've been doing, let's rearrange the factor levels of the `trt` column so that the control level `'None`` is first in the ordering and will be treated as the reference level by the model. This will assist our interpretation.
+
+```{r}
+stirret.borers <- stirret.borers %>%
+  mutate(trt = factor(trt, levels = c('None', 'Early', 'Late', 'Both')))
+```
+
+For a proof of concept, let's once again fit the model as a general linear model (with random intercepts), assuming normally distributed residuals.
+
+```{r}
+lmm_borers <- lmer(count2 ~ trt + (1|block), data = stirret.borers)
+```
+
+Then fit the generalized linear model. Here we use `family = poisson(link = 'log')` as the link function that works best with the Poisson distribution is just `log()`.
+
+```{r}
+glmm_borers <- glmer(count2 ~ trt + (1|block), data = stirret.borers, family = poisson(link = 'log'))
+```
+
+Compare the diagnostic plots from each model, first from the linear mixed model:
+
+```{r}
+check_model(lmm_borers)
+```
+
+Then from the Poisson GLMM:
+
+```{r}
+check_model(glmm_borers)
+```
+
+The residual diagnostics actually look acceptable for both models, because the count data are really not that far off from normal. But compare the predictive check plots. You can see that the first model produces a lot of negative predictions. So the GLMM is ideal to use here, not just to "make the residuals behave" but also because it allows us to make meaningful predictions.
+
+Let's look at the coefficients of the model.
+
+```{r}
+summary(glmm_borers)
+```
+
+Again, we have to back-transform the coefficient estimates from the link function scale back to the original scale of the data. In this case, because the logarithm `log()` was the link function, we use exponentiation `exp()` as the inverse. The intercept, 3.42, represents the estimated mean for the "None" treatment (control group) on a log scale.
+
+```{r}
+exp(3.42)
+```
+
+This is a population-level prediction for the control group of about 30.6 borers per plot on the original data scale. We can get similar predictions for the other treatment groups by adding their coefficients to the intercept and exponentiating. For example, the "Early" treatment's coefficient was -0.24:
+
+```{r}
+exp(3.42 - 0.24)
+```
+
+This corresponds to a prediction of 24.0 borers per plot.
+
+# Hey! What about ...
+
+Unfortunately we are only barely scratching the surface of generalized linear mixed models today. These are only a little bit of what you can do. I don't have time to cover all GLMM types in this workshop. For one thing, `glmer()` can only fit a small subset of GLMMs. For example, your response variable might be a categorical outcome with more than two possibilities. This would be the case in a choice trial. In that case, you would want to fit a multinomial GLMM. Some categorical response variables are ordered, such as disease ratings on a 1-5 scale. There are also GLMMs for that.
+
+Other topics that you might be wondering about include
+
+- Repeated measures designs
+- Spatial autocorrelation
+- Overdispersion in count data
+- Zero-inflation
+- Different types of random effects (G-side versus R-side) and error structures
+
+These topics are very near and dear to my heart and I am planning to develop workshops that cover them.
+
+Finally, you may have noticed there was no mention of Bayesian statistics. In many real world cases of data analysis, the "frequentist" methods we have covered today simply will not work. The best alternative is to use a Bayesian approach. I highly recommend the Bayesian R modeling packages **brms** and **rstanarm** to fit Bayesian GLMMs. I'm going to do a workshop on **brms** soon.
+
+We have one more lesson coming up today, where we are going to look at comparing means and testing hypotheses.
