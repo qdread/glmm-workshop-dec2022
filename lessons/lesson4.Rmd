@@ -77,7 +77,7 @@ The next question is, should location and year be random or fixed? This depends 
 
 Notice I did not include random slopes, only random intercepts. It could potentially also make sense to include random slopes, if we think the treatment effect is different by location and year, not just that the locations and years have different "baseline" yields.
 
-We also have many blocks at a given location, each of which has many plots. Block should definitely be treated as a random effect *nested* within location. Block 1 in Illinois is not the same as Block 1 in Minnesota; it would make no sense to have We do not need to include plot explicitly, because the plots are individual data points. The random variation of plots is already taken care of by the overall model residuals. This will add one more random intercept term to our model. We use the `:` operator to separate nesting terms.
+We also have many blocks at a given location, each of which has many plots. Block should definitely be treated as a random effect *nested* within location. Block 1 in Illinois is not the same as Block 1 in Minnesota; it would make no sense to have a common intercept for Block 1. Thus block is nested within location, meaning a separate intercept is fit for each block in each location. We do not need to include plot explicitly, because the plots are individual data points. The random variation of plots is already taken care of by the overall model residuals. This will add one more random intercept term to our model. We use the `:` operator to separate nesting terms.
 
 `yield ~ tillage + cover.trt + tillage:cover.trt + (1 | yr) + (1 | location) + (1 | block:location)`
 

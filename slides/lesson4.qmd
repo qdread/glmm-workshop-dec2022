@@ -92,44 +92,88 @@ ggplot(maize, aes(y = yield, x = tillage, fill = cover.trt)) +
 
 - Should location and year be random or fixed? 
 - Depends on the statistical inference we want to draw
+- If we are interested in change over time, year should be a fixed effect
+- If are not interested in comparing means of the different years, year should be a random effect
+- Treating years as a random population of environments
+- The same goes for location
 
-If we are interested in change over time, year should be a fixed effect. But if we think of the years the study was conducted as a "random sample" of the potential years we could have used, and we are not interested in comparing means of the different years, year should be a random effect. The same goes for location. For the sake of this example, let's say year and location will both be random effects. We will fit them as *crossed* random effects, meaning an intercept will be fit for each year and each location. This means we assume the effect of year is constant across locations, and vice versa. So now we have
+---
+
+## Building model formula
+
+- Let's say year and location will both be random effects
+- Fit them as *crossed* random effects
+- An intercept will be fit for each year and each location
+- This means we assume the effect of year is constant across locations, and vice versa
 
 `yield ~ tillage + cover.trt + tillage:cover.trt + (1 | yr) + (1 | location)`
 
-Notice I did not include random slopes, only random intercepts. It could potentially also make sense to include random slopes, if we think the treatment effect is different by location and year, not just that the locations and years have different "baseline" yields.
+- No random slopes (baseline yield differs across environments but not the treatment effect)
 
-We also have many blocks at a given location, each of which has many plots. Block should definitely be treated as a random effect *nested* within location. Block 1 in Illinois is not the same as Block 1 in Minnesota; it would make no sense to have We do not need to include plot explicitly, because the plots are individual data points. The random variation of plots is already taken care of by the overall model residuals. This will add one more random intercept term to our model. We use the `:` operator to separate nesting terms.
+---
+
+## Building model formula some more
+
+- There are many blocks at eacg location, each of which has many plots
+- Block treated as a random effect *nested* within location
+- Block 1 in Illinois is not the same as Block 1 in Minnesota
+- Separate intercept fitted for each block in each location
+- We do not need to include plot explicitly, because the plots are individual data points
+- Use the `:` operator to separate nesting terms.
 
 `yield ~ tillage + cover.trt + tillage:cover.trt + (1 | yr) + (1 | location) + (1 | block:location)`
 
-Here is the model.
+## Full model formula
 
 ```{r}
 fit_maize <- lmer(yield ~ tillage + cover.trt + tillage:cover.trt + (1 | yr) + (1 | location) + (1 | block:location), data = maize)
 ```
 
-An alternative here would be to give each location-year combination its own intercept. This would mean that location is *nested* within year as well, resulting in three levels of nesting, year : location : block. That might make sense in this case if the locations are far enough apart that we do not think the random variation of years would be consistent across locations. The formula would look like this:
+---
+
+### Alternative formula 1
+
+- Give each location-year combination its own intercept
+- This would mean location is *nested* within year as well
+- Three levels of nesting for block
+- Use this if the locations are far enough apart that the random variation of years isn't consistent across locations
 
 `yield ~ tillage + cover.trt + tillage:cover.trt + (1 | location:yr) + (1 | block:location:yr)`
 
-If we wanted to do random slopes in this model, we would have to specify which terms would be random and which grouping factors would get separate slopes fitted to them. For example, we might want to fit only random slopes for the main effect terms, and only for the year-location combination. The formula would look like this:
+---
+
+### Alternative formula 2
+
+- Random slopes
+- Must specify which effects are random in the design component
+- Specify which grouping factors get separate slopes fitted to them
+- For example, fit random slopes *only* to each main effect and *only* for the year-location grouping factor:
 
 `yield ~ tillage + cover.trt + tillage:cover.trt + (tillage + cover.trt | location:yr) + (1 | block:location:yr)`
 
-These examples demonstrate how many modeling decisions have to be made for even a relatively clean and neat dataset.
 
-# Data transformations
+## Data transformations
 
-Typically, researchers think of data transformation as something you only need to do to "make the data normal" (which really means making the residuals roughly normally distributed). This is not really the best approach. Transforming data should be done for scientific reasons, not just on an ad hoc basis. For example, if a response variable is a ratio or a concentration, it typically would make sense to take the logarithm of that value before fitting the statistical model. This is because the difference between two values on a logarithmic scale is *multiplicative*, not additive. The difference between a ratio of 0.01 and 1 is 100 times, which is the same difference as the difference between a ratio of 1 and 100. That is only true on a logarithmic scale.
+- Not just to "make the data normal" (actually the residuals)
+- Transformations should be guided by theory and science
+- For example, response variables that are ratios or concentrations
+- Difference between two values on a logarithmic scale is multiplicative difference (ratio) on an arithmetic scale 
+- Example: Difference between a ratio of 0.01 and a ratio of 1 is 100 times
+- Difference etween a ratio of 1 and 100 is 100 times
+- On a log scale those two differences are treated the same (which is good)
 
-Here is an example situation where you might want to consider doing a log transformation. These data are a small subset of an ARS scientist's data. We have different varieties of barley crossed with different types of fungicide. Multiple plots of each combination of variety and fungicide were grown in an experimental block (called `Rep` in the dataset). Among other responses, the amount of DON (a mycotoxin) produced was measured, which is given here in units of parts per million (column `DON_ppm`).
+## Log transformation example
+
+- Small subset of an ARS scientist's data (noise added)
+- Different varieties of barley crossed with different types of fungicide
+- Multiple plots of each combination of variety and fungicide in each experimental block (column `Rep`)
+- Amount of DON (a mycotoxin) produced measured, units of parts per million (column `DON_ppm`)
 
 ```{r}
 barley_don <- read_csv('datasets/barley_don.csv')
 ```
 
-What do the data look like?
+## Examine the data
 
 ```{r}
 glimpse(barley_don)
@@ -141,27 +185,35 @@ ggplot(barley_don, aes(x = Variety, y = DON_ppm, fill = Fungicide)) +
   theme_bw()
 ```
 
-We can fit a fairly simple model to these data, with variety, fungicide type, and their interaction as fixed effects, and experimental block (`Rep`) as random intercept.
+## Fit a model
+
+- Variety, fungicide, and interaction are the fixed effects
+- Each `Rep` gets a random intercept
 
 ```{r}
 fit_don <- lmer(DON_ppm ~ Variety + Fungicide + Variety:Fungicide + (1|Rep), data = barley_don)
 ```
 
-However, I would recommend fitting a model with the log-transformed `DON_ppm` variable as the response variable. You can do the log transformation directly in the model statement by surrounding the name of the variable with `log()`.
+## Log transformed response
+
+- Same as before but the response variable is log-transformed
+- This can be done directly in the model formula
+- Concentration is on a ratio scale so we are looking at multiplicative changes
 
 ```{r}
 fit_don_log <- lmer(log(DON_ppm) ~ Variety + Fungicide + Variety:Fungicide + (1|Rep), data = barley_don)
 ```
 
-It makes sense to fit the model to the logarithm of DON concentration because concentration is on a ratio scale, so multiplicative changes in concentration are the most meaningful to consider.
+## Improvement to residuals
 
-Even though I just said that the rationale behind transforming data should be scientific and not just about making the data behave well, it does help us improve the residuals. In this case we can see that the residuals of the model fit to the untransformed data show very non-homogeneous variance and many points that far fall off the normal Q-Q plot. The situation is much improved for the model fit to the log-transformed data.
-
-> Notice we're using the `check_model()` function from **easystats** but with the `check` argument to tell it to produce only the two diagnostic plots we are interested in. Look at the help documentation for `?check_model` to see all the options.
+- Transformations should be determined by the science, but it's still good to look at the residuals
+- Residuals in untransformed model have non-homogeneous variance and bad match to normal quantile line
+- Both diagnostics better for the log-transformed response
+- Note: `check` argument to `check_model()` lets you select specific diagnostic plots to make
+  + See all options by looking at help documentation: `?check_model`
 
 ```{r}
 check_model(fit_don, check = c('homogeneity', 'qq'))
 check_model(fit_don_log, check = c('homogeneity', 'qq'))
 ```
 
-We will revisit this model in a later lesson when we talk about comparing means.
