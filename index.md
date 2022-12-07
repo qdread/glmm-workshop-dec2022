@@ -20,8 +20,8 @@ Learning objectives and other information about course content.
 [WORKSHEETS AND EXAMPLE DATASETS](worksheets){: .biglink }  
 Page with course materials for download.
 
-[INSTALLATION INSTRUCTIONS](install){: .biglink }  
-Instructions on installing R, RStudio, and necessary packages. Please follow these instructions before the beginning of the workshop.
+[INSTALLATION/SIGNUP INSTRUCTIONS](install){: .biglink }  
+Instructions on joining the Posit Cloud project to access R from your web browser, or installing R, RStudio, and necessary packages if you want to use your own copy of R. Please follow these instructions before the beginning of the workshop.
 
 [OPTIONAL PRE-WORKSHOP LEARNING MATERIAL](pre-workshop-materials){: .biglink }  
 If you want to study up on R or statistical models before the workshop, here are some helpful resources.
