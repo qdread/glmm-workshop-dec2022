@@ -1,6 +1,8 @@
 ---
 title: "Lesson 3: From linear model to linear mixed model"
-format: revealjs
+format: 
+  revealjs:
+    code-overflow: wrap
 execute:
   echo: true
   eval: false
@@ -419,16 +421,13 @@ fert_mm_slopes <- lmer(biomass ~ treatment + (treatment | field), data = fert_bi
 
 - We get a message that the fit is singular -- what?!?
 
-## Singular fit
+## Singular fit {.smaller}
 
 - *"Some components of the variance-covariance matrix of the random effects, or possibly one or more linear combinations of them, are either exactly zero or exactly one."*
 - Still ... what?!? 
 - The algorithm that fits the model parameters doesn't have enough data to get a good estimate
 - Often occurs when fitting (overly) complex models
 - Or random effects are very small and cannot be distinguished from zero 
-
----
-
 - We still get output (it's a note, not an error or warning)
 - But we need to take a close look at the random effects and their variances
 

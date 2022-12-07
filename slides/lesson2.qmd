@@ -1,6 +1,8 @@
 ---
 title: "Lesson 2: Working with data frames"
-format: revealjs
+format: 
+  revealjs:
+    code-overflow: wrap
 execute:
   echo: true
   eval: false
@@ -132,6 +134,8 @@ dat[20, c('taxonID', 'sex')]
 ```
 
 ---
+
+## The $ operator
 
 - To extract a single column from a data frame as a vector, you can use the `$` operator. 
 
@@ -376,7 +380,7 @@ table3
 - Count of disease cases and total population in a country in one specific year is one observation
 - Each row of Table 1 includes both grouping columns and both variable columns from one observation
 
-## Reshaping data: pivot_wider()
+## Reshaping data: pivot_wider() {.smaller}
 
 - `pivot_wider()` will turn `table2` into `table1`
 - Three arguments needed to reshape data from long to wide

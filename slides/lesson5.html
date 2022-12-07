@@ -407,7 +407,7 @@
 <li>General linear mixed model and generalized linear mixed model begin with the same letters, so it’s a little bit confusing!</li>
 </ul>
 </section>
-<section id="glmm-with-binary-response-variable" class="slide level2">
+<section id="glmm-with-binary-response-variable" class="slide level2 smaller">
 <h2>GLMM with binary response variable</h2>
 <ul>
 <li>Let’s say we have response data that is binary</li>
@@ -461,10 +461,8 @@
 <section class="slide level2">
 
 <ul>
-<li>What if we wanted to make predictions?</li>
 <li>Let’s say we had a population where the baseline rate of disease was only 40%.</li>
 <li>Our model would predict -24% disease when inoculated</li>
-<li>That is logically impossible!</li>
 <li>It makes more sense to think about relative changes to odds.</li>
 <li>If the baseline rate is very low, it can’t be reduced much more</li>
 <li>If the baseline rate is high, it’s easier to reduce</li>
@@ -472,15 +470,12 @@
 </section>
 <section id="diagnostics-of-linear-model" class="slide level2">
 <h2>Diagnostics of linear model</h2>
-<ul>
-<li>Residuals of this model do not really meet assumptions</li>
-<li>Not normally distributed with homogeneous variance</li>
-</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">check_model</span>(lmm_disease)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
-<li>Also take a look at the posterior predictive check at top left</li>
+<li>Residuals of this model do not really meet assumptions</li>
+<li>Not normally distributed with homogeneous variance</li>
 <li>Predicted values of the model go well outside the 0 to 1 range</li>
 <li>Very poor match between the data (green line) and predictions (blue lines)</li>
 </ul>
@@ -492,10 +487,9 @@
 <li>Use a link function to convert the predicted response value into a scale that can be normally distributed</li>
 <li>Predict the probability that an individual from each pen with or without the inoculation treatment will get the disease</li>
 <li>Probability ranges from 0 to 1, so it cannot really have normally distributed error</li>
-<li>Bell curves can take any value, positive or negative, not bounded at all</li>
 </ul>
 </section>
-<section id="glmm-formula" class="slide level2">
+<section id="glmm-formula" class="slide level2 smaller">
 <h2>GLMM formula</h2>
 <p>Formula for predicting the probability of disease for individual <span class="math inline">\(i\)</span> in pen <span class="math inline">\(j\)</span>:</p>
 <p><span class="math display">\[\text{logit}~\hat{y}_{i,j} = \beta_0 + \beta_1 inoc_i + u_j\]</span></p>
@@ -522,14 +516,11 @@
 </section>
 <section id="graph-of-the-logit-function" class="slide level2">
 <h2>Graph of the logit function</h2>
-<div class="cell">
 
-</div>
-<ul>
+<img data-src="lesson5_files/figure-revealjs/unnamed-chunk-6-1.png" width="384" class="r-stretch"><ul>
 <li>Maps the values from 0 to 1 to negative to positive infinity.</li>
-<li>More or less a straight line between about 0.25 and 0.75,</li>
+<li>More or less a straight line between about 0.25 and 0.75</li>
 <li>Starts to get steep as you get close to the boundaries</li>
-<li>If you have an event that has an extremely low (or high) chance of happening, a little increase (or decrease) to the probability will be a relatively bigger difference</li>
 </ul>
 </section>
 <section id="fit-the-logit-model" class="slide level2">

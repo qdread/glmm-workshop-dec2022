@@ -390,10 +390,6 @@
   <h1 class="title">Lesson 6: Estimating and comparing treatment means</h1>
 </section>
 
-<section class="slide level2">
-
-<p>Welcome to the final lesson of the mixed models in R workshop! Pat yourselves on the back for making it this far.</p>
-</section>
 <section id="lesson-6-learning-objectives" class="slide level2">
 <h2>Lesson 6 learning objectives</h2>
 <p>At the end of this lesson, students will …</p>
@@ -426,7 +422,6 @@
 <ul>
 <li>Confidence interval or uncertainty around an estimated marginal mean is not the same thing as the range of variation in the population</li>
 <li>Example: population-level mean of the height of an adult female in the United States is 161.3 cm (5’ 3.5”)</li>
-<li>Roughly normally distributed</li>
 <li>90% confidence interval goes from 160.9 cm to 161.6 cm (5’ 3.38” to 5’ 3.63”).</li>
 <li>Mean was estimated from a sample of 5,510 women</li>
 <li>We are very confident we know the mean within a tiny range</li>
@@ -437,7 +432,7 @@
 <ul>
 <li>But if we took a random adult female from the United States and measured her height, does that mean we are 90% confident it would be between 160.9 cm and 161.6 cm? No!</li>
 <li>In fact, the 5th and 95th percentile are 149.8 cm (4’11”) and 172.5 cm (5’8”)</li>
-<li>90% of the time if we selected a random female we would expect her height to be between those much more widely separated values</li>
+<li>90% of females’ heights are between those much more widely separated values</li>
 <li>Estimated marginal means tell us the most likely expected value of a random individual from the population, not about the variation in the population itself</li>
 <li>Especially keep this in mind when averaging the estimated means across random effects and other fixed effects</li>
 </ul>
@@ -633,7 +628,7 @@
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>emm_borers <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(glmm_borers, <span class="sc">~</span> trt, <span class="at">type =</span> <span class="st">'response'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="contrasts-of-transformed-emms" class="slide level2">
+<section id="contrasts-of-transformed-emms" class="slide level2 smaller">
 <h2>Contrasts of transformed EMMs</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">contrast</span>(emm_borers, <span class="at">method =</span> <span class="st">'pairwise'</span>, <span class="at">adjust =</span> <span class="st">'sidak'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -683,7 +678,7 @@
 
 <h3 id="emms-for-combinations-of-fixed-effects">EMMs for combinations of fixed effects</h3>
 <ul>
-<li>Specify more than one variable, separating them with a <code>+</code>:</li>
+<li>Specify more than one variable, separating them with a <code>+</code></li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>emm_species_x_prep <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(fit_fillets, <span class="sc">~</span> species <span class="sc">+</span> prep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -735,6 +730,10 @@
 <li>We will cover them in a future workshop!</li>
 </ul>
 </section>
+<section id="all-models-are-wrong-but-some-are-useful" class="slide level2">
+<h2>All models are wrong but some are useful</h2>
+
+<img data-src="https://quentinread.com/glmm-workshop-dec2022/public/images/ModelWrong.png" class="r-stretch"></section>
 <section id="course-recap" class="slide level2">
 <h2>Course Recap</h2>
 <p>This concludes the mixed models in R workshop. We have learned a lot in the past two days!</p>

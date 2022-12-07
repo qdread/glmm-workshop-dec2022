@@ -1,12 +1,12 @@
 ---
 title: "Lesson 6: Estimating and comparing treatment means"
-format: revealjs
+format: 
+  revealjs:
+    code-overflow: wrap
 execute:
   echo: true
   eval: false
 ---
-
-Welcome to the final lesson of the mixed models in R workshop! Pat yourselves on the back for making it this far.
 
 ## Lesson 6 learning objectives
 
@@ -34,7 +34,6 @@ At the end of this lesson, students will ...
 
 - Confidence interval or uncertainty around an estimated marginal mean is not the same thing as the range of variation in the population
 - Example: population-level mean of the height of an adult female in the United States is 161.3 cm (5' 3.5") 
-- Roughly normally distributed
 - 90% confidence interval goes from 160.9 cm to 161.6 cm (5' 3.38" to 5' 3.63"). 
 - Mean was estimated from a sample of 5,510 women
 - We are very confident we know the mean within a tiny range
@@ -43,7 +42,7 @@ At the end of this lesson, students will ...
 
 - But if we took a random adult female from the United States and measured her height, does that mean we are 90% confident it would be between 160.9 cm and 161.6 cm? No! 
 - In fact, the 5th and 95th percentile are 149.8 cm (4'11") and 172.5 cm (5'8")
-- 90% of the time if we selected a random female we would expect her height to be between those much more widely separated values
+- 90% of females' heights are between those much more widely separated values
 - Estimated marginal means tell us the most likely expected value of a random individual from the population, not about the variation in the population itself
 - Especially keep this in mind when averaging the estimated means across random effects and other fixed effects
 
@@ -226,7 +225,7 @@ emmeans(glmm_borers, ~ trt)
 emm_borers <- emmeans(glmm_borers, ~ trt, type = 'response')
 ```
 
-## Contrasts of transformed EMMs
+## Contrasts of transformed EMMs {.smaller}
 
 ```{r}
 contrast(emm_borers, method = 'pairwise', adjust = 'sidak')
@@ -271,7 +270,7 @@ emm_prep <- emmeans(fit_fillets, ~ prep)
 
 ### EMMs for combinations of fixed effects
 
-- Specify more than one variable, separating them with a `+`:
+- Specify more than one variable, separating them with a `+`
 
 ```{r}
 emm_species_x_prep <- emmeans(fit_fillets, ~ species + prep)
@@ -315,6 +314,10 @@ cld(emm_prep_within_species, adjust = 'sidak', Letters = letters)
 - We want to evaluate the relative amount of evidence for each one
 - Likelihood ratio tests and information criteria are used to compare mixed models
 - We will cover them in a future workshop!
+
+## All models are wrong but some are useful
+
+![](https://quentinread.com/glmm-workshop-dec2022/public/images/ModelWrong.png)
 
 ## Course Recap
 

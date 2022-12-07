@@ -1,10 +1,25 @@
 ---
 title: "Lesson 4: Going further with linear mixed models"
-format: revealjs
+format: 
+  revealjs:
+    code-overflow: wrap
 execute:
   echo: true
   eval: false
 ---
+
+## Day 2 Schedule {.scrollable}
+
+Time                      | Activity
+------------------------- | ----------------------------------------------------------
+9:00-9:15 AM              | Introductions, troubleshooting
+9:15-10:15 AM             | **Lesson 4**: Going further with mixed models
+10:15-10:45 AM            | *break*
+10:45-11:30 AM            | **Lesson 5**: Generalized linear mixed models
+11:30-11:45 AM            | *break*
+11:45 AM-12:45 PM         | **Lesson 6**: Estimating and comparing treatment means
+12:45-2:00 PM             | *lunch break*
+2:00 PM-4:00 PM           | **office hours**
 
 ## Lesson 4 learning objectives
 
@@ -112,9 +127,9 @@ ggplot(maize, aes(y = yield, x = tillage, fill = cover.trt)) +
 
 ---
 
-## Building model formula some more
+## Building model formula some more {.smaller}
 
-- There are many blocks at eacg location, each of which has many plots
+- There are many blocks at each location, each of which has many plots
 - Block treated as a random effect *nested* within location
 - Block 1 in Illinois is not the same as Block 1 in Minnesota
 - Separate intercept fitted for each block in each location
@@ -152,7 +167,7 @@ fit_maize <- lmer(yield ~ tillage + cover.trt + tillage:cover.trt + (1 | yr) + (
 `yield ~ tillage + cover.trt + tillage:cover.trt + (tillage + cover.trt | location:yr) + (1 | block:location:yr)`
 
 
-## Data transformations
+## Data transformations {.smaller}
 
 - Not just to "make the data normal" (actually the residuals)
 - Transformations should be guided by theory and science

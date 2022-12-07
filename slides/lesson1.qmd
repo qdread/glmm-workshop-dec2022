@@ -1,6 +1,8 @@
 ---
 title: "Lesson 1: R basics"
-format: revealjs
+format: 
+  revealjs:
+    code-overflow: wrap
 execute:
   echo: true
   eval: false
@@ -15,7 +17,7 @@ execute:
 - Optional exercises at the end
 - This is a practical skills course, not "Principles of Statistics 101!"
 
-## Day 1 Schedule
+## Day 1 Schedule {.scrollable}
 
 Time                      | Activity
 ------------------------- | ----------------------------------------------------------
@@ -24,12 +26,6 @@ Time                      | Activity
 10:15-10:45 AM            | *break*
 10:45-11:30 AM            | **Lesson 2**: R Boot Camp: working with data frames
 11:30-11:45 AM            | *break*
-
-
-## Day 1 Schedule, continued
-
-Time                      | Activity
-------------------------- | ----------------------------------------------------------
 11:45 AM-12:45 PM         | **Lesson 3**: From linear model to linear mixed model
 12:45-2:00 PM             | *lunch break*
 2:00 PM-4:00 PM           | **office hours**
@@ -90,6 +86,8 @@ R and RStudio are software tools to help you work with and analyze your data.
   + a data frame with 1000 rows and 10 columns
   
 ---
+
+### The basic moving parts of R
 
 - **function**: something that takes arguments as input, does something, and returns output.
   + `log(10)`: takes a numeric value as input and returns a numeric value as output
@@ -334,7 +332,7 @@ treatment
 
 ---
 
-### Logical
+### Logical {.smaller}
 
 - Can take two values, `TRUE` and `FALSE`
 - The result of a comparison is a logical vector
@@ -370,7 +368,7 @@ x <= 1 | x >= 5
 
 ---
 
-#### Other important logical operators
+#### The ! operator
 
 - `!` is the negation operator
 - Converts all `TRUE` values to `FALSE` and vice versa.
@@ -380,6 +378,8 @@ x <= 1 | x >= 5
 ```
 
 ---
+
+#### The %in% operator
 
 - `%in%` is an operator comparing two vectors
 - Goes through the vector on the left-hand side and returns `TRUE` for the values that appear anywhere in the vector on the right-hand side, and `FALSE` otherwise
@@ -405,9 +405,7 @@ random_numbers <- rnorm(n = 1000, mean = 0, sd = 1)
 head(exp(random_numbers))
 ```
 
-> PROTIP: `set.seed()` ensures the code produces the same result each time
-
-> PROTIP 2: `head()` means only print the first few values of a result
+> PROTIP: `set.seed()` ensures the code produces the same result each time, and `head()` means only print the first few values of a result
   
 ---
 

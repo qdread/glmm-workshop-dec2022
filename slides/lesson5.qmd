@@ -1,6 +1,8 @@
 ---
 title: "Lesson 5: Generalized linear mixed models"
-format: revealjs
+format: 
+  revealjs:
+    code-overflow: wrap
 execute:
   echo: true
   eval: false
@@ -20,7 +22,7 @@ At the end of this lesson, students will ...
 - The next step is to enter the world of general*ized* linear mixed models (GLMMs)
 - General linear mixed model and generalized linear mixed model begin with the same letters, so it's a little bit confusing!
 
-## GLMM with binary response variable
+## GLMM with binary response variable {.smaller}
 
 - Let's say we have response data that is binary
 - For example, testing the ability of a vaccine to prevent some disease in animals
@@ -72,10 +74,8 @@ lmm_disease <- lmer(disease ~ inoc + (1|pen), data = disease)
 
 ---
 
-- What if we wanted to make predictions? 
 - Let's say we had a population where the baseline rate of disease was only 40%. 
 - Our model would predict -24% disease when inoculated 
-- That is logically impossible! 
 - It makes more sense to think about relative changes to odds. 
 - If the baseline rate is very low, it can't be reduced much more
 - If the baseline rate is high, it's easier to reduce
@@ -84,14 +84,12 @@ lmm_disease <- lmer(disease ~ inoc + (1|pen), data = disease)
 
 ## Diagnostics of linear model
 
-- Residuals of this model do not really meet assumptions 
-- Not normally distributed with homogeneous variance
-
 ```{r}
 check_model(lmm_disease)
 ```
 
-- Also take a look at the posterior predictive check at top left
+- Residuals of this model do not really meet assumptions 
+- Not normally distributed with homogeneous variance
 - Predicted values of the model go well outside the 0 to 1 range
 - Very poor match between the data (green line) and predictions (blue lines)
 
@@ -101,9 +99,8 @@ check_model(lmm_disease)
 - Use a link function to convert the predicted response value into a scale that can be normally distributed 
 - Predict the probability that an individual from each pen with or without the inoculation treatment will get the disease
 - Probability ranges from 0 to 1, so it cannot really have normally distributed error 
-- Bell curves can take any value, positive or negative, not bounded at all
 
-## GLMM formula
+## GLMM formula {.smaller}
 
 Formula for predicting the probability of disease for individual $i$ in pen $j$:
 
@@ -129,18 +126,18 @@ $$\text{logit}~p = \log \frac {p}{1-p}$$
 
 ## Graph of the logit function
 
-```{r, echo = FALSE}
+```{r, eval = TRUE, echo = FALSE, fig.height=4, fig.width=4}
 library(ggplot2)
 ggplot(data.frame(p = 0:1), aes(x=p)) +
   stat_function(fun = qlogis, color = 'slateblue', linewidth = 1) + 
   labs(y = 'logit(p)') + ylim(-5, 5) +
-  theme_bw()
+  theme_bw() +
+  theme(axis.text = element_text(size=rel(1.5)), axis.title = element_text(size=rel(1.5)))
 ```
 
 - Maps the values from 0 to 1 to negative to positive infinity. 
-- More or less a straight line between about 0.25 and 0.75, 
+- More or less a straight line between about 0.25 and 0.75
 - Starts to get steep as you get close to the boundaries
-- If you have an event that has an extremely low (or high) chance of happening, a little increase (or decrease) to the probability will be a relatively bigger difference
 
 ## Fit the logit model
 
@@ -215,7 +212,7 @@ plogis(1.39 - 3.37)
 - Poisson distribution is bounded over non-negative integers
 - Ideal for count data (as long as there are not too many 0 values)
 
-## Example count dataset
+## Example count dataset {.smaller}
 
 - From **agridat** package
 - Experiment conducted by George Stirret and colleagues in Canada in 1935
@@ -265,7 +262,7 @@ ggplot(stirret.borers, aes(x = count2)) +
 
 ---
 
-- Rearrange the factor levels of the `trt` column so control level `'None`` is first
+- Rearrange the factor levels of the `trt` column so control level `'None'` is first
 - It will be the reference level in the model, for easier interpretation
 
 ```{r}
