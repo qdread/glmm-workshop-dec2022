@@ -124,8 +124,8 @@ lm_fit <- lm(biomass ~ soilN, data = soilN_biomass)
 summary(lm_fit)
 ```
 
-- Positive coefficient (~1.04) on `soilN` 
-- For every 1 unit increase in soil N, there is a 1.04 unit increase in biomass
+- Positive coefficient (~1.34) on `soilN` 
+- For every 1 unit increase in soil N, there is a 1.34 unit increase in biomass
 
 ---
 

@@ -107,7 +107,7 @@ You can use the `summary()` function to look at the model output.
 summary(lm_fit)
 ```
 
-We can see that there is a positive coefficient of ~1.04 on `soilN` indicating that the simple regression finds that for every 1 unit increase in soil N, there is a 1.04 unit increase in biomass.
+We can see that there is a positive coefficient of ~1.34 on `soilN` indicating that the simple regression finds that for every 1 unit increase in soil N, there is a 1.34 unit increase in biomass.
 
 If you just want the coefficients you can use the `coef()` function:
 
@@ -303,7 +303,7 @@ summary(fert_mm)
 
 You can see that there are three coefficients in the model: the intercept, `treatmentlow`, and `treatmenthigh`. Even though there are three treatments (control, low, and high), only two of them have their own coefficient. This is because we have an intercept already, and the mean value of one of the three treatments is set as the intercept. Then we only need two additional coefficients to define the means for the other two levels. 
 
-What the summary tells us is that the expected mean value of biomass in unfertilized control plots is about 18.1. The coefficients on low and high are positive, so the biomass is greater than the control in both cases. For example, the expected value of biomass in the low fertilizer treatment is about 18.1 + 2.5 = 20.6. We will look at ways to compare these means later.
+What the summary tells us is that the expected mean value of biomass in unfertilized control plots is about 17.9. The coefficients on low and high are positive, so the biomass is greater than the control in both cases. For example, the expected value of biomass in the low fertilizer treatment is about 17.9 + 2.1 = 20. We will look at ways to compare these means later.
 
 We also see that there are built-in t-tests for each coefficient. The t-test for the intercept is not really meaningful because it is comparing the intercept against a value of zero. Of course all the biomass values are well above zero so it's not surprising to get a high t-statistic and low p-value here. However the other two t-tests are testing whether the difference between each other treatment and the control is not zero. So those are meaningful. They show that both the other two treatments are different from the control. However these don't account for multiple comparisons or anything, and there is no t-test showing whether low and high differ from one another, so these default tests aren't the best statistical tests to report. We'll revisit that tomorrow!
 

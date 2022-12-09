@@ -515,6 +515,7 @@
 </section>
 <section class="slide level2">
 
+<h3 id="the-basic-moving-parts-of-r-1">The basic moving parts of R</h3>
 <ul>
 <li><strong>function</strong>: something that takes arguments as input, does something, and returns output.
 <ul>
@@ -764,7 +765,7 @@
 </section>
 <section class="slide level2">
 
-<h3 id="logical">Logical</h3>
+<h3 class="smaller" id="logical">Logical</h3>
 <ul>
 <li>Can take two values, <code>TRUE</code> and <code>FALSE</code></li>
 <li>The result of a comparison is a logical vector</li>
@@ -802,7 +803,7 @@
 </section>
 <section class="slide level2">
 
-<h4 id="other-important-logical-operators">Other important logical operators</h4>
+<h4 id="the-operator">The ! operator</h4>
 <ul>
 <li><code>!</code> is the negation operator</li>
 <li>Converts all <code>TRUE</code> values to <code>FALSE</code> and vice versa.</li>
@@ -813,6 +814,7 @@
 </section>
 <section class="slide level2">
 
+<h4 id="the-in-operator">The %in% operator</h4>
 <ul>
 <li><code>%in%</code> is an operator comparing two vectors</li>
 <li>Goes through the vector on the left-hand side and returns <code>TRUE</code> for the values that appear anywhere in the vector on the right-hand side, and <code>FALSE</code> otherwise</li>
@@ -839,10 +841,7 @@
 <span id="cb22-5"><a href="#cb22-5"></a><span class="fu">head</span>(<span class="fu">exp</span>(random_numbers))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <blockquote>
-<p>PROTIP: <code>set.seed()</code> ensures the code produces the same result each time</p>
-</blockquote>
-<blockquote>
-<p>PROTIP 2: <code>head()</code> means only print the first few values of a result</p>
+<p>PROTIP: <code>set.seed()</code> ensures the code produces the same result each time, and <code>head()</code> means only print the first few values of a result</p>
 </blockquote>
 </section>
 <section class="slide level2">
