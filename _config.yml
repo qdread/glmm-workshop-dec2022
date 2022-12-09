@@ -27,7 +27,6 @@ github:
 exclude:
   - .Rproj.user/
   - testing/
-  - slides/
   - lessons/datasets
   - lessons/old_drafts/
   
