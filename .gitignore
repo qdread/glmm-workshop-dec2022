@@ -57,3 +57,7 @@ bower_components
 
 # Symbolic link
 lessons/datasets
+lesson_pdfs/datasets
+
+# PDFs
+lesson_pdfs/*.pdf

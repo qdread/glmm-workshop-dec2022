@@ -29,4 +29,6 @@ exclude:
   - testing/
   - lessons/datasets
   - lessons/old_drafts/
+  - lesson_pdfs/
+  - lesson_pdfs/datasets
   
