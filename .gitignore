@@ -61,3 +61,4 @@ lesson_pdfs/datasets
 
 # PDFs
 lesson_pdfs/*.pdf
+slides/*.pdf

@@ -1,5 +1,5 @@
 ---
-title: "Lesson 6: Making predictions and testing hypotheses"
+title: "Lesson 6: Estimating and comparing treatment means"
 author: "Quentin D. Read"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: 
