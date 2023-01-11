@@ -12,7 +12,7 @@ dat <- ...('datasets/small_mammals.csv')
 
 dat
 
-...length(dat, n = 50)
+...(dat, n = 50)
 
 dat[...]
 

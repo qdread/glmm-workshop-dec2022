@@ -52,7 +52,7 @@ ggplot(stirret.borers, aes(x = count2)) +
 stirret.borers <- ...
   ...(trt = ...(trt, ... = c('None', 'Early', 'Late', 'Both')))
 
-lmm_borers <- ...(...elt(), data = stirret.borers)
+lmm_borers <- ...(..., data = stirret.borers)
 
 glmm_borers <- ...(..., data = stirret.borers, family = ...)
 
